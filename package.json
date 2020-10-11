@@ -1,0 +1,27 @@
+{
+  "name": "wishlist",
+  "version": "1.0.0",
+  "description": "Web app where you can create and manage your wishlist",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "client": "npm start --prefix client",
+    "json": "json-server --watch db.json",
+    "dev": "concurrently \"npm run client\" \"npm run json\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dartungar/wishlist.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dartungar/wishlist/issues"
+  },
+  "homepage": "https://github.com/dartungar/wishlist#readme",
+  "dependencies": {
+    "concurrently": "^5.3.0",
+    "json-server": "^0.16.2"
+  }
+}
