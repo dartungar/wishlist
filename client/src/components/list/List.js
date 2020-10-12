@@ -3,11 +3,11 @@ import styled from "styled-components";
 import Item from "./Item";
 
 const ListContainer = styled.div`
+  grid-column: 2;
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
   justify-content: flex-start;
-  min-width: 70%;
 `;
 
 const testItem = {

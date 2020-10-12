@@ -1,20 +1,27 @@
 import React from "react";
 import styled from "styled-components";
-import List from "./components/list/List";
+import Main from "./components/layout/Main";
 
 const AppContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  background-color: beige;
+  display: grid;
+  grid-template-columns: 1fr min(100ch, 100%) 1fr;
   color: black;
+  font-family: "Source Sans Pro", sans-serif;
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: "Noto Serif", serif;
+  }
 `;
 
 const App = () => {
   return (
     <AppContainer>
       <div></div>
-      <List />
+      <Main />
       <div></div>
     </AppContainer>
   );
