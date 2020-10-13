@@ -1,6 +1,10 @@
-import React from "react";
+import React, { useState, useEffect, useContext } from "react";
 import styled from "styled-components";
 import Item from "./Item";
+import AddNewItemBtn from "./AddNewItemBtn";
+import NewItemPrompt from "./NewItemPrompt";
+import ItemsContext from "../../context/items/itemsContext";
+import AuthContext from "../../context/auth/authContext";
 
 const ListContainer = styled.div`
   grid-column: 2;
@@ -17,13 +21,17 @@ const testItem = {
 };
 
 const List = () => {
+  const { items, getItems } = useContext(ItemsContext);
+  const { isAuthorised, user } = useContext(AuthContext);
+
+  useEffect(() => {
+    getItems(user.id);
+  }, []);
+
   return (
     <ListContainer>
-      <Item item={testItem} />
-      <Item item={testItem} />
-      <Item item={testItem} />
-      <Item item={testItem} />
-      <Item item={testItem} />
+      <AddNewItemBtn />
+      {items && items.map((item) => <Item key={item.id} item={item} />)}
     </ListContainer>
   );
 };

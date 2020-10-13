@@ -9,7 +9,7 @@ const NavbarContainer = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem;
+  padding: 1rem 0;
 
   @media (max-width: 300px) {
     justify-content: center;

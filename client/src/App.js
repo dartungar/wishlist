@@ -1,10 +1,12 @@
 import React from "react";
 import styled from "styled-components";
+import ItemsState from "./context/items/ItemsState";
+import AuthState from "./context/auth/AuthState";
 import Main from "./components/layout/Main";
 
 const AppContainer = styled.div`
   display: grid;
-  grid-template-columns: 1fr min(100ch, 100%) 1fr;
+  grid-template-columns: 1fr min(100ch, 90%) 1fr;
   color: black;
   font-family: "Source Sans Pro", sans-serif;
   h1,
@@ -19,11 +21,15 @@ const AppContainer = styled.div`
 
 const App = () => {
   return (
-    <AppContainer>
-      <div></div>
-      <Main />
-      <div></div>
-    </AppContainer>
+    <AuthState>
+      <ItemsState>
+        <AppContainer>
+          <div></div>
+          <Main />
+          <div></div>
+        </AppContainer>
+      </ItemsState>
+    </AuthState>
   );
 };
 

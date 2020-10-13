@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
+import ItemsContext from "../../context/items/itemsContext";
+import AuthContext from "../../context/auth/authContext";
 
 const ItemContainer = styled.div`
   display: flex;
@@ -9,7 +11,7 @@ const ItemContainer = styled.div`
   margin: 1rem 0 0 0;
   border: 1px solid grey;
   border-radius: 3px;
-  background-color: #f5fffe;
+  background-color: #fcffff;
 `;
 
 const NameContainer = styled.div`
@@ -38,7 +40,14 @@ const PrivateButtonsContainer = styled.div`
   }
 `;
 
-const Item = ({ item: { name, price, url } }) => {
+const Item = ({ item: { id, name, price, url, bookers } }) => {
+  const { deleteItem } = useContext(ItemsContext);
+
+  const onDelete = () => {
+    console.log("want to delete");
+    deleteItem(id);
+  };
+
   return (
     <ItemContainer>
       <NameContainer>
@@ -55,7 +64,9 @@ const Item = ({ item: { name, price, url } }) => {
       </PublicBtnsContainer>
       <PrivateButtonsContainer>
         <i class="fas fa-user-times"></i>
-        <i class="fas fa-trash-alt"></i>
+        <a href="" onClick={onDelete}>
+          <i class="fas fa-trash-alt"></i>
+        </a>
       </PrivateButtonsContainer>
     </ItemContainer>
   );

@@ -1,26 +1,35 @@
 {
-    "items": [
-        {
-            "id": 1,
-            "name": "MacBook Air",
-            "price": "250000 Р",
-            "group_purchase": "true",
-            "bookers": 0,
-            "user_id": 1 
-        }, 
-        {
-            "id": 2,
-            "name": "Leuchtturm 1917 Dot Grid Notebook",
-            "price": "1500 Р",
-            "group_purchase": "false",
-            "bookers": 0,
-            "user_id": 1 
-        }
-    ],
-    "users": [
-        {
-            "id": 1,
-            "name": "Daniel Nikolaev"
-        }
-    ]
+  "items": [
+    {
+      "id": 2,
+      "name": "Leuchtturm 1917 Dot Grid Notebook",
+      "price": "1500 Р",
+      "url": "https://google.com",
+      "group_purchase": "false",
+      "bookers": 0,
+      "user_id": 1
+    },
+    {
+      "id": 3,
+      "name": "Гитара Yamaha черная акустическая F310",
+      "price": "17000 Р",
+      "group_purchase": "true",
+      "bookers": 0,
+      "user_id": 1
+    },
+    {
+      "id": 4,
+      "name": "Книга Python для умственно отсталых",
+      "price": "800 Р",
+      "group_purchase": "true",
+      "bookers": 0,
+      "user_id": 1
+    }
+  ],
+  "users": [
+    {
+      "id": 1,
+      "name": "Daniel Nikolaev"
+    }
+  ]
 }
