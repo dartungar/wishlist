@@ -3,25 +3,33 @@
     {
       "id": 3,
       "name": "Гитара Yamaha черная акустическая F310",
-      "price": "17000 Р",
+      "price": 17000,
       "group_purchase": true,
       "bookers": 0,
       "user_id": 1
     },
     {
       "id": 4,
-      "name": "Книга Python для умственно отсталых",
-      "price": "800 Р",
+      "name": "Книга Python для умственно отсталых!",
+      "price": 800,
       "group_purchase": false,
       "bookers": 0,
       "user_id": 1
     },
     {
       "id": "559c6e64-8486-4a48-b0e4-2b79ee7ef098",
-      "name": "A New Item",
-      "price": "11111",
+      "name": "A New!!",
+      "price": 1111,
       "url": "https://metrika.yandex.ru/dashboard?id=55837855",
       "group_purchase": true,
+      "user_id": 1
+    },
+    {
+      "id": "6d7fd92b-b6b6-4ab3-bde8-fe73a9ab483f",
+      "name": "Залупоглазка необыкновенная",
+      "price": "111111",
+      "url": "HTTPS://vk.com/sunjshu",
+      "group_purchase": false,
       "user_id": 1
     }
   ],

@@ -2,7 +2,12 @@ import React, { useReducer } from "react";
 import { v4 as uuid4 } from "uuid";
 import itemsContext from "./itemsContext";
 import itemsReducer from "./itemsReducer";
-import { SET_LOADING, SET_ITEMS, SET_ADDING_NEW_ITEM } from "../types.js";
+import {
+  SET_LOADING,
+  SET_ITEMS,
+  SET_ADDING_NEW_ITEM,
+  SET_EDITED_ITEM,
+} from "../types.js";
 
 const ItemsState = (props) => {
   const initialState = {
@@ -10,6 +15,7 @@ const ItemsState = (props) => {
     items: [],
     loading: false,
     addingNewItem: false,
+    editedItem: null,
   };
 
   // set loading
@@ -20,6 +26,11 @@ const ItemsState = (props) => {
   // toggle 'adding new item' state to show new item prompt
   const setAddingNewItem = (value) => {
     dispatch({ type: SET_ADDING_NEW_ITEM, payload: value });
+  };
+
+  // set item that's being currently edited
+  const setEditedItem = (item) => {
+    dispatch({ type: SET_EDITED_ITEM, payload: item });
   };
 
   // set current user (whose wishlist we are viewing)
@@ -80,8 +91,27 @@ const ItemsState = (props) => {
   };
 
   // update item in current user's wishlist
-  const updateItem = (user = state.user, item) => {
+  const updateItem = async (user = state.user, item) => {
     console.log(`updating item ${item} in ${user}'s wishlist...`);
+    try {
+      const response = await fetch(`http://localhost:3005/items/${item.id}`, {
+        method: "PUT",
+        mode: "cors",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(item),
+      });
+      if (response.ok) {
+        console.log("updated item!");
+        dispatch({ type: SET_EDITED_ITEM, payload: null });
+        getItems(user.id);
+      } else {
+        console.log("item was not updated", response.status);
+      }
+    } catch (error) {
+      throw new Error(error);
+    }
   };
 
   // clear bookers from item
@@ -118,9 +148,11 @@ const ItemsState = (props) => {
         currentListOwnerId: state.currentListOwnerId,
         items: state.items,
         addingNewItem: state.addingNewItem,
+        editedItem: state.editedItem,
         setCurrentListOwnerId,
         setLoading,
         setAddingNewItem,
+        setEditedItem,
         getItems,
         addItem,
         updateItem,

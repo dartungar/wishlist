@@ -29,7 +29,7 @@ const PriceContainer = styled.div`
 `;
 
 const UrlContainer = styled.div`
-  margin: 1rem;
+  margin: 1rem 0 1rem 1rem;
 `;
 
 const PublicBtnsContainer = styled.div`
@@ -45,8 +45,19 @@ const PrivateButtonsContainer = styled.div`
   }
 `;
 
-const Item = ({ item: { id, name, price, url, bookers } }) => {
-  const { deleteItem } = useContext(ItemsContext);
+const Item = ({ item }) => {
+  const { setEditedItem, deleteItem } = useContext(ItemsContext);
+  const { id, name, price, url, bookers } = item;
+
+  const onEdit = (e) => {
+    e.preventDefault();
+    setEditedItem(item);
+  };
+
+  const onClearBookers = (e) => {
+    e.preventDefault();
+    // TODO: update item with bookers set to null
+  };
 
   const onDelete = () => {
     console.log("want to delete");
@@ -68,7 +79,13 @@ const Item = ({ item: { id, name, price, url, bookers } }) => {
         <i class="fas fa-gift"></i>
       </PublicBtnsContainer>
       <PrivateButtonsContainer>
-        <i class="fas fa-user-times"></i>
+        <a href="" onClick={onEdit}>
+          <i class="fas fa-edit"></i>
+        </a>
+        <a href="" onClick={onClearBookers}>
+          <i class="fas fa-user-times"></i>
+        </a>
+
         <a href="" onClick={onDelete}>
           <i class="fas fa-trash-alt"></i>
         </a>

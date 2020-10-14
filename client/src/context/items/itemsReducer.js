@@ -1,6 +1,7 @@
 import {
   SET_LOADING,
   SET_ADDING_NEW_ITEM,
+  SET_EDITED_ITEM,
   SET_ITEMS,
   CLEAR_ITEMS,
 } from "../types.js";
@@ -18,7 +19,11 @@ const itemsReducer = (state, action) => {
         ...state,
         addingNewItem: action.payload,
       };
-
+    case SET_EDITED_ITEM:
+      return {
+        ...state,
+        editedItem: action.payload,
+      };
     case SET_ITEMS:
       console.log("setting items:", action.payload);
       return {

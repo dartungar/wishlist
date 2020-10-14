@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Item from "./Item";
 import AddNewItemBtn from "./AddNewItemBtn";
 import NewItemPrompt from "./NewItemPrompt";
+import EditItemPrompt from "./EditItemPrompt";
 import ItemsContext from "../../context/items/itemsContext";
 import AuthContext from "../../context/auth/authContext";
 
@@ -14,14 +15,10 @@ const ListContainer = styled.div`
   justify-content: flex-start;
 `;
 
-const testItem = {
-  name: "Офигенно нужная штукенция, которую я сам себе никогда бы не купил",
-  price: "3000 Р",
-  url: "https://www.ozon.ru/context/detail/id/167083349/",
-};
-
 const List = () => {
-  const { items, getItems, addingNewItem } = useContext(ItemsContext);
+  const { items, getItems, addingNewItem, editedItem } = useContext(
+    ItemsContext
+  );
   const { isAuthorised, user } = useContext(AuthContext);
 
   useEffect(() => {
@@ -31,7 +28,14 @@ const List = () => {
   return (
     <ListContainer>
       {addingNewItem ? <NewItemPrompt /> : <AddNewItemBtn />}
-      {items && items.map((item) => <Item key={item.id} item={item} />)}
+      {items &&
+        items.map((item) => {
+          if (editedItem && item.id === editedItem.id) {
+            return <EditItemPrompt key={item.id} item={editedItem} />;
+          } else {
+            return <Item key={item.id} item={item} />;
+          }
+        })}
     </ListContainer>
   );
 };
