@@ -12,6 +12,11 @@ const ItemContainer = styled.div`
   border: 1px solid grey;
   border-radius: 3px;
   background-color: #fcffff;
+
+  a {
+    text-decoration: none;
+    color: black;
+  }
 `;
 
 const NameContainer = styled.div`

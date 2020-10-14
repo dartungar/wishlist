@@ -21,7 +21,7 @@ const testItem = {
 };
 
 const List = () => {
-  const { items, getItems } = useContext(ItemsContext);
+  const { items, getItems, addingNewItem } = useContext(ItemsContext);
   const { isAuthorised, user } = useContext(AuthContext);
 
   useEffect(() => {
@@ -30,7 +30,7 @@ const List = () => {
 
   return (
     <ListContainer>
-      <AddNewItemBtn />
+      {addingNewItem ? <NewItemPrompt /> : <AddNewItemBtn />}
       {items && items.map((item) => <Item key={item.id} item={item} />)}
     </ListContainer>
   );

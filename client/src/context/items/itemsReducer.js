@@ -1,4 +1,9 @@
-import { SET_LOADING, SET_ITEMS, CLEAR_ITEMS } from "../types.js";
+import {
+  SET_LOADING,
+  SET_ADDING_NEW_ITEM,
+  SET_ITEMS,
+  CLEAR_ITEMS,
+} from "../types.js";
 
 const itemsReducer = (state, action) => {
   switch (action.type) {
@@ -8,12 +13,19 @@ const itemsReducer = (state, action) => {
         loading: true,
       };
 
+    case SET_ADDING_NEW_ITEM:
+      return {
+        ...state,
+        addingNewItem: action.payload,
+      };
+
     case SET_ITEMS:
       console.log("setting items:", action.payload);
       return {
         ...state,
         items: action.payload,
         loading: false,
+        addingNewItem: false,
       };
 
     case CLEAR_ITEMS:

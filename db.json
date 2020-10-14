@@ -1,19 +1,10 @@
 {
   "items": [
     {
-      "id": 2,
-      "name": "Leuchtturm 1917 Dot Grid Notebook",
-      "price": "1500 Р",
-      "url": "https://google.com",
-      "group_purchase": "false",
-      "bookers": 0,
-      "user_id": 1
-    },
-    {
       "id": 3,
       "name": "Гитара Yamaha черная акустическая F310",
       "price": "17000 Р",
-      "group_purchase": "true",
+      "group_purchase": true,
       "bookers": 0,
       "user_id": 1
     },
@@ -21,8 +12,16 @@
       "id": 4,
       "name": "Книга Python для умственно отсталых",
       "price": "800 Р",
-      "group_purchase": "true",
+      "group_purchase": false,
       "bookers": 0,
+      "user_id": 1
+    },
+    {
+      "id": "559c6e64-8486-4a48-b0e4-2b79ee7ef098",
+      "name": "A New Item",
+      "price": "11111",
+      "url": "https://metrika.yandex.ru/dashboard?id=55837855",
+      "group_purchase": true,
       "user_id": 1
     }
   ],
