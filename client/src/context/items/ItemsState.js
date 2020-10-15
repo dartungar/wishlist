@@ -11,7 +11,6 @@ import {
 
 const ItemsState = (props) => {
   const initialState = {
-    currentListOwnerId: null,
     items: [],
     loading: false,
     addingNewItem: false,
@@ -30,12 +29,8 @@ const ItemsState = (props) => {
 
   // set item that's being currently edited
   const setEditedItem = (item) => {
+    console.log("setting edited item: ", item);
     dispatch({ type: SET_EDITED_ITEM, payload: item });
-  };
-
-  // set current user (whose wishlist we are viewing)
-  const setCurrentListOwnerId = (user) => {
-    console.log("setting current list owner");
   };
 
   // get current user's wishlist
@@ -145,11 +140,9 @@ const ItemsState = (props) => {
   return (
     <itemsContext.Provider
       value={{
-        currentListOwnerId: state.currentListOwnerId,
         items: state.items,
         addingNewItem: state.addingNewItem,
         editedItem: state.editedItem,
-        setCurrentListOwnerId,
         setLoading,
         setAddingNewItem,
         setEditedItem,

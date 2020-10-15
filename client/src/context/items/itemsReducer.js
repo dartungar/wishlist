@@ -25,7 +25,6 @@ const itemsReducer = (state, action) => {
         editedItem: action.payload,
       };
     case SET_ITEMS:
-      console.log("setting items:", action.payload);
       return {
         ...state,
         items: action.payload,

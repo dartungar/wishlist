@@ -1,7 +1,10 @@
 import React from "react";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import styled from "styled-components";
 import Navbar from "./Navbar";
 import List from "../list/List";
+import Profile from "../user/Profile";
+import AuthContext from "../../context/auth/authContext";
 
 const MainContainer = styled.div`
   grid-column: 2;
@@ -12,10 +15,16 @@ const MainContainer = styled.div`
 
 const Main = () => {
   return (
-    <MainContainer>
-      <Navbar />
-      <List />
-    </MainContainer>
+    <Router>
+      <MainContainer>
+        <Navbar />
+        <Switch>
+          <Route path="/list/:user_id" children={<List />} />
+          <Route exact path="/profile" children={<Profile />} />
+          <Route path="/" children={<List show_my_wishlist="true" />} />
+        </Switch>
+      </MainContainer>
+    </Router>
   );
 };
 

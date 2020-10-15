@@ -68,40 +68,36 @@ const IsGroupPurchaseInput = styled.div`
 `;
 
 const EditItemPrompt = ({ item }) => {
-  const { updateItem, getItems } = useContext(ItemsContext);
+  const { updateItem, setEditedItem, getItems } = useContext(ItemsContext);
   const { user } = useContext(AuthContext);
-  const [editedItem, setEditedItem] = useState();
-
-  console.log(item);
+  const [editedItemValue, updateEditedItemValue] = useState();
 
   useEffect(() => {
-    setEditedItem(item);
+    updateEditedItemValue(item);
   }, [item]);
-
-  console.log(editedItem);
 
   const onChange = (e) => {
     const value =
       e.target.type === "checkbox" ? e.target.checked : e.target.value;
-    setEditedItem({
-      ...editedItem,
+    updateEditedItemValue({
+      ...editedItemValue,
       [e.target.name]: value,
     });
   };
 
-  const onCancel = (e) => {
-    e.preventDefault();
+  const onCancel = () => {
+    console.log("cancelled!");
     setEditedItem(null);
-    getItems(user.id);
+    console.log("after setting edited item to null");
   };
 
   const onSubmit = (e) => {
     e.preventDefault();
-    console.log("saving edited item:", editedItem);
-    updateItem(user, editedItem);
+    console.log("saving edited item:", editedItemValue);
+    updateItem(user, editedItemValue);
   };
 
-  if (!editedItem) return null;
+  if (!editedItemValue) return null;
 
   return (
     <EditItemContainer onSubmit={onSubmit}>
@@ -110,7 +106,7 @@ const EditItemPrompt = ({ item }) => {
         name="name"
         title="Название"
         placeholder="Название вещи"
-        value={editedItem.name}
+        value={editedItemValue.name}
         onChange={onChange}
         required
         autoFocus
@@ -120,7 +116,7 @@ const EditItemPrompt = ({ item }) => {
         name="url"
         title="Ссылка на товар"
         placeholder="Ссылка"
-        value={editedItem.url}
+        value={editedItemValue.url}
         onChange={onChange}
       ></UrlInput>
       <PriceInput
@@ -128,7 +124,7 @@ const EditItemPrompt = ({ item }) => {
         name="price"
         title="Цена"
         placeholder="Цена"
-        value={editedItem.price}
+        value={editedItemValue.price}
         onChange={onChange}
         required
       ></PriceInput>
@@ -136,7 +132,7 @@ const EditItemPrompt = ({ item }) => {
         <input
           type="checkbox"
           name="group_purchase"
-          checked={editedItem.group_purchase}
+          checked={editedItemValue.group_purchase}
           onChange={onChange}
         ></input>{" "}
         можно вскладчину

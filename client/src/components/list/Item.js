@@ -46,7 +46,8 @@ const PrivateButtonsContainer = styled.div`
 `;
 
 const Item = ({ item }) => {
-  const { setEditedItem, deleteItem } = useContext(ItemsContext);
+  const { setEditedItem, updateItem, deleteItem } = useContext(ItemsContext);
+  const { user } = useContext(AuthContext);
   const { id, name, price, url, bookers } = item;
 
   const onEdit = (e) => {
@@ -54,9 +55,15 @@ const Item = ({ item }) => {
     setEditedItem(item);
   };
 
+  // TODO: update item with bookers set to null
   const onClearBookers = (e) => {
     e.preventDefault();
-    // TODO: update item with bookers set to null
+
+    const itemWithClearedBookers = {
+      ...item,
+      bookers: null,
+    };
+    updateItem(user, itemWithClearedBookers);
   };
 
   const onDelete = () => {

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import Item from "./Item";
 import AddNewItemBtn from "./AddNewItemBtn";
@@ -15,15 +16,22 @@ const ListContainer = styled.div`
   justify-content: flex-start;
 `;
 
-const List = () => {
+const List = ({ show_my_wishlist }) => {
   const { items, getItems, addingNewItem, editedItem } = useContext(
     ItemsContext
   );
   const { isAuthorised, user } = useContext(AuthContext);
+  const { user_id } = useParams();
 
   useEffect(() => {
-    getItems(user.id);
-  }, []);
+    console.log("will get items for user id: ", user_id);
+    if (user_id) {
+      getItems(user_id);
+    } else if (show_my_wishlist) {
+      console.log("show my wishlist");
+      getItems(user.id);
+    }
+  }, [user_id, editedItem]);
 
   return (
     <ListContainer>
