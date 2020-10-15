@@ -5,6 +5,7 @@ import Item from "./Item";
 import AddNewItemBtn from "./AddNewItemBtn";
 import NewItemPrompt from "./NewItemPrompt";
 import EditItemPrompt from "./EditItemPrompt";
+import ListTitle from "./ListTitle";
 import ItemsContext from "../../context/items/itemsContext";
 import AuthContext from "../../context/auth/authContext";
 
@@ -17,27 +18,33 @@ const ListContainer = styled.div`
 `;
 
 const List = ({ show_my_wishlist }) => {
-  const { items, getItems, addingNewItem, editedItem } = useContext(
-    ItemsContext
-  );
+  const {
+    currentWishlist,
+    getItems,
+    getWishlist,
+    addingNewItem,
+    editedItem,
+  } = useContext(ItemsContext);
   const { isAuthorised, user } = useContext(AuthContext);
   const { user_id } = useParams();
 
   useEffect(() => {
-    console.log("will get items for user id: ", user_id);
+    console.log("will get wishlist for user id: ", user_id);
     if (user_id) {
-      getItems(user_id);
+      getWishlist(user_id);
     } else if (show_my_wishlist) {
       console.log("show my wishlist");
-      getItems(user.id);
+      getWishlist(user.id);
     }
-  }, [user_id, editedItem]);
+  }, [user_id]);
 
   return (
     <ListContainer>
+      <ListTitle user={currentWishlist.user} />
+
       {addingNewItem ? <NewItemPrompt /> : <AddNewItemBtn />}
-      {items &&
-        items.map((item) => {
+      {currentWishlist.items.length > 0 &&
+        currentWishlist.items.map((item) => {
           if (editedItem && item.id === editedItem.id) {
             return <EditItemPrompt key={item.id} item={editedItem} />;
           } else {

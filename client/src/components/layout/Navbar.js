@@ -11,8 +11,9 @@ const NavbarContainer = styled.div`
   align-items: center;
   padding: 1rem 0;
 
-  @media (max-width: 300px) {
+  @media (max-width: 500px) {
     justify-content: center;
+    /* align-items: center; */
   }
 `;
 

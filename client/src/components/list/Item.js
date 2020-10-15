@@ -26,6 +26,7 @@ const NameContainer = styled.div`
 
 const PriceContainer = styled.div`
   margin: 1rem;
+  width: 9ch;
 `;
 
 const UrlContainer = styled.div`
@@ -35,6 +36,9 @@ const UrlContainer = styled.div`
 const PublicBtnsContainer = styled.div`
   margin: 1rem;
   /* margin: 1rem; */
+  i {
+    margin-left: 0.1rem;
+  }
 `;
 
 const PrivateButtonsContainer = styled.div`
@@ -48,7 +52,7 @@ const PrivateButtonsContainer = styled.div`
 const Item = ({ item }) => {
   const { setEditedItem, updateItem, deleteItem } = useContext(ItemsContext);
   const { user } = useContext(AuthContext);
-  const { id, name, price, url, bookers } = item;
+  const { id, name, price, url, bookers, group_purchase } = item;
 
   const onEdit = (e) => {
     e.preventDefault();
@@ -76,24 +80,28 @@ const Item = ({ item }) => {
       <NameContainer>
         <p>{name}</p>
       </NameContainer>
-      <PriceContainer>{price}</PriceContainer>
+      <PriceContainer>{price} ₽</PriceContainer>
       <UrlContainer>
         <a href={url} title="посмотреть подробности">
           <i class="fas fa-external-link-alt"></i>
         </a>
       </UrlContainer>
-      <PublicBtnsContainer>
-        <i class="fas fa-gift"></i>
+      <PublicBtnsContainer title="Буду дарить">
+        {group_purchase ? (
+          <i class="fas fa-users"></i>
+        ) : (
+          <i class="fas fa-gift"></i>
+        )}
       </PublicBtnsContainer>
       <PrivateButtonsContainer>
-        <a href="" onClick={onEdit}>
+        <a href="" onClick={onEdit} title="Редактировать">
           <i class="fas fa-edit"></i>
         </a>
-        <a href="" onClick={onClearBookers}>
+        <a href="" onClick={onClearBookers} title="Очистить дарителей">
           <i class="fas fa-user-times"></i>
         </a>
 
-        <a href="" onClick={onDelete}>
+        <a href="" onClick={onDelete} title="Удалить">
           <i class="fas fa-trash-alt"></i>
         </a>
       </PrivateButtonsContainer>

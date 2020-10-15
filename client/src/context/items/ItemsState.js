@@ -5,13 +5,17 @@ import itemsReducer from "./itemsReducer";
 import {
   SET_LOADING,
   SET_ITEMS,
+  SET_WISHLIST,
   SET_ADDING_NEW_ITEM,
   SET_EDITED_ITEM,
 } from "../types.js";
 
 const ItemsState = (props) => {
   const initialState = {
-    items: [],
+    currentWishlist: {
+      user: {},
+      items: [],
+    },
     loading: false,
     addingNewItem: false,
     editedItem: null,
@@ -33,8 +37,31 @@ const ItemsState = (props) => {
     dispatch({ type: SET_EDITED_ITEM, payload: item });
   };
 
-  // get current user's wishlist
-  const getItems = async (user_id = state.currentListOwnerId) => {
+  // get wishlist (items & user info) by user
+  const getWishlist = async (user_id) => {
+    console.log("getting wishlist...");
+    setLoading();
+    try {
+      const usr_response = await fetch(
+        `http://localhost:3005/users?id=${user_id}`
+      );
+
+      if (usr_response.ok) {
+        const users = await usr_response.json();
+        const user = users[0];
+        const items = getItems(user_id);
+        const wishlist = { user, items };
+        dispatch({ type: SET_WISHLIST, payload: wishlist });
+      } else {
+        console.log(`request to get items failed with ${usr_response.status}`);
+      }
+    } catch (error) {
+      throw new Error(error);
+    }
+  };
+
+  // get current user's wishlist items
+  const getItems = async (user_id = state.currentWishlist.user.id) => {
     console.log("getting items...");
     setLoading();
     try {
@@ -141,12 +168,14 @@ const ItemsState = (props) => {
     <itemsContext.Provider
       value={{
         items: state.items,
+        currentWishlist: state.currentWishlist,
         addingNewItem: state.addingNewItem,
         editedItem: state.editedItem,
         setLoading,
         setAddingNewItem,
         setEditedItem,
         getItems,
+        getWishlist,
         addItem,
         updateItem,
         clearBookers,

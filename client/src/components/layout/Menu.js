@@ -6,10 +6,21 @@ import AuthContext from "../../context/auth/authContext";
 const MenuContainer = styled.ul`
   list-style: none;
   display: inline-block;
+  padding: 0;
 
   li {
     display: inline;
-    margin-left: 1rem;
+    margin-left: 1.5rem;
+  }
+
+  li i {
+    font-size: 1.1rem;
+  }
+
+  @media (max-width: 500px) {
+    li {
+      margin: 0 1.5rem;
+    }
   }
 `;
 
@@ -19,16 +30,24 @@ const Menu = () => {
   return (
     <MenuContainer>
       <li>
-        <span>Поиск пользователей</span>
+        <Link title="Найти пользователя">
+          <i class="fas fa-search"></i>
+        </Link>
       </li>
       <li>
-        <Link to={`/list/${user.id}`}>Мой вишлист</Link>
+        <Link to={`/list/${user.id}`} title="Мой список">
+          <i class="fas fa-list"></i>
+        </Link>
       </li>
       <li>
-        <Link to={`/profile`}>Профиль</Link>
+        <Link to={`/profile`} title="Профиль">
+          <i class="fas fa-user-circle"></i>
+        </Link>
       </li>
       <li>
-        <span>Выйти</span>
+        <Link title="Выйти">
+          <i class="fas fa-sign-out-alt"></i>
+        </Link>
       </li>
     </MenuContainer>
   );

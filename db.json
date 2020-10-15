@@ -1,14 +1,6 @@
 {
   "items": [
     {
-      "id": 3,
-      "name": "Гитара Yamaha черная акустическая F310",
-      "price": 17000,
-      "group_purchase": true,
-      "bookers": null,
-      "user_id": 1
-    },
-    {
       "id": 4,
       "name": "Книга Python для умственно отсталых!",
       "price": 800,
@@ -28,11 +20,19 @@
     {
       "id": "6d7fd92b-b6b6-4ab3-bde8-fe73a9ab483f",
       "name": "Залупоглазка необыкновенная",
-      "price": "111111",
+      "price": "1111111",
       "url": "HTTPS://vk.com/sunjshu",
       "group_purchase": false,
       "user_id": 1,
       "bookers": null
+    },
+    {
+      "id": "35f076f7-32f0-4508-8f41-019b5ca07380",
+      "name": "Одеялко котусеничке чтобы не мерзли лапки",
+      "price": "10000",
+      "url": "https://yandex.ru/maps/213/moscow/?ll=37.622504%2C55.753215&z=10",
+      "group_purchase": true,
+      "user_id": 1
     }
   ],
   "users": [

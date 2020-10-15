@@ -4,6 +4,7 @@ import {
   SET_EDITED_ITEM,
   SET_ITEMS,
   CLEAR_ITEMS,
+  SET_WISHLIST,
 } from "../types.js";
 
 const itemsReducer = (state, action) => {
@@ -27,11 +28,20 @@ const itemsReducer = (state, action) => {
     case SET_ITEMS:
       return {
         ...state,
-        items: action.payload,
+        currentWishlist: {
+          ...state.currentWishlist,
+          items: action.payload,
+        },
         loading: false,
         addingNewItem: false,
       };
-
+    case SET_WISHLIST:
+      return {
+        ...state,
+        currentWishlist: action.payload,
+        loading: false,
+        addingNewItem: false,
+      };
     case CLEAR_ITEMS:
       return {
         ...state,
