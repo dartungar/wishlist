@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 const SpinnerContainer = styled.div`
-  margin: auto;
+  height: 90px;
   text-align: center;
   animation: 2s infinite pulse;
 

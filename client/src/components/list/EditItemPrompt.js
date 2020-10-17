@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import styled from "styled-components";
 import ItemsContext from "../../context/items/itemsContext";
 import AuthContext from "../../context/auth/authContext";
+import AlertContext from "../../context/alert/alertContext";
 
 const EditItemContainer = styled.form`
   display: flex;
@@ -68,8 +69,9 @@ const IsGroupPurchaseInput = styled.div`
 `;
 
 const EditItemPrompt = ({ item }) => {
-  const { updateItem, setEditedItem, getItems } = useContext(ItemsContext);
+  const { updateItem, setEditedItem, itemsError } = useContext(ItemsContext);
   const { user } = useContext(AuthContext);
+  const { setAlert } = useContext(AlertContext);
   const [editedItemValue, updateEditedItemValue] = useState();
 
   useEffect(() => {
@@ -86,14 +88,11 @@ const EditItemPrompt = ({ item }) => {
   };
 
   const onCancel = () => {
-    console.log("cancelled!");
     setEditedItem(null);
-    console.log("after setting edited item to null");
   };
 
   const onSubmit = (e) => {
     e.preventDefault();
-    console.log("saving edited item:", editedItemValue);
     updateItem(user, editedItemValue);
   };
 

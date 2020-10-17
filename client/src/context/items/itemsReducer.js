@@ -5,6 +5,7 @@ import {
   SET_ITEMS,
   CLEAR_ITEMS,
   SET_WISHLIST,
+  SET_ITEMS_ERROR,
 } from "../types.js";
 
 const itemsReducer = (state, action) => {
@@ -48,7 +49,12 @@ const itemsReducer = (state, action) => {
         items: [],
         loading: false,
       };
-
+    case SET_ITEMS_ERROR:
+      return {
+        ...state,
+        itemsError: action.payload,
+        loading: false,
+      };
     default:
       return state;
   }

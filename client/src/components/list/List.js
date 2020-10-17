@@ -9,6 +9,7 @@ import ListTitle from "./ListTitle";
 import Spinner from "../layout/Spinner";
 import ItemsContext from "../../context/items/itemsContext";
 import AuthContext from "../../context/auth/authContext";
+import AlertContext from "../../context/alert/alertContext";
 
 const ListContainer = styled.div`
   grid-column: 2;
@@ -26,8 +27,10 @@ const List = ({ show_my_wishlist }) => {
     getWishlist,
     addingNewItem,
     editedItem,
+    itemsError,
   } = useContext(ItemsContext);
-  const { isAuthorised, user } = useContext(AuthContext);
+  const { isAuthorised, user, authError } = useContext(AuthContext);
+  const { setAlert } = useContext(AlertContext);
   const { user_id } = useParams();
 
   useEffect(() => {
@@ -40,24 +43,36 @@ const List = ({ show_my_wishlist }) => {
     }
   }, [user_id]);
 
-  if (loading) {
-    return <Spinner />;
-  } else
-    return (
-      <ListContainer>
-        <ListTitle user={currentWishlist.user} />
+  // TODO: отрефакторить, чтобы не было повторений
+  useEffect(() => {
+    if (itemsError) {
+      setAlert({
+        text: itemsError,
+        type: "danger",
+      });
+    } else if (authError) {
+      setAlert({
+        text: authError,
+        type: "danger",
+      });
+    }
+  }, [itemsError, authError]);
 
-        {addingNewItem ? <NewItemPrompt /> : <AddNewItemBtn />}
-        {currentWishlist.items.length > 0 &&
-          currentWishlist.items.map((item) => {
-            if (editedItem && item.id === editedItem.id) {
-              return <EditItemPrompt key={item.id} item={editedItem} />;
-            } else {
-              return <Item key={item.id} item={item} />;
-            }
-          })}
-      </ListContainer>
-    );
+  return (
+    <ListContainer>
+      <ListTitle user={currentWishlist.user} />
+      {loading && <Spinner />}
+      {addingNewItem ? <NewItemPrompt /> : <AddNewItemBtn />}
+      {currentWishlist.items.length > 0 &&
+        currentWishlist.items.map((item) => {
+          if (editedItem && item.id === editedItem.id) {
+            return <EditItemPrompt key={item.id} item={editedItem} />;
+          } else {
+            return <Item key={item.id} item={item} />;
+          }
+        })}
+    </ListContainer>
+  );
 };
 
 export default List;

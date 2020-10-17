@@ -8,6 +8,7 @@ import {
   SET_WISHLIST,
   SET_ADDING_NEW_ITEM,
   SET_EDITED_ITEM,
+  SET_ITEMS_ERROR,
 } from "../types.js";
 
 const ItemsState = (props) => {
@@ -19,11 +20,18 @@ const ItemsState = (props) => {
     loading: false,
     addingNewItem: false,
     editedItem: null,
+    itemsError: null,
   };
+
+  const [state, dispatch] = useReducer(itemsReducer, initialState);
 
   // set loading
   const setLoading = () => {
     dispatch({ type: SET_LOADING });
+  };
+
+  const setItemsError = (text) => {
+    dispatch({ type: SET_ITEMS_ERROR, payload: text });
   };
 
   // toggle 'adding new item' state to show new item prompt
@@ -54,9 +62,10 @@ const ItemsState = (props) => {
         dispatch({ type: SET_WISHLIST, payload: wishlist });
       } else {
         console.log(`request to get items failed with ${usr_response.status}`);
+        setItemsError("Error loading wishlist");
       }
     } catch (error) {
-      throw new Error(error);
+      setItemsError("Error loading wishlist");
     }
   };
 
@@ -73,17 +82,17 @@ const ItemsState = (props) => {
         const data = await response.json();
         dispatch({ type: SET_ITEMS, payload: data });
       } else {
-        console.log(
-          `request to wishlist to get items failed with ${response.status}`
-        );
+        setItemsError("Error loading wishlist items");
       }
     } catch (error) {
-      throw new Error(error);
+      setItemsError("Error loading wishlist items");
     }
   };
 
   // add item in current user's wishlist
   const addItem = async (user = state.user, item) => {
+    setLoading();
+
     let completeItem = {
       id: uuid4(),
       ...item,
@@ -91,7 +100,7 @@ const ItemsState = (props) => {
     };
     console.log(`adding item ${item} into ${user}'s wishlist...`);
     try {
-      const response = await fetch(`http://localhost:3005/items`, {
+      const response = await fetch(`http://localhost:3003/items`, {
         method: "POST",
         mode: "cors",
         headers: {
@@ -105,18 +114,21 @@ const ItemsState = (props) => {
         getItems(user.id);
       } else {
         // TODO: alert on failing to add item
-        console.log("Failed to add item!", response.statusText);
+        console.log("Failed to add item", response.statusText);
+        setItemsError("Error adding item");
       }
     } catch (error) {
-      throw new Error(error);
+      setItemsError("Error adding item");
     }
   };
 
   // update item in current user's wishlist
   const updateItem = async (user = state.user, item) => {
+    setLoading();
+
     console.log(`updating item ${item} in ${user}'s wishlist...`);
     try {
-      const response = await fetch(`http://localhost:3005/items/${item.id}`, {
+      const response = await fetch(`http://localhost:3003/items/${item.id}`, {
         method: "PUT",
         mode: "cors",
         headers: {
@@ -130,22 +142,27 @@ const ItemsState = (props) => {
         getItems(user.id);
       } else {
         console.log("item was not updated", response.status);
+        setItemsError("Error while trying to load updated item");
       }
     } catch (error) {
-      throw new Error(error);
+      setItemsError("Error while trying to load updated item");
     }
   };
 
   // clear bookers from item
   const clearBookers = (item) => {
+    setLoading();
+
     console.log(`clearing bookers from ${item}`);
   };
 
   // delete item from current user's wishlist
   const deleteItem = async (id) => {
+    setLoading();
+
     console.log(`deleting item ${id}...`);
     try {
-      const response = await fetch(`http://localhost:3005/items/${id}`, {
+      const response = await fetch(`http://localhost:3003/items/${id}`, {
         method: "DELETE",
         mode: "cors",
         headers: {
@@ -155,14 +172,12 @@ const ItemsState = (props) => {
       if (response.ok) {
         console.log("deleted item!");
       } else {
-        console.log("item was not deleted", response.status);
+        setItemsError("Error deleting item");
       }
     } catch (error) {
-      throw new Error(error);
+      setItemsError("Error deleting item");
     }
   };
-
-  const [state, dispatch] = useReducer(itemsReducer, initialState);
 
   return (
     <itemsContext.Provider
@@ -172,6 +187,7 @@ const ItemsState = (props) => {
         currentWishlist: state.currentWishlist,
         addingNewItem: state.addingNewItem,
         editedItem: state.editedItem,
+        itemsError: state.itemsError,
         setLoading,
         setAddingNewItem,
         setEditedItem,

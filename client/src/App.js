@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import ItemsState from "./context/items/ItemsState";
 import AuthState from "./context/auth/AuthState";
+import AlertState from "./context/alert/AlertState";
 import Main from "./components/layout/Main";
 
 const AppContainer = styled.div`
@@ -45,15 +46,17 @@ const AppContainer = styled.div`
 
 const App = () => {
   return (
-    <AuthState>
-      <ItemsState>
-        <AppContainer>
-          <div></div>
-          <Main />
-          <div></div>
-        </AppContainer>
-      </ItemsState>
-    </AuthState>
+    <AlertState>
+      <AuthState>
+        <ItemsState>
+          <AppContainer>
+            <div></div>
+            <Main />
+            <div></div>
+          </AppContainer>
+        </ItemsState>
+      </AuthState>
+    </AlertState>
   );
 };
 

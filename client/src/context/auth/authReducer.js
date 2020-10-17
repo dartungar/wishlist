@@ -1,4 +1,4 @@
-import { SET_IS_AUTHORISED, SET_USER_ID } from "../types";
+import { SET_IS_AUTHORISED, SET_USER_ID, SET_AUTH_ERROR } from "../types";
 
 const authReducer = (state, action) => {
   switch (action) {
@@ -6,12 +6,19 @@ const authReducer = (state, action) => {
       return {
         ...state,
         isAuthorised: action.payload,
+        authError: null,
       };
 
     case SET_USER_ID:
       return {
         ...state,
         userId: action.payload,
+        authError: null,
+      };
+    case SET_AUTH_ERROR:
+      return {
+        ...state,
+        authError: action.payload,
       };
     default:
       return state;

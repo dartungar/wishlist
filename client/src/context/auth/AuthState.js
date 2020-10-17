@@ -2,7 +2,7 @@ import React, { useReducer } from "react";
 import authContext from "./authContext";
 import authReducer from "./authReducer";
 import shortid from "shortid";
-import { SET_IS_AUTHORISED } from "../types";
+import { SET_IS_AUTHORISED, SET_AUTH_ERROR } from "../types";
 
 const AuthState = (props) => {
   const initialState = {
@@ -11,6 +11,7 @@ const AuthState = (props) => {
       id: "1BeRbZgI",
       name: "Daniel Nikolaev",
     }, // TODO: make null default
+    authError: null,
   };
 
   const [state, dispatch] = useReducer(authReducer, initialState);
@@ -39,6 +40,7 @@ const AuthState = (props) => {
       value={{
         isAuthorised: state.isAuthorised,
         user: state.user,
+        authError: state.authError,
         register,
         login,
         logout,

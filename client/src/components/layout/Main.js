@@ -4,8 +4,8 @@ import styled from "styled-components";
 import Navbar from "./Navbar";
 import List from "../list/List";
 import Profile from "../user/Profile";
-import AuthContext from "../../context/auth/authContext";
-import ItemsContext from "../../context/items/itemsContext";
+import Alert from "../alerts/Alert";
+import AlertContext from "../../context/alert/alertContext";
 
 const MainContainer = styled.div`
   grid-column: 2;
@@ -15,11 +15,12 @@ const MainContainer = styled.div`
 `;
 
 const Main = () => {
+  const { alert } = useContext(AlertContext);
   return (
     <Router>
       <MainContainer>
         <Navbar />
-
+        {alert && <Alert />}
         <Switch>
           <Route path="/list/:user_id" children={<List />} />
           <Route exact path="/profile" children={<Profile />} />

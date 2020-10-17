@@ -70,7 +70,8 @@ const Item = ({ item }) => {
     updateItem(user, itemWithClearedBookers);
   };
 
-  const onDelete = () => {
+  const onDelete = (e) => {
+    e.preventDefault();
     console.log("want to delete");
     deleteItem(id);
   };
