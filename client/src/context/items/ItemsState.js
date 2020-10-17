@@ -167,6 +167,7 @@ const ItemsState = (props) => {
   return (
     <itemsContext.Provider
       value={{
+        loading: state.loading,
         items: state.items,
         currentWishlist: state.currentWishlist,
         addingNewItem: state.addingNewItem,

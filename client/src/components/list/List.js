@@ -6,6 +6,7 @@ import AddNewItemBtn from "./AddNewItemBtn";
 import NewItemPrompt from "./NewItemPrompt";
 import EditItemPrompt from "./EditItemPrompt";
 import ListTitle from "./ListTitle";
+import Spinner from "../layout/Spinner";
 import ItemsContext from "../../context/items/itemsContext";
 import AuthContext from "../../context/auth/authContext";
 
@@ -19,6 +20,7 @@ const ListContainer = styled.div`
 
 const List = ({ show_my_wishlist }) => {
   const {
+    loading,
     currentWishlist,
     getItems,
     getWishlist,
@@ -38,21 +40,24 @@ const List = ({ show_my_wishlist }) => {
     }
   }, [user_id]);
 
-  return (
-    <ListContainer>
-      <ListTitle user={currentWishlist.user} />
+  if (loading) {
+    return <Spinner />;
+  } else
+    return (
+      <ListContainer>
+        <ListTitle user={currentWishlist.user} />
 
-      {addingNewItem ? <NewItemPrompt /> : <AddNewItemBtn />}
-      {currentWishlist.items.length > 0 &&
-        currentWishlist.items.map((item) => {
-          if (editedItem && item.id === editedItem.id) {
-            return <EditItemPrompt key={item.id} item={editedItem} />;
-          } else {
-            return <Item key={item.id} item={item} />;
-          }
-        })}
-    </ListContainer>
-  );
+        {addingNewItem ? <NewItemPrompt /> : <AddNewItemBtn />}
+        {currentWishlist.items.length > 0 &&
+          currentWishlist.items.map((item) => {
+            if (editedItem && item.id === editedItem.id) {
+              return <EditItemPrompt key={item.id} item={editedItem} />;
+            } else {
+              return <Item key={item.id} item={item} />;
+            }
+          })}
+      </ListContainer>
+    );
 };
 
 export default List;

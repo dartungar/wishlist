@@ -18,6 +18,15 @@ const AppContainer = styled.div`
     font-family: "Noto Serif", serif;
   }
 
+  a {
+    text-decoration: none;
+    color: #1a1c1c;
+  }
+
+  a:hover {
+    color: #39add4;
+  }
+
   input {
     font-family: "Source Sans Pro", sans-serif;
     padding: 0.3rem;
@@ -30,7 +39,7 @@ const AppContainer = styled.div`
 
   input:focus {
     outline: none;
-    border: 2px solid #c0eded;
+    border: 1px solid #39add4;
   }
 `;
 

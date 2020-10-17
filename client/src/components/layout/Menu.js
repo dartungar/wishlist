@@ -27,30 +27,45 @@ const MenuContainer = styled.ul`
 const Menu = () => {
   const { isAuthorised, user } = useContext(AuthContext);
 
-  return (
-    <MenuContainer>
-      <li>
-        <Link title="Найти пользователя">
-          <i class="fas fa-search"></i>
-        </Link>
-      </li>
-      <li>
-        <Link to={`/list/${user.id}`} title="Мой список">
-          <i class="fas fa-list"></i>
-        </Link>
-      </li>
-      <li>
-        <Link to={`/profile`} title="Профиль">
-          <i class="fas fa-user-circle"></i>
-        </Link>
-      </li>
-      <li>
-        <Link title="Выйти">
-          <i class="fas fa-sign-out-alt"></i>
-        </Link>
-      </li>
-    </MenuContainer>
-  );
+  if (isAuthorised === true) {
+    return (
+      <MenuContainer>
+        <li>
+          <Link title="Найти пользователя">Поиск</Link>
+        </li>
+        <li>
+          <Link to={`/list/${user.id}`} title="Мой список">
+            Мой список
+          </Link>
+        </li>
+        <li>
+          <Link to={`/profile`} title="Профиль">
+            Профиль
+          </Link>
+        </li>
+        <li>
+          <Link title="Выйти">Выйти</Link>
+        </li>
+      </MenuContainer>
+    );
+  } else {
+    return (
+      <MenuContainer>
+        <li>
+          <Link title="Найти пользователя">Поиск</Link>
+        </li>
+
+        <li>
+          <Link to={`/profile`} title="Вход">
+            Вход
+          </Link>
+        </li>
+        <li>
+          <Link title="Регистрация">Регистрация</Link>
+        </li>
+      </MenuContainer>
+    );
+  }
 };
 
 export default Menu;

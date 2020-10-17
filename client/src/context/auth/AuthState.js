@@ -1,13 +1,15 @@
 import React, { useReducer } from "react";
 import authContext from "./authContext";
 import authReducer from "./authReducer";
+import shortid from "shortid";
 import { SET_IS_AUTHORISED } from "../types";
 
 const AuthState = (props) => {
   const initialState = {
     isAuthorised: true, // TODO: make default false after implementing auth
     user: {
-      id: 1,
+      id: "1BeRbZgI",
+      name: "Daniel Nikolaev",
     }, // TODO: make null default
   };
 
@@ -21,10 +23,15 @@ const AuthState = (props) => {
   const login = () => {
     console.log("log user in");
   };
-  // log out
 
+  // log out
   const logout = () => {
     console.log("log user out");
+  };
+
+  // change user info, i.e name
+  const changeUserInfo = (newInfo) => {
+    console.log("changing user info...");
   };
 
   return (
