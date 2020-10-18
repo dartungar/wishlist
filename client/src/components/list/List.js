@@ -62,7 +62,9 @@ const List = ({ show_my_wishlist }) => {
     <ListContainer>
       <ListTitle user={currentWishlist.user} />
       {loading && <Spinner />}
-      {addingNewItem ? <NewItemPrompt /> : <AddNewItemBtn />}
+      {user &&
+        currentWishlist.user.id === user.id &&
+        (addingNewItem ? <NewItemPrompt /> : <AddNewItemBtn />)}
       {currentWishlist.items.length > 0 &&
         currentWishlist.items.map((item) => {
           if (editedItem && item.id === editedItem.id) {

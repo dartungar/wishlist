@@ -46,6 +46,7 @@ const ItemsState = (props) => {
   };
 
   // get wishlist (items & user info) by user
+  // used on every page update (adding, deleting, editing items)
   const getWishlist = async (user_id) => {
     console.log("getting wishlist...");
     setLoading();
@@ -57,9 +58,12 @@ const ItemsState = (props) => {
       if (usr_response.ok) {
         const users = await usr_response.json();
         const user = users[0];
-        const items = getItems(user_id);
+        const items = await getItems(user_id);
         const wishlist = { user, items };
-        dispatch({ type: SET_WISHLIST, payload: wishlist });
+        console.log(wishlist);
+        if (user) {
+          dispatch({ type: SET_WISHLIST, payload: wishlist });
+        } else setItemsError("User not found!");
       } else {
         console.log(`request to get items failed with ${usr_response.status}`);
         setItemsError("Error loading wishlist");
@@ -70,6 +74,7 @@ const ItemsState = (props) => {
   };
 
   // get current user's wishlist items
+  // used in getWishlist
   const getItems = async (user_id = state.currentWishlist.user.id) => {
     console.log("getting items...");
     setLoading();
@@ -79,8 +84,8 @@ const ItemsState = (props) => {
       );
 
       if (response.ok) {
-        const data = await response.json();
-        dispatch({ type: SET_ITEMS, payload: data });
+        const items = await response.json();
+        return items;
       } else {
         setItemsError("Error loading wishlist items");
       }
@@ -100,7 +105,7 @@ const ItemsState = (props) => {
     };
     console.log(`adding item ${item} into ${user}'s wishlist...`);
     try {
-      const response = await fetch(`http://localhost:3003/items`, {
+      const response = await fetch(`http://localhost:3005/items`, {
         method: "POST",
         mode: "cors",
         headers: {
@@ -111,7 +116,7 @@ const ItemsState = (props) => {
       if (response.ok) {
         // TODO: alert on successful addition of item
         console.log("Added item!");
-        getItems(user.id);
+        getWishlist(user.id);
       } else {
         // TODO: alert on failing to add item
         console.log("Failed to add item", response.statusText);
@@ -139,7 +144,7 @@ const ItemsState = (props) => {
       if (response.ok) {
         console.log("updated item!");
         dispatch({ type: SET_EDITED_ITEM, payload: null });
-        getItems(user.id);
+        getWishlist(user.id);
       } else {
         console.log("item was not updated", response.status);
         setItemsError("Error while trying to load updated item");
@@ -162,7 +167,7 @@ const ItemsState = (props) => {
 
     console.log(`deleting item ${id}...`);
     try {
-      const response = await fetch(`http://localhost:3003/items/${id}`, {
+      const response = await fetch(`http://localhost:3005/items/${id}`, {
         method: "DELETE",
         mode: "cors",
         headers: {

@@ -25,13 +25,15 @@ const MenuContainer = styled.ul`
 `;
 
 const Menu = () => {
-  const { isAuthorised, user } = useContext(AuthContext);
+  const { isAuthorised, user, logout } = useContext(AuthContext);
 
   if (isAuthorised === true) {
     return (
       <MenuContainer>
         <li>
-          <Link title="Найти пользователя">Поиск</Link>
+          <Link to="/search" title="Найти пользователя">
+            Поиск
+          </Link>
         </li>
         <li>
           <Link to={`/list/${user.id}`} title="Мой список">
@@ -39,12 +41,21 @@ const Menu = () => {
           </Link>
         </li>
         <li>
-          <Link to={`/profile`} title="Профиль">
+          <Link to="/profile" title="Профиль">
             Профиль
           </Link>
         </li>
         <li>
-          <Link title="Выйти">Выйти</Link>
+          <a
+            href=""
+            title="Выйти"
+            onClick={(e) => {
+              e.preventDefault();
+              logout();
+            }}
+          >
+            Выйти
+          </a>
         </li>
       </MenuContainer>
     );
@@ -52,16 +63,20 @@ const Menu = () => {
     return (
       <MenuContainer>
         <li>
-          <Link title="Найти пользователя">Поиск</Link>
+          <Link to="/search" title="Найти пользователя">
+            Поиск
+          </Link>
         </li>
 
         <li>
-          <Link to={`/profile`} title="Вход">
+          <Link to="/login" title="Вход">
             Вход
           </Link>
         </li>
         <li>
-          <Link title="Регистрация">Регистрация</Link>
+          <Link to="/register" title="Регистрация">
+            Регистрация
+          </Link>
         </li>
       </MenuContainer>
     );

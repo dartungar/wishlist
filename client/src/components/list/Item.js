@@ -51,7 +51,7 @@ const PrivateButtonsContainer = styled.div`
 
 const Item = ({ item }) => {
   const { setEditedItem, updateItem, deleteItem } = useContext(ItemsContext);
-  const { user } = useContext(AuthContext);
+  const { user, isAuthorised } = useContext(AuthContext);
   const { id, name, price, url, bookers, group_purchase } = item;
 
   const onEdit = (e) => {
