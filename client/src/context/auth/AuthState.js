@@ -70,6 +70,44 @@ const AuthState = (props) => {
     }
   };
 
+  // log in with google
+  const facebookLogin = async (facebookID) => {
+    const user = await getUserByFacebookID(facebookID);
+    console.log("found user by facebook id: ", user);
+    if (user) {
+      console.log("Logging in with Facebook", facebookID, user);
+      dispatch({ type: SET_USER, payload: user });
+      dispatch({ type: SET_IS_AUTHORISED, payload: true });
+      console.log("logged in with Facebook");
+    } else setAuthError("User not found. Please register.");
+  };
+
+  const facebookRegister = async (facebookResponse) => {
+    const { name, id } = facebookResponse;
+    const user = await getUserByFacebookID(id);
+    if (user) {
+      facebookLogin(id);
+    } else {
+      const newUser = {
+        id: shortid(),
+        name,
+        facebookID: id,
+      };
+      console.log("new user: ", newUser);
+      const response = await fetch(`http://localhost:3005/users`, {
+        method: "POST",
+        mode: "cors",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newUser),
+      });
+      if (response.ok) {
+        facebookLogin(id);
+      } else setAuthError("Error registering user");
+    }
+  };
+
   // log out
   const logout = () => {
     console.log("log user out");
@@ -96,6 +134,19 @@ const AuthState = (props) => {
     } else return null;
   };
 
+  // find user by Facebook ID
+  // TODO: same as Google ID
+  const getUserByFacebookID = async (facebookID) => {
+    const response = await fetch(
+      `http://localhost:3005/users?facebookID=${facebookID}`
+    );
+    if (response.ok) {
+      const data = await response.json();
+      const user = data[0];
+      return user;
+    } else return null;
+  };
+
   return (
     <authContext.Provider
       value={{
@@ -104,8 +155,10 @@ const AuthState = (props) => {
         authError: state.authError,
         register,
         googleRegister,
+        facebookRegister,
         login,
         googleLogin,
+        facebookLogin,
         logout,
         setAuthError,
       }}

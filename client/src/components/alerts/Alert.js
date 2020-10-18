@@ -36,7 +36,7 @@ const Alert = () => {
       {alert.text}
 
       <a href="" onClick={onCloseAlert} title="Закрыть">
-        <i class="fas fa-times"></i>
+        <i className="fas fa-times"></i>
       </a>
     </AlertContainer>
   );

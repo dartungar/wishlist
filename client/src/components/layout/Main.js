@@ -11,6 +11,7 @@ import List from "../list/List";
 import Profile from "../user/Profile";
 import Login from "../auth/Login";
 import Register from "../auth/Register";
+import PublicHome from "../layout/PublicHome";
 import Search from "./Search";
 import Alert from "../alerts/Alert";
 import AlertContext from "../../context/alert/alertContext";
@@ -45,7 +46,7 @@ const Main = () => {
           {isAuthorised ? (
             <Route path="/" children={<List show_my_wishlist="true" />} />
           ) : (
-            <Route path="/search" children={<Search />} />
+            <Route path="/" children={<PublicHome />} />
           )}
         </Switch>
       </MainContainer>

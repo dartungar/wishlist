@@ -26,14 +26,6 @@
       "user_id": "1BeRbZgI"
     },
     {
-      "id": "57710d94-c083-47f3-8706-bfacaea01bd0",
-      "name": "Пледик с вышитыми пушинами, которые котучат",
-      "price": "2000",
-      "url": "https://pusheen.com",
-      "group_purchase": false,
-      "user_id": "c30sPzQzq"
-    },
-    {
       "id": "6193664d-c354-4cd2-a439-1fcb65633aac",
       "name": "Чайный набор с чайничком-пушином ",
       "price": "3000",
@@ -55,7 +47,8 @@
       "id": "1BeRbZgI",
       "name": "Daniel Nikolaev",
       "birthday": "1991-11-07",
-      "googleID": "100328220455310332488"
+      "googleID": "100328220455310332488",
+      "facebookID": "3285394268250001"
     },
     {
       "id": "c30sPzQzq",

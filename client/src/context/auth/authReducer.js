@@ -16,11 +16,13 @@ const authReducer = (state, action) => {
         user: action.payload,
         authError: null,
       };
+
     case SET_AUTH_ERROR:
       return {
         ...state,
         authError: action.payload,
       };
+
     default:
       return state;
   }
