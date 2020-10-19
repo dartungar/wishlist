@@ -80,7 +80,7 @@ const ItemsState = (props) => {
     setLoading();
     try {
       const response = await fetch(
-        `http://localhost:3005/items?user_id=${user_id}`
+        `http://localhost:3005/items?user_id=${user_id}&_sort=dateAdded&_order=desc`
       );
 
       if (response.ok) {
@@ -102,6 +102,7 @@ const ItemsState = (props) => {
       id: uuid4(),
       ...item,
       user_id: user.id,
+      dateAdded: new Date(),
     };
     console.log(`adding item ${item} into ${user}'s wishlist...`);
     try {
@@ -133,7 +134,7 @@ const ItemsState = (props) => {
 
     console.log(`updating item ${item} in ${user}'s wishlist...`);
     try {
-      const response = await fetch(`http://localhost:3003/items/${item.id}`, {
+      const response = await fetch(`http://localhost:3005/items/${item.id}`, {
         method: "PUT",
         mode: "cors",
         headers: {

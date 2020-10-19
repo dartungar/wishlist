@@ -1,7 +1,21 @@
 import React, { useState, useContext } from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import ItemsContext from "../../context/items/itemsContext";
 import AuthContext from "../../context/auth/authContext";
+
+const fadein = keyframes`
+  from {
+    opacity: 0;
+    ${"" /* transform: scale(0);
+    transform-origin: bottom; */}
+  }
+
+  to {
+    opacity: 100%;
+    ${"" /* transform: scale(1);
+    transform-origin: bottom; */}
+  }
+`;
 
 const AddNewItemContainer = styled.form`
   display: flex;
@@ -12,7 +26,7 @@ const AddNewItemContainer = styled.form`
   border: 1px solid grey;
   border-radius: 3px;
   background-color: #fcffff;
-
+  animation: 0.5s ${fadein} linear;
   button {
     background-color: #fcffff;
     border: none;

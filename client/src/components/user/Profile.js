@@ -14,16 +14,18 @@ const Profile = () => {
     <div>
       <h1>Профиль</h1>
       <table>
-        <tr>
-          <td>Отображаемое имя</td>
-          <td>{user.name}</td>
-        </tr>
-        <tr>
-          <td>Ссылка на вишлист</td>
-          <td>
-            <a href={`/list/${user.id}`}>{`/list/${user.id}`}</a>
-          </td>
-        </tr>
+        <tbody>
+          <tr>
+            <td>Отображаемое имя</td>
+            <td>{user.name}</td>
+          </tr>
+          <tr>
+            <td>Ссылка на вишлист</td>
+            <td>
+              <a href={`/list/${user.id}`}>{`/list/${user.id}`}</a>
+            </td>
+          </tr>
+        </tbody>
       </table>
     </div>
   );

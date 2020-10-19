@@ -6,14 +6,14 @@ import { SET_IS_AUTHORISED, SET_USER, SET_AUTH_ERROR } from "../types";
 
 const AuthState = (props) => {
   const initialState = {
-    // isAuthorised: true, // TODO: make default false after implementing auth
-    // user: {
-    //   id: "1BeRbZgI",
-    //   name: "Daniel Nikolaev",
-    // }, // TODO: make null default
-    isAuthorised: false,
-    user: null,
-    authError: null,
+    isAuthorised: true, // TODO: make default false after implementing auth
+    user: {
+      id: "1BeRbZgI",
+      name: "Daniel Nikolaev",
+    }, // TODO: make null default
+    // isAuthorised: false,
+    // user: null,
+    // authError: null,
   };
 
   const [state, dispatch] = useReducer(authReducer, initialState);

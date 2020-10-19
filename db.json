@@ -1,31 +1,6 @@
 {
   "items": [
     {
-      "id": 4,
-      "name": "Книга Python для умственно отсталых!",
-      "price": 800,
-      "group_purchase": false,
-      "bookers": null,
-      "user_id": "1BeRbZgI"
-    },
-    {
-      "id": "559c6e64-8486-4a48-b0e4-2b79ee7ef098",
-      "name": "A New!!",
-      "price": 1111,
-      "url": "https://metrika.yandex.ru/dashboard?id=55837855",
-      "group_purchase": true,
-      "user_id": "1BeRbZgI",
-      "bookers": null
-    },
-    {
-      "id": "35f076f7-32f0-4508-8f41-019b5ca07380",
-      "name": "Одеялко котусеничке чтобы не мерзли лапки",
-      "price": "10000",
-      "url": "https://yandex.ru/maps/213/moscow/?ll=37.622504%2C55.753215&z=10",
-      "group_purchase": true,
-      "user_id": "1BeRbZgI"
-    },
-    {
       "id": "6193664d-c354-4cd2-a439-1fcb65633aac",
       "name": "Чайный набор с чайничком-пушином ",
       "price": "3000",
@@ -40,6 +15,33 @@
       "url": "https://pusheen.com",
       "group_purchase": false,
       "user_id": "c30sPzQzq"
+    },
+    {
+      "id": "73aa2da3-0d69-49c6-87fe-d5c25ecd3c16",
+      "name": "Oh fuck oh shit!",
+      "price": "111",
+      "url": "https://metrika.yandex.ru/list/",
+      "group_purchase": false,
+      "user_id": "1BeRbZgI",
+      "dateAdded": "2020-10-19T19:24:19.360Z"
+    },
+    {
+      "id": "f8322e27-5451-4f27-b62c-661e7a852389",
+      "name": "Some New Crazy Item!",
+      "price": "2222",
+      "url": "https://metrika.yandex.ru/list/",
+      "group_purchase": false,
+      "user_id": "1BeRbZgI",
+      "dateAdded": "2020-10-19T19:25:32.752Z"
+    },
+    {
+      "id": "4acee8c2-f09d-4f71-ad7a-695af7dc57cf",
+      "name": "Серия книг \"Программируем за 300к в наносекунду без анального рабства\"",
+      "price": "10000",
+      "url": "https://metrika.yandex.ru/dashboard?id=55837855",
+      "group_purchase": true,
+      "user_id": "1BeRbZgI",
+      "dateAdded": "2020-10-19T19:26:14.787Z"
     }
   ],
   "users": [

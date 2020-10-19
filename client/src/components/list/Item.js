@@ -1,7 +1,17 @@
 import React, { useContext } from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import ItemsContext from "../../context/items/itemsContext";
 import AuthContext from "../../context/auth/authContext";
+
+const fadein = keyframes`
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 100%;
+  }
+`;
 
 const ItemContainer = styled.div`
   display: flex;
@@ -12,7 +22,7 @@ const ItemContainer = styled.div`
   border: 1px solid grey;
   border-radius: 3px;
   background-color: #fcffff;
-
+  animation: 0.5s ${fadein} linear;
   a {
     text-decoration: none;
     color: black;

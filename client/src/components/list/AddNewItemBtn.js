@@ -11,6 +11,7 @@ const BtnContainer = styled.div`
   font-size: 0.8rem;
   width: 12ch;
   border-radius: 3px;
+
   &:hover {
     background-color: lightgrey;
   }
