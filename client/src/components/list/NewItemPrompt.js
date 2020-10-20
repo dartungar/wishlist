@@ -6,14 +6,11 @@ import AuthContext from "../../context/auth/authContext";
 const fadein = keyframes`
   from {
     opacity: 0;
-    ${"" /* transform: scale(0);
-    transform-origin: bottom; */}
   }
 
   to {
     opacity: 100%;
-    ${"" /* transform: scale(1);
-    transform-origin: bottom; */}
+
   }
 `;
 
@@ -23,7 +20,7 @@ const AddNewItemContainer = styled.form`
   justify-content: flex-start;
   align-items: center;
   margin: 1rem 0 0 0;
-  border: 1px solid grey;
+  border: 1px solid #b1dff2;
   border-radius: 3px;
   background-color: #fcffff;
   animation: 0.5s ${fadein} linear;

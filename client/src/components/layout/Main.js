@@ -6,6 +6,7 @@ import {
   Redirect,
 } from "react-router-dom";
 import styled from "styled-components";
+import PrivateRoute from "../auth/PrivateRoute";
 import Navbar from "./Navbar";
 import List from "../list/List";
 import Profile from "../user/Profile";
@@ -27,7 +28,12 @@ const MainContainer = styled.div`
 
 const Main = () => {
   const { alert } = useContext(AlertContext);
-  const { isAuthorised, user } = useContext(AuthContext);
+  const { isAuthorised, user, authorize } = useContext(AuthContext);
+
+  useEffect(() => {
+    authorize();
+  }, []);
+
   return (
     <Router>
       <MainContainer>
@@ -35,7 +41,7 @@ const Main = () => {
         {alert && <Alert />}
         <Switch>
           <Route path="/list/:user_id" children={<List />} />
-          <Route exact path="/profile" children={<Profile />} />
+          <PrivateRoute path="/profile" component={<Profile />} />
           <Route exact path="/login">
             {isAuthorised ? <Redirect to="/" /> : <Login />}
           </Route>
@@ -44,9 +50,9 @@ const Main = () => {
           </Route>
           <Route exact path="/search" children={<Search />} />
           {isAuthorised ? (
-            <Route path="/" children={<List show_my_wishlist="true" />} />
+            <Route children={<List show_my_wishlist="true" />} />
           ) : (
-            <Route path="/" children={<PublicHome />} />
+            <Route children={<PublicHome />} />
           )}
         </Switch>
       </MainContainer>

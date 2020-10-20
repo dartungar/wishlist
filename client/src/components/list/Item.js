@@ -19,7 +19,7 @@ const ItemContainer = styled.div`
   justify-content: flex-start;
   align-items: center;
   margin: 1rem 0 0 0;
-  border: 1px solid grey;
+  border: 1px solid #b1dff2;
   border-radius: 3px;
   background-color: #fcffff;
   animation: 0.5s ${fadein} linear;
@@ -62,7 +62,7 @@ const PrivateButtonsContainer = styled.div`
 const Item = ({ item }) => {
   const { setEditedItem, updateItem, deleteItem } = useContext(ItemsContext);
   const { user, isAuthorised } = useContext(AuthContext);
-  const { id, name, price, url, bookers, group_purchase } = item;
+  const { id, name, price, url, bookers, group_purchase, user_id } = item;
 
   const onEdit = (e) => {
     e.preventDefault();
@@ -83,7 +83,7 @@ const Item = ({ item }) => {
   const onDelete = (e) => {
     e.preventDefault();
     console.log("want to delete");
-    deleteItem(id);
+    deleteItem(user_id, id);
   };
 
   return (

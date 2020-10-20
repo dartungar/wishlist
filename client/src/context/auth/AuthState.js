@@ -23,6 +23,36 @@ const AuthState = (props) => {
     dispatch({ type: SET_AUTH_ERROR, payload: text });
   };
 
+  // authorize: check token & set isAuthorized and current user
+  const authorize = async () => {
+    let token = getToken();
+    console.log("token:", token);
+    if (token) {
+      let user = JSON.parse(token).user;
+      console.log("user from token", user);
+      dispatch({ type: SET_USER, payload: user });
+      dispatch({ type: SET_IS_AUTHORISED, payload: true });
+    } else {
+      dispatch({ type: SET_USER, payload: null });
+      dispatch({ type: SET_IS_AUTHORISED, payload: false });
+    }
+  };
+
+  // set token in local storage
+  const setToken = (token) => {
+    localStorage.setItem("token", token);
+  };
+
+  // get token from local storage
+  const getToken = () => {
+    try {
+      let token = localStorage.getItem("token");
+      return token;
+    } catch (error) {
+      setAuthError("Error getting token");
+    }
+  };
+
   // register user
   const register = () => {
     console.log("register user");
@@ -36,10 +66,11 @@ const AuthState = (props) => {
   // log in with google
   const googleLogin = async (googleID) => {
     const user = await getUserByGoogleID(googleID);
+
     if (user) {
       console.log("Logging in with Google ID", googleID, user);
-      dispatch({ type: SET_USER, payload: user });
-      dispatch({ type: SET_IS_AUTHORISED, payload: true });
+      setToken(JSON.stringify({ user }));
+      authorize(user);
       console.log("logged in with Google ID!");
     } else setAuthError("User not found. Please register.");
   };
@@ -73,6 +104,7 @@ const AuthState = (props) => {
   // log in with google
   const facebookLogin = async (facebookID) => {
     const user = await getUserByFacebookID(facebookID);
+    setToken(JSON.stringify({ user }));
     console.log("found user by facebook id: ", user);
     if (user) {
       console.log("Logging in with Facebook", facebookID, user);
@@ -113,11 +145,22 @@ const AuthState = (props) => {
     console.log("log user out");
     dispatch({ type: SET_USER, payload: false });
     dispatch({ type: SET_IS_AUTHORISED, payload: false });
+    localStorage.removeItem("token");
   };
 
   // change user info, i.e name
   const changeUserInfo = (newInfo) => {
     console.log("changing user info...");
+  };
+
+  // find user by ID
+  const getUserByID = async (id) => {
+    const response = await fetch(`http://localhost:3005/users?id=${id}`);
+    if (response.ok) {
+      const data = await response.json();
+      const user = data[0];
+      return user;
+    } else return null;
   };
 
   // find user by Google ID
@@ -153,6 +196,7 @@ const AuthState = (props) => {
         isAuthorised: state.isAuthorised,
         user: state.user,
         authError: state.authError,
+        authorize,
         register,
         googleRegister,
         facebookRegister,

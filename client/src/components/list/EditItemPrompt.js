@@ -10,7 +10,7 @@ const EditItemContainer = styled.form`
   justify-content: flex-start;
   align-items: center;
   margin: 1rem 0 0 0;
-  border: 1px solid grey;
+  border: 1px solid #b1dff2;
   border-radius: 3px;
   background-color: #fcffff;
 

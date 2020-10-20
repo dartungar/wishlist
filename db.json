@@ -17,24 +17,6 @@
       "user_id": "c30sPzQzq"
     },
     {
-      "id": "73aa2da3-0d69-49c6-87fe-d5c25ecd3c16",
-      "name": "Oh fuck oh shit!",
-      "price": "111",
-      "url": "https://metrika.yandex.ru/list/",
-      "group_purchase": false,
-      "user_id": "1BeRbZgI",
-      "dateAdded": "2020-10-19T19:24:19.360Z"
-    },
-    {
-      "id": "f8322e27-5451-4f27-b62c-661e7a852389",
-      "name": "Some New Crazy Item!",
-      "price": "2222",
-      "url": "https://metrika.yandex.ru/list/",
-      "group_purchase": false,
-      "user_id": "1BeRbZgI",
-      "dateAdded": "2020-10-19T19:25:32.752Z"
-    },
-    {
       "id": "4acee8c2-f09d-4f71-ad7a-695af7dc57cf",
       "name": "Серия книг \"Программируем за 300к в наносекунду без анального рабства\"",
       "price": "10000",
@@ -42,6 +24,24 @@
       "group_purchase": true,
       "user_id": "1BeRbZgI",
       "dateAdded": "2020-10-19T19:26:14.787Z"
+    },
+    {
+      "id": "9d5a4821-557e-419c-be64-54cd8cbd67c0",
+      "name": "Мазь для подгоревшего седалища",
+      "price": "800",
+      "url": "https://doctorpopov.ru",
+      "group_purchase": false,
+      "user_id": "1BeRbZgI",
+      "dateAdded": "2020-10-19T19:31:04.961Z"
+    },
+    {
+      "id": "1e1d258a-0a22-4028-bd62-508b568a7044",
+      "name": "Билет на ретроспективу Тома Йорка \"Воем вместе\"",
+      "price": "300",
+      "url": "https://metrika.yandex.ru/list/",
+      "group_purchase": false,
+      "user_id": "1BeRbZgI",
+      "dateAdded": "2020-10-19T19:35:34.727Z"
     }
   ],
   "users": [

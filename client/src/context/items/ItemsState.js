@@ -163,12 +163,12 @@ const ItemsState = (props) => {
   };
 
   // delete item from current user's wishlist
-  const deleteItem = async (id) => {
+  const deleteItem = async (user_id, item_id) => {
     setLoading();
 
-    console.log(`deleting item ${id}...`);
+    console.log(`deleting item ${item_id}...`);
     try {
-      const response = await fetch(`http://localhost:3005/items/${id}`, {
+      const response = await fetch(`http://localhost:3005/items/${item_id}`, {
         method: "DELETE",
         mode: "cors",
         headers: {
@@ -177,6 +177,7 @@ const ItemsState = (props) => {
       });
       if (response.ok) {
         console.log("deleted item!");
+        getWishlist(user_id);
       } else {
         setItemsError("Error deleting item");
       }
