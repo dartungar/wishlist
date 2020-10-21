@@ -65,26 +65,25 @@ const AuthState = (props) => {
 
   // log in with google
   const googleLogin = async (googleID) => {
-    const user = await getUserByGoogleID(googleID);
-
+    const user = await getUserByGoogleID(btoa(googleID));
     if (user) {
-      console.log("Logging in with Google ID", googleID, user);
       setToken(createToken(user));
       authorize(user);
-      console.log("logged in with Google ID!");
     } else setAuthError("User not found. Please register.");
   };
 
   const googleRegister = async (googleResponse) => {
     const { name, googleId } = googleResponse.profileObj;
-    const user = await getUserByGoogleID(googleId);
+    const encryptedId = btoa(googleId);
+    const user = await getUserByGoogleID(encryptedId);
     if (user) {
       googleLogin(googleId);
     } else {
       const newUser = {
         id: shortid(),
         name,
-        googleID: googleId,
+        googleID: encryptedId,
+        facebookID: "",
       };
       console.log("new user: ", newUser);
       const response = await fetch(`http://localhost:3005/users`, {
@@ -96,34 +95,35 @@ const AuthState = (props) => {
         body: JSON.stringify(newUser),
       });
       if (response.ok) {
-        googleLogin(googleResponse.googleId);
+        googleLogin(googleId);
       } else setAuthError("Error registering user");
     }
   };
 
   // log in with facebook
   const facebookLogin = async (facebookID) => {
-    const user = await getUserByFacebookID(facebookID);
+    const user = await getUserByFacebookID(btoa(facebookID));
+    console.log("found user by facebook id:", user);
 
     if (user) {
-      console.log("Logging in with Facebook", facebookID, user);
       setToken(createToken(user));
       authorize(user);
-      console.log("logged in with Facebook");
     } else setAuthError("User not found. Please register.");
   };
 
   // register new user after auth with facebook
   const facebookRegister = async (facebookResponse) => {
     const { name, id } = facebookResponse;
-    const user = await getUserByFacebookID(id);
+    const encryptedId = btoa(id);
+    const user = await getUserByFacebookID(encryptedId);
     if (user) {
       facebookLogin(id);
     } else {
       const newUser = {
         id: shortid(),
         name,
-        facebookID: id,
+        googleID: "",
+        facebookID: encryptedId,
       };
       console.log("new user: ", newUser);
       const response = await fetch(`http://localhost:3005/users`, {
@@ -167,12 +167,14 @@ const AuthState = (props) => {
   // find user by Google ID
   // TODO: encrypt Google ID
   const getUserByGoogleID = async (googleID) => {
+    console.log("getting user by google id...", googleID);
     const response = await fetch(
       `http://localhost:3005/users?googleID=${googleID}`
     );
     if (response.ok) {
       const data = await response.json();
       const user = data[0];
+      console.log("got user by google id", user);
       return user;
     } else return null;
   };
@@ -183,6 +185,7 @@ const AuthState = (props) => {
     const response = await fetch(
       `http://localhost:3005/users?facebookID=${facebookID}`
     );
+    console.log("user by fb ID:", response);
     if (response.ok) {
       const data = await response.json();
       const user = data[0];

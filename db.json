@@ -47,15 +47,9 @@
   "users": [
     {
       "id": "1BeRbZgI",
-      "name": "Daniel Nikolaev",
-      "birthday": "1991-11-07",
-      "googleID": "100328220455310332488",
-      "facebookID": "3285394268250001"
-    },
-    {
-      "id": "o4gpSS9D0",
-      "name": "Юлия Николаева",
-      "googleID": "106752728972544552615"
+      "name": "Данила Николаев",
+      "googleID": "MTAwMzI4MjIwNDU1MzEwMzMyNDg4",
+      "facebookID": ""
     }
   ]
 }
