@@ -25,9 +25,9 @@ const MenuContainer = styled.ul`
 `;
 
 const Menu = () => {
-  const { isAuthorised, user, logout } = useContext(AuthContext);
+  const { isAuthorized, user, logout } = useContext(AuthContext);
 
-  if (isAuthorised === true) {
+  if (isAuthorized === true) {
     return (
       <MenuContainer>
         <li>

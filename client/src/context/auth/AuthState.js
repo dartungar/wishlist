@@ -2,16 +2,16 @@ import React, { useReducer } from "react";
 import authContext from "./authContext";
 import authReducer from "./authReducer";
 import shortid from "shortid";
-import { SET_IS_AUTHORISED, SET_USER, SET_AUTH_ERROR } from "../types";
+import { SET_IS_AUTHORIZED, SET_USER, SET_AUTH_ERROR } from "../types";
 
 const AuthState = (props) => {
   const initialState = {
-    // isAuthorised: true, // TODO: make default false after implementing auth
+    // isAuthorized: true, // TODO: make default false after implementing auth
     // user: {
     //   id: "1BeRbZgI",
     //   name: "Daniel Nikolaev",
     // }, // TODO: make null default
-    isAuthorised: false,
+    isAuthorized: false,
     user: null,
     authError: null,
   };
@@ -28,9 +28,9 @@ const AuthState = (props) => {
     let token = getToken();
     console.log("token:", token);
     let user = token ? await getUserFromToken(token) : null;
-    let isAuthorised = token && user ? true : false;
+    let isAuthorized = token && user ? true : false;
     dispatch({ type: SET_USER, payload: user });
-    dispatch({ type: SET_IS_AUTHORISED, payload: isAuthorised });
+    dispatch({ type: SET_IS_AUTHORIZED, payload: isAuthorized });
   };
 
   // create encrypted token with user data
@@ -144,7 +144,7 @@ const AuthState = (props) => {
   const logout = () => {
     console.log("log user out");
     dispatch({ type: SET_USER, payload: false });
-    dispatch({ type: SET_IS_AUTHORISED, payload: false });
+    dispatch({ type: SET_IS_AUTHORIZED, payload: false });
     localStorage.removeItem("token");
   };
 
@@ -193,7 +193,7 @@ const AuthState = (props) => {
   return (
     <authContext.Provider
       value={{
-        isAuthorised: state.isAuthorised,
+        isAuthorized: state.isAuthorized,
         user: state.user,
         authError: state.authError,
         googleLogin,

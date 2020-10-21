@@ -28,7 +28,7 @@ const MainContainer = styled.div`
 
 const Main = () => {
   const { alert } = useContext(AlertContext);
-  const { isAuthorised, authorize, user } = useContext(AuthContext);
+  const { isAuthorized, authorize, user } = useContext(AuthContext);
 
   useEffect(() => {
     if (!user) {
@@ -43,15 +43,15 @@ const Main = () => {
         {alert && <Alert />}
         <Switch>
           <Route path="/list/:user_id" children={<List />} />
-          <PrivateRoute path="/profile" component={<Profile />} />
+          <PrivateRoute path="/profile" component={Profile} />
           <Route exact path="/login">
-            {isAuthorised ? <Redirect to="/" /> : <Login />}
+            {isAuthorized ? <Redirect to="/" /> : <Login />}
           </Route>
           <Route exact path="/register">
-            {isAuthorised ? <Redirect to="/" /> : <Register />}
+            {isAuthorized ? <Redirect to="/" /> : <Register />}
           </Route>
           <Route exact path="/search" children={<Search />} />
-          {isAuthorised ? (
+          {isAuthorized ? (
             <Route children={<List show_my_wishlist="true" />} />
           ) : (
             <Route children={<PublicHome />} />

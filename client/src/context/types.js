@@ -9,7 +9,7 @@ export const SET_CURRENT_USER = "SET_CURRENT_USER";
 export const CLEAR_CURRENT_USER = "CLEAR_CURRENT_USER";
 export const SET_ITEMS_ERROR = "SET_ITEMS_ERROR";
 
-export const SET_IS_AUTHORISED = "SET_IS_AUTHORISED";
+export const SET_IS_AUTHORIZED = "SET_IS_AUTHORIZED";
 export const SET_USER = "SET_USER";
 export const SET_AUTH_ERROR = "SET_AUTH_ERROR";
 
