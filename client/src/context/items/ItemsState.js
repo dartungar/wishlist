@@ -204,6 +204,7 @@ const ItemsState = (props) => {
         updateItem,
         clearBookers,
         deleteItem,
+        setItemsError,
       }}
     >
       {props.children}

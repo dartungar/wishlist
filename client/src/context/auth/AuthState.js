@@ -6,14 +6,14 @@ import { SET_IS_AUTHORISED, SET_USER, SET_AUTH_ERROR } from "../types";
 
 const AuthState = (props) => {
   const initialState = {
-    isAuthorised: true, // TODO: make default false after implementing auth
-    user: {
-      id: "1BeRbZgI",
-      name: "Daniel Nikolaev",
-    }, // TODO: make null default
-    // isAuthorised: false,
-    // user: null,
-    // authError: null,
+    // isAuthorised: true, // TODO: make default false after implementing auth
+    // user: {
+    //   id: "1BeRbZgI",
+    //   name: "Daniel Nikolaev",
+    // }, // TODO: make null default
+    isAuthorised: false,
+    user: null,
+    authError: null,
   };
 
   const [state, dispatch] = useReducer(authReducer, initialState);
@@ -27,15 +27,17 @@ const AuthState = (props) => {
   const authorize = async () => {
     let token = getToken();
     console.log("token:", token);
-    if (token) {
-      let user = JSON.parse(token).user;
-      console.log("user from token", user);
-      dispatch({ type: SET_USER, payload: user });
-      dispatch({ type: SET_IS_AUTHORISED, payload: true });
-    } else {
-      dispatch({ type: SET_USER, payload: null });
-      dispatch({ type: SET_IS_AUTHORISED, payload: false });
-    }
+    let user = token ? await getUserFromToken(token) : null;
+    let isAuthorised = token && user ? true : false;
+    dispatch({ type: SET_USER, payload: user });
+    dispatch({ type: SET_IS_AUTHORISED, payload: isAuthorised });
+  };
+
+  // create encrypted token with user data
+  const createToken = (userData) => {
+    let tokenObj = { userId: userData.id };
+    let encryptedToken = btoa(JSON.stringify(tokenObj));
+    return encryptedToken;
   };
 
   // set token in local storage
@@ -53,14 +55,12 @@ const AuthState = (props) => {
     }
   };
 
-  // register user
-  const register = () => {
-    console.log("register user");
-  };
-
-  // authenticate user
-  const login = () => {
-    console.log("log user in");
+  // get user data from encrypted token
+  const getUserFromToken = async (token) => {
+    let decryptedToken = atob(token);
+    let userId = JSON.parse(decryptedToken).userId;
+    let user = await getUserByID(userId);
+    return user;
   };
 
   // log in with google
@@ -69,7 +69,7 @@ const AuthState = (props) => {
 
     if (user) {
       console.log("Logging in with Google ID", googleID, user);
-      setToken(JSON.stringify({ user }));
+      setToken(createToken(user));
       authorize(user);
       console.log("logged in with Google ID!");
     } else setAuthError("User not found. Please register.");
@@ -101,19 +101,19 @@ const AuthState = (props) => {
     }
   };
 
-  // log in with google
+  // log in with facebook
   const facebookLogin = async (facebookID) => {
     const user = await getUserByFacebookID(facebookID);
-    setToken(JSON.stringify({ user }));
-    console.log("found user by facebook id: ", user);
+
     if (user) {
       console.log("Logging in with Facebook", facebookID, user);
-      dispatch({ type: SET_USER, payload: user });
-      dispatch({ type: SET_IS_AUTHORISED, payload: true });
+      setToken(createToken(user));
+      authorize(user);
       console.log("logged in with Facebook");
     } else setAuthError("User not found. Please register.");
   };
 
+  // register new user after auth with facebook
   const facebookRegister = async (facebookResponse) => {
     const { name, id } = facebookResponse;
     const user = await getUserByFacebookID(id);
@@ -151,6 +151,7 @@ const AuthState = (props) => {
   // change user info, i.e name
   const changeUserInfo = (newInfo) => {
     console.log("changing user info...");
+    // TODO
   };
 
   // find user by ID
@@ -164,8 +165,7 @@ const AuthState = (props) => {
   };
 
   // find user by Google ID
-  // TODO: encrypt Google ID or find out best practice about
-  // how to match Google ID to users in our DB
+  // TODO: encrypt Google ID
   const getUserByGoogleID = async (googleID) => {
     const response = await fetch(
       `http://localhost:3005/users?googleID=${googleID}`
@@ -196,13 +196,11 @@ const AuthState = (props) => {
         isAuthorised: state.isAuthorised,
         user: state.user,
         authError: state.authError,
-        authorize,
-        register,
-        googleRegister,
-        facebookRegister,
-        login,
         googleLogin,
         facebookLogin,
+        authorize,
+        googleRegister,
+        facebookRegister,
         logout,
         setAuthError,
       }}

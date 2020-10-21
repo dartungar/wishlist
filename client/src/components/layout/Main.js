@@ -28,10 +28,12 @@ const MainContainer = styled.div`
 
 const Main = () => {
   const { alert } = useContext(AlertContext);
-  const { isAuthorised, user, authorize } = useContext(AuthContext);
+  const { isAuthorised, authorize, user } = useContext(AuthContext);
 
   useEffect(() => {
-    authorize();
+    if (!user) {
+      authorize();
+    }
   }, []);
 
   return (

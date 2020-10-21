@@ -1,6 +1,8 @@
 import React, { useContext } from "react";
 import styled from "styled-components";
 import AlertContext from "../../context/alert/alertContext";
+import AuthContext from "../../context/auth/authContext";
+import ItemsContext from "../../context/items/itemsContext";
 
 const AlertContainer = styled.div`
   z-index: 100;
@@ -26,11 +28,16 @@ const alertColors = {
 
 const Alert = () => {
   const { alert, clearAlert } = useContext(AlertContext);
+  const { authError, setAuthError } = useContext(AuthContext);
+  const { itemsError, setItemsError } = useContext(ItemsContext);
 
   const onCloseAlert = (e) => {
     e.preventDefault();
     clearAlert();
+    setAuthError(null);
+    setItemsError(null);
   };
+
   return (
     <AlertContainer style={{ backgroundColor: alertColors[alert.type] }}>
       {alert.text}
