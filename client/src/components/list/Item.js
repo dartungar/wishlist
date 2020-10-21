@@ -43,15 +43,15 @@ const UrlContainer = styled.div`
   margin: 1rem 0 1rem 1rem;
 `;
 
-const PublicBtnsContainer = styled.div`
-  margin: 1rem;
+const LeftBtnsContainer = styled.div`
+  margin-right: auto;
   /* margin: 1rem; */
   i {
-    margin-left: 0.1rem;
+    margin-left: 1rem;
   }
 `;
 
-const PrivateButtonsContainer = styled.div`
+const RightBtnsContainer = styled.div`
   margin: 1rem 1rem 1rem auto;
   /* margin: 1rem; */
   i {
@@ -97,25 +97,34 @@ const Item = ({ item }) => {
           <i class="fas fa-external-link-alt"></i>
         </a>
       </UrlContainer>
-      <PublicBtnsContainer title="Буду дарить">
-        {group_purchase ? (
-          <i class="fas fa-users"></i>
-        ) : (
-          <i class="fas fa-gift"></i>
-        )}
-      </PublicBtnsContainer>
-      <PrivateButtonsContainer>
-        <a href="" onClick={onEdit} title="Редактировать">
-          <i class="fas fa-edit"></i>
-        </a>
-        <a href="" onClick={onClearBookers} title="Очистить дарителей">
-          <i class="fas fa-user-times"></i>
-        </a>
 
-        <a href="" onClick={onDelete} title="Удалить">
-          <i class="fas fa-trash-alt"></i>
-        </a>
-      </PrivateButtonsContainer>
+      {user && user.id === user_id ? (
+        <>
+          <LeftBtnsContainer>
+            <a href="" onClick={onClearBookers} title="Очистить дарителей">
+              <i class="fas fa-user-times"></i>
+            </a>
+          </LeftBtnsContainer>
+
+          <RightBtnsContainer>
+            {" "}
+            <a href="" onClick={onEdit} title="Редактировать">
+              <i class="fas fa-edit"></i>
+            </a>
+            <a href="" onClick={onDelete} title="Удалить">
+              <i class="fas fa-trash-alt"></i>
+            </a>
+          </RightBtnsContainer>
+        </>
+      ) : (
+        <LeftBtnsContainer title="Буду дарить">
+          {group_purchase ? (
+            <i class="fas fa-users"></i>
+          ) : (
+            <i class="fas fa-gift"></i>
+          )}
+        </LeftBtnsContainer>
+      )}
     </ItemContainer>
   );
 };
