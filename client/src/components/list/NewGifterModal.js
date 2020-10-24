@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import styled, { keyframes } from "styled-components";
-import itemsContext from "../../context/items/itemsContext";
 import ItemsContext from "../../context/items/itemsContext";
+import AuthContext from "../../context/auth/authContext";
 
 const DarkenedBackground = styled.div`
   z-index: 100;
@@ -18,7 +18,6 @@ const DarkenedBackground = styled.div`
 
 const PromptContainer = styled.div`
   z-index: 200;
-  margin: auto;
   max-width: 80%;
   background-color: #fcffff;
   border-radius: 3px;
@@ -29,8 +28,9 @@ const PromptContainer = styled.div`
   }
 
   input {
-    width: 90%;
-    margin-top: 1rem;
+    display: block;
+    width: 95%;
+    margin: 1rem 0;
   }
 
   button {
@@ -41,12 +41,8 @@ const PromptContainer = styled.div`
 `;
 
 const BtnsContainer = styled.div`
-  margin: 1rem 1rem 0 auto;
-  /* margin: 1rem; */
-  i,
-  div {
-    margin-left: 1rem;
-  }
+  display: flex;
+  justify-content: flex-end;
 `;
 
 const CancelBtn = styled.button`
@@ -74,12 +70,17 @@ const NewGifterModal = () => {
     setNewGifterModal,
     updateItem,
     getWishlist,
-  } = useContext(itemsContext);
+  } = useContext(ItemsContext);
+  const { user } = useContext(AuthContext);
   const [gifterName, setGifterName] = useState();
 
   useEffect(() => {
     if (!gifterName) {
-      setGifterName("Аноним");
+      if (user.name) {
+        setGifterName(user.name);
+      } else {
+        setGifterName("Аноним");
+      }
     }
   }, []);
 
