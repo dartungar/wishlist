@@ -6,6 +6,7 @@ import AddNewItemBtn from "./AddNewItemBtn";
 import NewItemPrompt from "./NewItemPrompt";
 import EditItemPrompt from "./EditItemPrompt";
 import ListTitle from "./ListTitle";
+import NewGifterModal from "./NewGifterModal";
 import Spinner from "../layout/Spinner";
 import ItemsContext from "../../context/items/itemsContext";
 import AuthContext from "../../context/auth/authContext";
@@ -23,11 +24,11 @@ const List = ({ show_my_wishlist }) => {
   const {
     loading,
     currentWishlist,
-    getItems,
     getWishlist,
     addingNewItem,
     editedItem,
     itemsError,
+    newGifterModal,
   } = useContext(ItemsContext);
   const { isAuthorised, user, authError } = useContext(AuthContext);
   const { setAlert } = useContext(AlertContext);
@@ -60,6 +61,8 @@ const List = ({ show_my_wishlist }) => {
 
   return (
     <ListContainer>
+      {newGifterModal && <NewGifterModal />}
+
       <ListTitle user={currentWishlist.user} />
       {loading && <Spinner />}
       {user &&

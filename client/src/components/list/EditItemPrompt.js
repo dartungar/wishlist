@@ -1,8 +1,18 @@
 import React, { useState, useEffect, useContext } from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import ItemsContext from "../../context/items/itemsContext";
 import AuthContext from "../../context/auth/authContext";
 import AlertContext from "../../context/alert/alertContext";
+
+const fadein = keyframes`
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 100%;
+  }
+`;
 
 const EditItemContainer = styled.form`
   display: flex;
@@ -13,6 +23,7 @@ const EditItemContainer = styled.form`
   border: 1px solid #b1dff2;
   border-radius: 3px;
   background-color: #fcffff;
+  animation: 0.5s ${fadein} linear;
 
   button {
     background-color: #fcffff;
@@ -69,9 +80,8 @@ const IsGroupPurchaseInput = styled.div`
 `;
 
 const EditItemPrompt = ({ item }) => {
-  const { updateItem, setEditedItem, itemsError } = useContext(ItemsContext);
+  const { updateItem, setEditedItem, getWishlist } = useContext(ItemsContext);
   const { user } = useContext(AuthContext);
-  const { setAlert } = useContext(AlertContext);
   const [editedItemValue, updateEditedItemValue] = useState();
 
   useEffect(() => {
@@ -93,7 +103,8 @@ const EditItemPrompt = ({ item }) => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    updateItem(user, editedItemValue);
+    updateItem(editedItemValue);
+    getWishlist(user.id);
   };
 
   if (!editedItemValue) return null;

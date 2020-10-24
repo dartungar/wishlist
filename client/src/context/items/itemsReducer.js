@@ -2,10 +2,9 @@ import {
   SET_LOADING,
   SET_ADDING_NEW_ITEM,
   SET_EDITED_ITEM,
-  SET_ITEMS,
-  CLEAR_ITEMS,
   SET_WISHLIST,
   SET_ITEMS_ERROR,
+  SET_NEW_GIFTER_MODAL,
 } from "../types.js";
 
 const itemsReducer = (state, action) => {
@@ -15,7 +14,13 @@ const itemsReducer = (state, action) => {
         ...state,
         loading: true,
       };
-
+    case SET_WISHLIST:
+      return {
+        ...state,
+        currentWishlist: action.payload,
+        loading: false,
+        addingNewItem: false,
+      };
     case SET_ADDING_NEW_ITEM:
       return {
         ...state,
@@ -26,28 +31,11 @@ const itemsReducer = (state, action) => {
         ...state,
         editedItem: action.payload,
       };
-    case SET_ITEMS:
+
+    case SET_NEW_GIFTER_MODAL:
       return {
         ...state,
-        currentWishlist: {
-          ...state.currentWishlist,
-          items: action.payload,
-        },
-        loading: false,
-        addingNewItem: false,
-      };
-    case SET_WISHLIST:
-      return {
-        ...state,
-        currentWishlist: action.payload,
-        loading: false,
-        addingNewItem: false,
-      };
-    case CLEAR_ITEMS:
-      return {
-        ...state,
-        items: [],
-        loading: false,
+        newGifterModal: action.payload,
       };
     case SET_ITEMS_ERROR:
       return {

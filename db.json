@@ -6,7 +6,12 @@
       "price": "3000",
       "url": "https://pusheen.com",
       "group_purchase": true,
-      "user_id": "c30sPzQzq"
+      "user_id": "c30sPzQzq",
+      "gifters": [
+        "Аноним",
+        "Пухлая котусеничка",
+        "Вертлявая котусеничка"
+      ]
     },
     {
       "id": "50b2b06e-0e32-4fa0-9bfe-5e27011c5d72",
@@ -14,7 +19,10 @@
       "price": "2000",
       "url": "https://pusheen.com",
       "group_purchase": false,
-      "user_id": "c30sPzQzq"
+      "user_id": "c30sPzQzq",
+      "gifters": [
+        "Веселая котусеничка"
+      ]
     },
     {
       "id": "4acee8c2-f09d-4f71-ad7a-695af7dc57cf",
@@ -37,11 +45,12 @@
     {
       "id": "1e1d258a-0a22-4028-bd62-508b568a7044",
       "name": "Билет на ретроспективу Тома Йорка \"Воем вместе\"",
-      "price": "300",
+      "price": "3000",
       "url": "https://metrika.yandex.ru/list/",
       "group_purchase": false,
       "user_id": "1BeRbZgI",
-      "dateAdded": "2020-10-19T19:35:34.727Z"
+      "dateAdded": "2020-10-19T19:35:34.727Z",
+      "gifters": null
     }
   ],
   "users": [
@@ -49,6 +58,12 @@
       "id": "1BeRbZgI",
       "name": "Данила Николаев",
       "googleID": "MTAwMzI4MjIwNDU1MzEwMzMyNDg4",
+      "facebookID": ""
+    },
+    {
+      "id": "c30sPzQzq",
+      "name": "Юлия Николаева",
+      "googleID": "MTA2NzUyNzI4OTcyNTQ0NTUyNjE1",
       "facebookID": ""
     }
   ]

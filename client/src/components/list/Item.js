@@ -60,30 +60,39 @@ const RightBtnsContainer = styled.div`
 `;
 
 const Item = ({ item }) => {
-  const { setEditedItem, updateItem, deleteItem } = useContext(ItemsContext);
-  const { user, isAuthorised } = useContext(AuthContext);
-  const { id, name, price, url, bookers, group_purchase, user_id } = item;
+  const {
+    setEditedItem,
+    updateItem,
+    deleteItem,
+    getWishlist,
+    setNewGifterModal,
+  } = useContext(ItemsContext);
+  const { user } = useContext(AuthContext);
+  const { id, name, price, url, gifters, group_purchase, user_id } = item;
 
   const onEdit = (e) => {
     e.preventDefault();
     setEditedItem(item);
   };
 
-  // TODO: update item with bookers set to null
-  const onClearBookers = (e) => {
-    e.preventDefault();
-
-    const itemWithClearedBookers = {
-      ...item,
-      bookers: null,
-    };
-    updateItem(user, itemWithClearedBookers);
-  };
-
   const onDelete = (e) => {
     e.preventDefault();
-    console.log("want to delete");
     deleteItem(user_id, id);
+  };
+
+  const onCleargifters = (e) => {
+    e.preventDefault();
+    updateItem({
+      ...item,
+      gifters: null,
+    });
+    getWishlist(user.id);
+  };
+
+  const onClickBooking = (e) => {
+    e.preventDefault();
+    console.log("Clicked Booking");
+    setNewGifterModal({ item: item });
   };
 
   return (
@@ -100,14 +109,14 @@ const Item = ({ item }) => {
 
       {user && user.id === user_id ? (
         <>
-          <LeftBtnsContainer>
-            <a href="" onClick={onClearBookers} title="Очистить дарителей">
-              <i class="fas fa-user-times"></i>
-            </a>
-          </LeftBtnsContainer>
-
+          {gifters && (
+            <LeftBtnsContainer>
+              <a href="" onClick={onCleargifters} title="Очистить дарителей">
+                <i class="fas fa-user-times"></i>
+              </a>
+            </LeftBtnsContainer>
+          )}
           <RightBtnsContainer>
-            {" "}
             <a href="" onClick={onEdit} title="Редактировать">
               <i class="fas fa-edit"></i>
             </a>
@@ -117,11 +126,27 @@ const Item = ({ item }) => {
           </RightBtnsContainer>
         </>
       ) : (
-        <LeftBtnsContainer title="Буду дарить">
+        <LeftBtnsContainer>
           {group_purchase ? (
-            <i class="fas fa-users"></i>
+            <a
+              href=""
+              title={
+                !gifters ? `Буду дарить` : `Буду дарить вместе с ${gifters}`
+              }
+              onClick={onClickBooking}
+            >
+              <i class="fas fa-users"></i>
+            </a>
+          ) : !gifters ? (
+            <a href="" title={`Буду дарить`} onClick={onClickBooking}>
+              <i class="fas fa-gift"></i>
+            </a>
           ) : (
-            <i class="fas fa-gift"></i>
+            <i
+              class="fas fa-gift"
+              title={`Будет дарить ${gifters}`}
+              style={{ opacity: "50%" }}
+            ></i>
           )}
         </LeftBtnsContainer>
       )}

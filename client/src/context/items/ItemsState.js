@@ -4,11 +4,11 @@ import itemsContext from "./itemsContext";
 import itemsReducer from "./itemsReducer";
 import {
   SET_LOADING,
-  SET_ITEMS,
   SET_WISHLIST,
   SET_ADDING_NEW_ITEM,
   SET_EDITED_ITEM,
   SET_ITEMS_ERROR,
+  SET_NEW_GIFTER_MODAL,
 } from "../types.js";
 
 const ItemsState = (props) => {
@@ -21,6 +21,7 @@ const ItemsState = (props) => {
     addingNewItem: false,
     editedItem: null,
     itemsError: null,
+    newGifterModal: null,
   };
 
   const [state, dispatch] = useReducer(itemsReducer, initialState);
@@ -43,6 +44,11 @@ const ItemsState = (props) => {
   const setEditedItem = (item) => {
     console.log("setting edited item: ", item);
     dispatch({ type: SET_EDITED_ITEM, payload: item });
+  };
+
+  // show modal for adding new gifter (user clicks on 'will gift this' and is prompted for his name (optionally))
+  const setNewGifterModal = (data) => {
+    dispatch({ type: SET_NEW_GIFTER_MODAL, payload: data });
   };
 
   // get wishlist (items & user info) by user
@@ -129,10 +135,10 @@ const ItemsState = (props) => {
   };
 
   // update item in current user's wishlist
-  const updateItem = async (user = state.user, item) => {
+  const updateItem = async (item) => {
     setLoading();
 
-    console.log(`updating item ${item} in ${user}'s wishlist...`);
+    // console.log(`updating item ${item} in ${user}'s wishlist...`);
     try {
       const response = await fetch(`http://localhost:3005/items/${item.id}`, {
         method: "PUT",
@@ -145,7 +151,6 @@ const ItemsState = (props) => {
       if (response.ok) {
         console.log("updated item!");
         dispatch({ type: SET_EDITED_ITEM, payload: null });
-        getWishlist(user.id);
       } else {
         console.log("item was not updated", response.status);
         setItemsError("Error while trying to load updated item");
@@ -153,13 +158,6 @@ const ItemsState = (props) => {
     } catch (error) {
       setItemsError("Error while trying to load updated item");
     }
-  };
-
-  // clear bookers from item
-  const clearBookers = (item) => {
-    setLoading();
-
-    console.log(`clearing bookers from ${item}`);
   };
 
   // delete item from current user's wishlist
@@ -195,6 +193,7 @@ const ItemsState = (props) => {
         addingNewItem: state.addingNewItem,
         editedItem: state.editedItem,
         itemsError: state.itemsError,
+        newGifterModal: state.newGifterModal,
         setLoading,
         setAddingNewItem,
         setEditedItem,
@@ -202,9 +201,9 @@ const ItemsState = (props) => {
         getWishlist,
         addItem,
         updateItem,
-        clearBookers,
         deleteItem,
         setItemsError,
+        setNewGifterModal,
       }}
     >
       {props.children}
