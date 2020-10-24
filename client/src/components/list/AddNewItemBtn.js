@@ -6,14 +6,17 @@ const BtnContainer = styled.div`
   margin-left: auto;
   margin-right: 0rem;
   padding: 5px;
-  /* background-color: lightgrey; */
-  color: #1f2120;
+  color: ${(props) => props.theme.TEXT_LIGHT};
   font-size: 0.8rem;
   width: 12ch;
+  border: 1px solid ${(props) => props.theme.BACKGROUND};
   border-radius: 3px;
 
   &:hover {
-    background-color: lightgrey;
+    background-color: ${(props) => props.theme.BACKGROUND};
+    /* border-color: ${(props) => props.theme.PRIMARY_LIGHT}; */
+    box-shadow: 1px 1px 4px darkgrey;
+    transition: box-shadow 0.3s;
   }
   i {
     margin-right: 0.3rem;

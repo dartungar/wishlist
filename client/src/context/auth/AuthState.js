@@ -26,7 +26,6 @@ const AuthState = (props) => {
   // authorize: check token & set isAuthorized and current user
   const authorize = async () => {
     let token = getToken();
-    console.log("token:", token);
     let user = token ? await getUserFromToken(token) : null;
     let isAuthorized = token && user ? true : false;
     dispatch({ type: SET_USER, payload: user });

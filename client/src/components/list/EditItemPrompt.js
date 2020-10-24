@@ -20,13 +20,14 @@ const EditItemContainer = styled.form`
   justify-content: flex-start;
   align-items: center;
   margin: 1rem 0 0 0;
-  border: 1px solid #b1dff2;
+  /* border: 1px solid #b1dff2; */
   border-radius: 3px;
-  background-color: #fcffff;
+  background-color: ${(props) => props.theme.BACKGROUND};
   animation: 0.5s ${fadein} linear;
+  box-shadow: 1px 1px 4px lightgray;
 
   button {
-    background-color: #fcffff;
+    background-color: ${(props) => props.theme.BACKGROUND};
     border: none;
     font-size: 1rem;
   }
@@ -56,19 +57,19 @@ const BtnsContainer = styled.div`
 
 const CancelBtn = styled.button`
   i {
-    color: #733625;
+    color: ${(props) => props.theme.DANGER};
   }
   i:hover {
-    color: red;
+    color: ${(props) => props.theme.DANGER_DARK};
   }
 `;
 
 const SaveBtn = styled.button`
   i {
-    color: #2b6131;
+    color: ${(props) => props.theme.SUCCESS};
   }
   i:hover {
-    color: #5eb823;
+    color: ${(props) => props.theme.SUCCESS_DARK};
   }
 `;
 

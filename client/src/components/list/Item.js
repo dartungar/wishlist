@@ -19,9 +19,10 @@ const ItemContainer = styled.div`
   justify-content: flex-start;
   align-items: center;
   margin: 1rem 0 0 0;
-  border: 1px solid #b1dff2;
+  /* border: 1px solid ${(props) => props.theme.PRIMARY_LIGHT}; */
   border-radius: 3px;
-  background-color: #fcffff;
+  background-color: ${(props) => props.theme.BACKGROUND};
+  box-shadow: 1px 1px 4px lightgray;
   animation: 0.5s ${fadein} linear;
   a {
     text-decoration: none;

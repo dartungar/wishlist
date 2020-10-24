@@ -21,9 +21,9 @@ const AlertContainer = styled.div`
 
 // TODO: replace with global color constants
 const alertColors = {
-  success: "#c9ffd4",
-  danger: "#ff9c9c",
-  info: "#bff9ff",
+  success: `${(props) => props.theme.SUCCESS}`,
+  danger: `${(props) => props.theme.DANGER}`,
+  info: `${(props) => props.theme.PRIMARY}`,
 };
 
 const Alert = () => {

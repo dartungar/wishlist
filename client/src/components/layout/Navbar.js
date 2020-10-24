@@ -13,7 +13,6 @@ const NavbarContainer = styled.div`
 
   @media (max-width: 500px) {
     justify-content: center;
-    /* align-items: center; */
   }
 `;
 

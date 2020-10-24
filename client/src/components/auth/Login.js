@@ -23,7 +23,7 @@ const Button = styled.button`
   cursor: pointer;
 
   :hover {
-    background-color: #bfeff5;
+    background-color: ${(props) => props.theme.PRIMARY};
   }
 
   i {
