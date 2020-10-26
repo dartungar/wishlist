@@ -6,6 +6,7 @@ import AlertState from "./context/alert/AlertState";
 import Main from "./components/layout/Main";
 import { lightTheme } from "./style/themes";
 
+// global styles
 const AppContainer = styled.div`
   display: grid;
   grid-template-columns: 1fr min(100ch, 90%) 1fr;
