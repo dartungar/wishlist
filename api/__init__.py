@@ -1,3 +1,4 @@
+from datetime import datetime
 from flask import Flask, session, request, send_from_directory
 from flask_cors import CORS
 from .db import session
@@ -5,6 +6,7 @@ from .models import User, Item
 from uuid import uuid4
 import flask
 import json
+import jwt
 import os
 import werkzeug
 
@@ -39,7 +41,6 @@ def create_app(test_config=None, *args, **kwargs):
     @app.route('/api/auth', methods=['POST'])
     def auth():
         data = request.get_json()
-        pass
 
     # get user info
     # TODO
@@ -56,11 +57,10 @@ def create_app(test_config=None, *args, **kwargs):
     def add_user():
         try:
             data = request.get_json()
-            print(data)
-            new_user = User(id=uuid4(
-            ), name=data['name'], facebook_id=data['facebookID'], google_id=data['googleID'])
+            new_user = User(
+                name=data['name'], facebook_id=data['facebookID'], google_id=data['googleID'])
         except Exception as e:
-            return flask.Response('Bad format of User object', status=400)
+            return flask.Response(status=400)
         try:
             session.add(new_user)
             session.commit()
@@ -100,24 +100,54 @@ def create_app(test_config=None, *args, **kwargs):
             return flask.Response('Error getting items for user', status=500)
         return json.dumps(items), 200, {'ContentType': 'application/json'}
 
-    # add item to user's wishlist
+    # add item
     # TODO
-    @ app.route('/api/<user_id>/items/', methods=['POST'])
-    def add_item(user_id):
-        pass
+    @ app.route('/api/items/', methods=['POST'])
+    def add_item():
+        data = request.get_json()
+        if not data:
+            return flask.Response(data, status=400)
+        try:
+            new_item = Item(user_id=data['user_id'], name=data['name'], price=data['price'],
+                            url=data['url'], group_purchase=data['group_purchase'], gifters=data['gifters'])
+            session.add(new_item)
+            session.commit()
+        except Exception as e:
+            return flask.Response(str(e), status=500)
+        return 'Added item', 200, {'ContentType': 'application/json'}
 
     # update item info
     # TODO
     @ app.route('/api/items/<item_id>', methods=['PUT'])
     def update_item(item_id):
-        pass
+        data = request.get_json()
+        item = session.query(Item).filter_by(id=item_id).first()
+        if not data or not item:
+            return flask.Response(data, status=400)
+        try:
+            item.name = data['name']
+            item.price = data['price']
+            item.url = data['url']
+            item.group_purchase = data['group_purchase']
+            item.gifters = data['gifters']
+            session.commit()
+        except Exception as e:
+            return flask.Response(status=500)
+        return 'Edited item', 200, {'ContentType': 'application/json'}
 
     # delete item
     # TODO
     @ app.route('/api/items/<item_id>', methods=['DELETE'])
     def delete_item(item_id):
-        pass
-
+        item = session.query(Item).filter_by(id=item_id).first()
+        if not item:
+            return flask.Response('Item not found', status=400)
+        try:
+            session.query(Item).filter_by(id=item_id).delete()
+            session.commit()
+        except Exception as e:
+            return flask.Response(str(e), status=500)
+        return 'Deleted item', 200, {'ContentType': 'application/json'}
     ### ERROR HANDLERS ###
 
     # simple error handlers

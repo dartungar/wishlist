@@ -15,7 +15,7 @@ uuid = "*"
 psycopg2 = "*"
 flask = "*"
 flask-cors = "*"
-fcntl = "*"
+pyjwt = "*"
 
 [requires]
 python_version = "3.7"

@@ -5,6 +5,8 @@ from sqlalchemy.dialects.postgresql import UUID
 from uuid import uuid4
 from datetime import datetime
 import json
+
+from sqlalchemy.sql.sqltypes import Boolean
 from .db import Base, engine
 
 
@@ -32,8 +34,13 @@ class Item(Base):
     __tablename__ = 'items'
     id = Column(UUID(as_uuid=True), primary_key=True,
                 default=uuid4, unique=True, nullable=False)
-    name = Column(String)
     user_id = Column(UUID(as_uuid=True), ForeignKey('users.id'))
+    name = Column(String)
+    url = Column(String)
+    price = Column(Integer)
+    group_purchase = Column(Boolean)
+    gifters = Column(String)
+    date_added = Column(DateTime, default=datetime.now())
 
     def to_json(self):
         item_obj = {'id': str(self.id), 'name': self.name,
