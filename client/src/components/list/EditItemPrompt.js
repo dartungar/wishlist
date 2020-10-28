@@ -151,10 +151,10 @@ const EditItemPrompt = ({ item }) => {
 
       <BtnsContainer>
         <CancelBtn onClick={onCancel} title="Отмена">
-          <i class="fas fa-times"></i>
+          <i className="fas fa-times"></i>
         </CancelBtn>
         <SaveBtn type="submit" title="Сохранить">
-          <i class="fas fa-check"></i>
+          <i className="fas fa-check"></i>
         </SaveBtn>
       </BtnsContainer>
     </EditItemContainer>

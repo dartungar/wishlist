@@ -79,13 +79,12 @@ const AuthState = (props) => {
       googleLogin(googleId);
     } else {
       const newUser = {
-        id: shortid(),
         name,
         googleID: encryptedId,
         facebookID: "",
       };
       console.log("new user: ", newUser);
-      const response = await fetch(`http://localhost:3005/users`, {
+      const response = await fetch(`http://localhost:5000/api/users`, {
         method: "POST",
         mode: "cors",
         headers: {
@@ -119,13 +118,12 @@ const AuthState = (props) => {
       facebookLogin(id);
     } else {
       const newUser = {
-        id: shortid(),
         name,
         googleID: "",
         facebookID: encryptedId,
       };
       console.log("new user: ", newUser);
-      const response = await fetch(`http://localhost:3005/users`, {
+      const response = await fetch(`http://localhost:5000/api/users`, {
         method: "POST",
         mode: "cors",
         headers: {
@@ -155,10 +153,10 @@ const AuthState = (props) => {
 
   // find user by ID
   const getUserByID = async (id) => {
-    const response = await fetch(`http://localhost:3005/users?id=${id}`);
+    const apiUrl = `http://localhost:5000/api/users?id=${id}`;
+    const response = await fetch(apiUrl);
     if (response.ok) {
-      const data = await response.json();
-      const user = data[0];
+      const user = await response.json();
       return user;
     } else return null;
   };
@@ -166,14 +164,11 @@ const AuthState = (props) => {
   // find user by Google ID
   // TODO: encrypt Google ID
   const getUserByGoogleID = async (googleID) => {
-    console.log("getting user by google id...", googleID);
     const response = await fetch(
-      `http://localhost:3005/users?googleID=${googleID}`
+      `http://localhost:5000/api/users?google_id=${googleID}`
     );
     if (response.ok) {
-      const data = await response.json();
-      const user = data[0];
-      console.log("got user by google id", user);
+      const user = await response.json();
       return user;
     } else return null;
   };
@@ -182,12 +177,10 @@ const AuthState = (props) => {
   // TODO: same as Google ID
   const getUserByFacebookID = async (facebookID) => {
     const response = await fetch(
-      `http://localhost:3005/users?facebookID=${facebookID}`
+      `http://localhost:5000/api/users?facebook_id=${facebookID}`
     );
-    console.log("user by fb ID:", response);
     if (response.ok) {
-      const data = await response.json();
-      const user = data[0];
+      const user = await response.json();
       return user;
     } else return null;
   };

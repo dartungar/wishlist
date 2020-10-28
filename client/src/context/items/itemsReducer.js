@@ -42,6 +42,7 @@ const itemsReducer = (state, action) => {
         ...state,
         itemsError: action.payload,
         loading: false,
+        editedItem: false,
       };
     default:
       return state;

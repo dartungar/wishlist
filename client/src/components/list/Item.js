@@ -104,7 +104,7 @@ const Item = ({ item }) => {
       <PriceContainer>{price} ₽</PriceContainer>
       <UrlContainer>
         <a href={url} title="посмотреть подробности">
-          <i class="fas fa-external-link-alt"></i>
+          <i className="fas fa-external-link-alt"></i>
         </a>
       </UrlContainer>
 
@@ -113,16 +113,16 @@ const Item = ({ item }) => {
           {gifters && (
             <LeftBtnsContainer>
               <a href="" onClick={onCleargifters} title="Очистить дарителей">
-                <i class="fas fa-user-times"></i>
+                <i className="fas fa-user-times"></i>
               </a>
             </LeftBtnsContainer>
           )}
           <RightBtnsContainer>
             <a href="" onClick={onEdit} title="Редактировать">
-              <i class="fas fa-edit"></i>
+              <i className="fas fa-edit"></i>
             </a>
             <a href="" onClick={onDelete} title="Удалить">
-              <i class="fas fa-trash-alt"></i>
+              <i className="fas fa-trash-alt"></i>
             </a>
           </RightBtnsContainer>
         </>
@@ -136,15 +136,15 @@ const Item = ({ item }) => {
               }
               onClick={onClickBooking}
             >
-              <i class="fas fa-users"></i>
+              <i className="fas fa-users"></i>
             </a>
           ) : !gifters ? (
             <a href="" title={`Буду дарить`} onClick={onClickBooking}>
-              <i class="fas fa-gift"></i>
+              <i className="fas fa-gift"></i>
             </a>
           ) : (
             <i
-              class="fas fa-gift"
+              className="fas fa-gift"
               title={`Будет дарить ${gifters}`}
               style={{ opacity: "50%" }}
             ></i>

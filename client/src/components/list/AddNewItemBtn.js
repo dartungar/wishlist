@@ -38,7 +38,7 @@ const AddNewItemBtn = () => {
 
   return (
     <BtnContainer onClick={onClick}>
-      <i class="fas fa-plus"></i>
+      <i className="fas fa-plus"></i>
       {"   "} Добавить
     </BtnContainer>
   );

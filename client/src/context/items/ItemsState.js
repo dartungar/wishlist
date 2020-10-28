@@ -58,12 +58,11 @@ const ItemsState = (props) => {
     setLoading();
     try {
       const usr_response = await fetch(
-        `http://localhost:3005/users?id=${user_id}`
+        `http://localhost:5000/api/users?id=${user_id}`
       );
 
       if (usr_response.ok) {
-        const users = await usr_response.json();
-        const user = users[0];
+        const user = await usr_response.json();
         const items = await getItems(user_id);
         const wishlist = { user, items };
         console.log(wishlist);
@@ -71,10 +70,11 @@ const ItemsState = (props) => {
           dispatch({ type: SET_WISHLIST, payload: wishlist });
         } else setItemsError("User not found!");
       } else {
-        console.log(`request to get items failed with ${usr_response.status}`);
+        console.log(`request to get wishlist failed with ${usr_response.text}`);
         setItemsError("Error loading wishlist");
       }
     } catch (error) {
+      console.log(`getting wishlist failed: ${error}`);
       setItemsError("Error loading wishlist");
     }
   };
@@ -86,16 +86,20 @@ const ItemsState = (props) => {
     setLoading();
     try {
       const response = await fetch(
-        `http://localhost:3005/items?user_id=${user_id}&_sort=dateAdded&_order=desc`
+        `http://localhost:5000/api/users/${user_id}/items`
       );
 
       if (response.ok) {
-        const items = await response.json();
+        let unparsed_items = await response.json();
+        console.log("fetched items: ", unparsed_items);
+        let items = unparsed_items.map((i) => JSON.parse(i));
         return items;
       } else {
+        console.log(`getting items failed: ${response.status}`);
         setItemsError("Error loading wishlist items");
       }
     } catch (error) {
+      console.log(`getting wishlist failed: ${error}`);
       setItemsError("Error loading wishlist items");
     }
   };
@@ -105,14 +109,11 @@ const ItemsState = (props) => {
     setLoading();
 
     let completeItem = {
-      id: uuid4(),
       ...item,
       user_id: user.id,
-      dateAdded: new Date(),
     };
-    console.log(`adding item ${item} into ${user}'s wishlist...`);
     try {
-      const response = await fetch(`http://localhost:3005/items`, {
+      const response = await fetch(`http://localhost:5000/api/items`, {
         method: "POST",
         mode: "cors",
         headers: {
@@ -121,15 +122,15 @@ const ItemsState = (props) => {
         body: JSON.stringify(completeItem),
       });
       if (response.ok) {
-        // TODO: alert on successful addition of item
         console.log("Added item!");
         getWishlist(user.id);
       } else {
-        // TODO: alert on failing to add item
-        console.log("Failed to add item", response.statusText);
+        // const res = await response.text();
+        console.log("Failed to add item", completeItem);
         setItemsError("Error adding item");
       }
     } catch (error) {
+      console.log("Failed to add item", error);
       setItemsError("Error adding item");
     }
   };
@@ -140,14 +141,17 @@ const ItemsState = (props) => {
 
     // console.log(`updating item ${item} in ${user}'s wishlist...`);
     try {
-      const response = await fetch(`http://localhost:3005/items/${item.id}`, {
-        method: "PUT",
-        mode: "cors",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(item),
-      });
+      const response = await fetch(
+        `http://localhost:5000/api/items/${item.id}`,
+        {
+          method: "PUT",
+          mode: "cors",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(item),
+        }
+      );
       if (response.ok) {
         console.log("updated item!");
         dispatch({ type: SET_EDITED_ITEM, payload: null });
@@ -166,13 +170,16 @@ const ItemsState = (props) => {
 
     console.log(`deleting item ${item_id}...`);
     try {
-      const response = await fetch(`http://localhost:3005/items/${item_id}`, {
-        method: "DELETE",
-        mode: "cors",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await fetch(
+        `http://localhost:5000/api/items/${item_id}`,
+        {
+          method: "DELETE",
+          mode: "cors",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
       if (response.ok) {
         console.log("deleted item!");
         getWishlist(user_id);
