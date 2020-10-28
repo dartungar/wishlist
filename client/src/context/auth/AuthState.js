@@ -80,10 +80,10 @@ const AuthState = (props) => {
     } else {
       const newUser = {
         name,
-        googleID: encryptedId,
-        facebookID: "",
+        google_id: encryptedId,
+        // facebook_id: "",
       };
-      console.log("new user: ", newUser);
+      console.log("new user: ", JSON.stringify(newUser));
       const response = await fetch(`http://localhost:5000/api/users`, {
         method: "POST",
         mode: "cors",
@@ -119,8 +119,8 @@ const AuthState = (props) => {
     } else {
       const newUser = {
         name,
-        googleID: "",
-        facebookID: encryptedId,
+        // google_id: "",
+        facebook_id: encryptedId,
       };
       console.log("new user: ", newUser);
       const response = await fetch(`http://localhost:5000/api/users`, {

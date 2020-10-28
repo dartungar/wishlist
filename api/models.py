@@ -16,8 +16,8 @@ class User(Base):
                 default=uuid4, unique=True, nullable=False)
 
     name = Column(String)
-    facebook_id = Column(String, unique=True)
-    google_id = Column(String, unique=True)
+    facebook_id = Column(String, unique=True, default=None)
+    google_id = Column(String, unique=True, default=None)
     items = relationship("Item", backref="users")
 
     def to_json(self):
@@ -38,13 +38,13 @@ class Item(Base):
     name = Column(String)
     url = Column(String)
     price = Column(Integer)
-    group_purchase = Column(Boolean)
+    group_purchase = Column(Boolean, default=False)
     gifters = Column(String)
     date_added = Column(DateTime, default=datetime.now())
 
     def to_json(self):
         item_obj = {"id": str(self.id), "name": self.name,
-                    "user_id": str(self.user_id), "price": self.price, "url": self.url, "group_purchase": self.group_purchase, "gifters": str(self.gifters), "date_added": str(self.date_added)}
+                    "user_id": str(self.user_id), "price": self.price, "url": self.url, "group_purchase": self.group_purchase, "gifters": self.gifters, "date_added": str(self.date_added)}
         return json.dumps(item_obj)
 
 

@@ -61,14 +61,15 @@ def create_app(test_config=None, *args, **kwargs):
         try:
             data = request.get_json()
             new_user = User(
-                name=data["name"], facebook_id=data["facebookID"], google_id=data["googleID"])
+                name=data["name"], facebook_id=data.get("facebook_id"), google_id=data.get("google_id"))
         except Exception as e:
             return flask.Response(status=400)
         try:
             session.add(new_user)
             session.commit()
         except Exception as e:
-            return flask.Response("Error adding user!", status=500)
+            session.rollback()
+            return flask.Response(f"Error adding user: {e}", status=500)
         return "Added user!", 200, {"ContentType": "application/json"}
 
     # update user
@@ -82,11 +83,12 @@ def create_app(test_config=None, *args, **kwargs):
             user = session.query(User).filter_by(id=user_id).first()
             if not user:
                 return flask.Response("User not found", status=400)
-            user.name = data["name"]
-            user.facebook_id = data["facebookID"]
-            user.google_id = data["googleID"]
+            user.name = data.get("name")
+            user.facebook_id = data.get("facebookID")
+            user.google_id = data.get("googleID")
             session.commit()
         except Exception as e:
+            session.rollback()
             return flask.Response("Error updating user info", status=500)
         return "Updated user!", 200, {"ContentType": "application/json"}
 
@@ -107,14 +109,15 @@ def create_app(test_config=None, *args, **kwargs):
     @app.route("/api/items", methods=["POST"])
     def add_item():
         data = request.get_json()
-        if not data:
-            return flask.Response(data, status=400)
+        if not data or not data["user_id"]:
+            return flask.Response("Invalid new item data", status=400)
         try:
-            new_item = Item(user_id=data["user_id"], name=data["name"], price=int(data["price"]),
-                            url=data["url"], group_purchase=data["group_purchase"], gifters=data["gifters"])
+            new_item = Item(user_id=data["user_id"], name=data.get("name"), price=int(data.get("price")),
+                            url=data.get("url"), group_purchase=data.get("group_purchase"))
             session.add(new_item)
             session.commit()
         except Exception as e:
+            session.rollback()
             return flask.Response(str(e), status=500)
         return "Added item", 200, {"ContentType": "application/json"}
 
@@ -134,6 +137,7 @@ def create_app(test_config=None, *args, **kwargs):
             item.gifters = data["gifters"]
             session.commit()
         except Exception as e:
+            session.rollback()
             return flask.Response(str(e), status=500)
         return "Edited item", 200, {"ContentType": "application/json"}
 
@@ -148,6 +152,7 @@ def create_app(test_config=None, *args, **kwargs):
             session.query(Item).filter_by(id=item_id).delete()
             session.commit()
         except Exception as e:
+            session.rollback()
             return flask.Response(str(e), status=500)
         return "Deleted item", 200, {"ContentType": "application/json"}
 

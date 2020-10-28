@@ -126,7 +126,7 @@ const ItemsState = (props) => {
         getWishlist(user.id);
       } else {
         // const res = await response.text();
-        console.log("Failed to add item", completeItem);
+        console.log("Failed to add item", JSON.stringify(completeItem));
         setItemsError("Error adding item");
       }
     } catch (error) {
