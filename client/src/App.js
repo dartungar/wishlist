@@ -3,6 +3,7 @@ import styled, { ThemeProvider } from "styled-components";
 import ItemsState from "./context/items/ItemsState";
 import AuthState from "./context/auth/AuthState";
 import AlertState from "./context/alert/AlertState";
+import SearchState from "./context/search/SearchState";
 import Main from "./components/layout/Main";
 import { lightTheme } from "./style/themes";
 
@@ -61,17 +62,19 @@ const AppContainer = styled.div`
 const App = () => {
   return (
     <ThemeProvider theme={lightTheme}>
-      <AlertState>
-        <AuthState>
-          <ItemsState>
-            <AppContainer>
-              <div></div>
-              <Main />
-              <div></div>
-            </AppContainer>
-          </ItemsState>
-        </AuthState>
-      </AlertState>
+      <SearchState>
+        <AlertState>
+          <AuthState>
+            <ItemsState>
+              <AppContainer>
+                <div></div>
+                <Main />
+                <div></div>
+              </AppContainer>
+            </ItemsState>
+          </AuthState>
+        </AlertState>
+      </SearchState>
     </ThemeProvider>
   );
 };

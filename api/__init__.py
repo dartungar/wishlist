@@ -1,5 +1,5 @@
 from flask import Flask, request
-from flask_cors import CORS, cross_origin
+from flask_cors import CORS
 from .db import session
 from .models import User, Item
 from .helpers import generate_public_url
@@ -16,7 +16,9 @@ def create_app(test_config=None, *args, **kwargs):
         SECRET_KEY=os.getenv("FLASK_SECRET_KEY")
     )
 
+    # CORSify app so we can receive data from client on another port
     CORS(app)
+
     # if test_config is None:
     #     # если не тестим - загружаем боевой конфиг
     #     app.config.from_pyfile("config.py", silent=True)
@@ -29,13 +31,7 @@ def create_app(test_config=None, *args, **kwargs):
     except OSError:
         pass
 
-    ### USER & AUTH ###
-
-    # authenticate: generate JWT if user exists
-    # TODO
-    @app.route("/api/auth", methods=["POST"])
-    def auth():
-        data = request.get_json()
+    ### USER  ###
 
     # get user info
     @app.route("/api/users", methods=["GET"])
@@ -57,12 +53,12 @@ def create_app(test_config=None, *args, **kwargs):
                 user = session.query(User).filter_by(
                     public_url=public_url).first()
             else:
-                return flask.Response(status=400)
+                return flask.Response('User ID, Google / Facebook ID, or public url must be provided', status=400)
         except Exception as e:
             return flask.Response(f'Error while trying to find user: {e}', status=500)
         if user:
             return user.to_json(), 200, {"ContentType": "application/json"}
-        return "User not found", 404, {"ContentType": "application/json"}
+        return flask.Response("User not found", status=204)
 
     # add new user
     @app.route("/api/users", methods=["POST"])
@@ -76,14 +72,14 @@ def create_app(test_config=None, *args, **kwargs):
             new_user = User(
                 name=data["name"], facebook_id=data.get("facebook_id"), google_id=data.get("google_id"), public_url=public_url)
         except Exception as e:
-            return flask.Response(status=400)
+            return flask.Response("Error processing new user before registering", status=500)
         try:
             session.add(new_user)
             session.commit()
         except Exception as e:
             session.rollback()
-            return flask.Response(f"Error adding user: {e}", status=500)
-        return "Added user!", 200, {"ContentType": "application/json"}
+            return flask.Response("Error adding user", status=500)
+        return flask.Response("Added user", status=201)
 
     # update user
     # TODO
@@ -95,7 +91,7 @@ def create_app(test_config=None, *args, **kwargs):
             data = request.get_json()
             user = session.query(User).filter_by(id=user_id).first()
             if not user:
-                return flask.Response("User not found", status=400)
+                return flask.Response("User not found", status=204)
             user.name = data.get("name")
             user.facebook_id = data.get("facebookID")
             user.google_id = data.get("googleID")
@@ -104,7 +100,7 @@ def create_app(test_config=None, *args, **kwargs):
         except Exception as e:
             session.rollback()
             return flask.Response("Error updating user info", status=500)
-        return "Updated user!", 200, {"ContentType": "application/json"}
+        return flask.Response("Updated user", status=200)
 
     ### WISHLIST ITEMS ###
 
@@ -115,16 +111,15 @@ def create_app(test_config=None, *args, **kwargs):
             items = session.query(Item).filter_by(user_id=user_id)
             items = [i.to_json() for i in items]
         except Exception as e:
-            return flask.Response(str(e), status=500)
+            return flask.Response('Error getting wishlist items', status=500)
         return json.dumps(items), 200, {"ContentType": "application/json"}
 
     # add item
-    # TODO
     @app.route("/api/items", methods=["POST"])
     def add_item():
         data = request.get_json()
         if not data or not data["user_id"]:
-            return flask.Response("Invalid new item data", status=400)
+            return flask.Response("Must provide item data with user_id", status=400)
         try:
             new_item = Item(user_id=data["user_id"], name=data.get("name"), price=int(data.get("price")),
                             url=data.get("url"), group_purchase=data.get("group_purchase"))
@@ -132,8 +127,8 @@ def create_app(test_config=None, *args, **kwargs):
             session.commit()
         except Exception as e:
             session.rollback()
-            return flask.Response(str(e), status=500)
-        return "Added item", 200, {"ContentType": "application/json"}
+            return flask.Response("Error adding item", status=500)
+        return flask.Response("Added item", status=201)
 
     # update item info
     # TODO
@@ -152,8 +147,8 @@ def create_app(test_config=None, *args, **kwargs):
             session.commit()
         except Exception as e:
             session.rollback()
-            return flask.Response(str(e), status=500)
-        return "Edited item", 200, {"ContentType": "application/json"}
+            return flask.Response('Error updating item', status=500)
+        return flask.Response("Updated item", status=200)
 
     # delete item
     # TODO
@@ -161,15 +156,31 @@ def create_app(test_config=None, *args, **kwargs):
     def delete_item(item_id):
         item = session.query(Item).filter_by(id=item_id).first()
         if not item:
-            return flask.Response("Item not found", status=400)
+            return flask.Response("Item not found", status=204)
         try:
             session.query(Item).filter_by(id=item_id).delete()
             session.commit()
         except Exception as e:
             session.rollback()
-            return flask.Response(str(e), status=500)
-        return "Deleted item", 200, {"ContentType": "application/json"}
+            return flask.Response('Error deleting item', status=500)
+        return flask.Response('Item deleted', status=200)
 
-    # CORSify app so we can receive data from client on another port
+    ### SEARCH ###
+    # TODO
+
+    @app.route("/api/users/search", methods=["GET"])
+    def search_users():
+        query = request.args.get('q')
+        if not query or len(query) < 3:
+            return flask.Response("Must provide search query longer than 2 characters", status=400)
+        try:
+            results = session.query(User).filter(
+                User.name.ilike(f"%{query}%") | User.public_url.ilike(f"%{query}%"))
+            if not results:
+                return '[]', 204, {"ContentType": "application/json"}
+            users = [u.to_json() for u in results]
+            return json.dumps(users), 200, {"ContentType": "application/json"}
+        except Exception as e:
+            flask.Response('Error searching users', status=500)
 
     return app

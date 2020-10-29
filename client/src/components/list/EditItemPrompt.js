@@ -2,7 +2,6 @@ import React, { useState, useEffect, useContext } from "react";
 import styled, { keyframes } from "styled-components";
 import ItemsContext from "../../context/items/itemsContext";
 import AuthContext from "../../context/auth/authContext";
-import AlertContext from "../../context/alert/alertContext";
 
 const fadein = keyframes`
   from {

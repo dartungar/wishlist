@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import AuthContext from "../../context/auth/authContext";
+import AlertContext from "../../context/alert/alertContext";
 
 const MenuContainer = styled.ul`
   list-style: none;
@@ -26,6 +27,7 @@ const MenuContainer = styled.ul`
 
 const Menu = () => {
   const { isAuthorized, user, logout } = useContext(AuthContext);
+  const { setAlert } = useContext(AlertContext);
 
   if (isAuthorized === true) {
     return (
@@ -52,6 +54,7 @@ const Menu = () => {
             onClick={(e) => {
               e.preventDefault();
               logout();
+              setAlert(null);
             }}
           >
             Выйти

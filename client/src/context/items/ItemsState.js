@@ -1,5 +1,4 @@
 import React, { useReducer } from "react";
-import { v4 as uuid4 } from "uuid";
 import itemsContext from "./itemsContext";
 import itemsReducer from "./itemsReducer";
 import {

@@ -49,7 +49,6 @@ const Login = () => {
     googleLogin(response.googleId);
   };
 
-  // TODO: handle errors
   const responseFacebook = (response) => {
     console.log(response);
     facebookLogin(response.id);

@@ -13,7 +13,7 @@ import Profile from "../user/Profile";
 import Login from "../auth/Login";
 import Register from "../auth/Register";
 import PublicHome from "../layout/PublicHome";
-import Search from "./Search";
+import Search from "../search/Search";
 import Alert from "../alerts/Alert";
 import AlertContext from "../../context/alert/alertContext";
 import AuthContext from "../../context/auth/authContext";

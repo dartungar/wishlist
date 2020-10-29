@@ -13,7 +13,7 @@ const DarkenedBackground = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgba(82, 82, 82, 0.7);
+  background-color: rgba(252, 255, 255, 0.6);
 `;
 
 const PromptContainer = styled.div`
@@ -72,7 +72,7 @@ const NewGifterModal = () => {
     getWishlist,
   } = useContext(ItemsContext);
   const { user } = useContext(AuthContext);
-  const [gifterName, setGifterName] = useState();
+  const [gifterName, setGifterName] = useState("");
 
   useEffect(() => {
     if (!gifterName) {
@@ -120,10 +120,10 @@ const NewGifterModal = () => {
           />
           <BtnsContainer>
             <CancelBtn onClick={onCancel} title="Отмена">
-              <i class="fas fa-times"></i>
+              <i className="fas fa-times"></i>
             </CancelBtn>
             <SaveBtn type="submit" title="Сохранить">
-              <i class="fas fa-check"></i>
+              <i className="fas fa-check"></i>
             </SaveBtn>
           </BtnsContainer>
         </form>

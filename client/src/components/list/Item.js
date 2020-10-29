@@ -104,14 +104,16 @@ const Item = ({ item }) => {
       </NameContainer>
       <PriceContainer>{price} ₽</PriceContainer>
       <UrlContainer>
-        <a
-          href={url}
-          title="посмотреть в магазине"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <i className="fas fa-external-link-alt"></i>
-        </a>
+        {url && (
+          <a
+            href={url}
+            title="посмотреть в магазине"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <i className="fas fa-external-link-alt"></i>
+          </a>
+        )}
       </UrlContainer>
 
       {user && user.id === user_id ? (

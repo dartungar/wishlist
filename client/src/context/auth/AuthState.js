@@ -18,12 +18,14 @@ const AuthState = (props) => {
 
   const [state, dispatch] = useReducer(authReducer, initialState);
 
-  // set error message so the alert will be shown
+  // set error message
+  // used in alerts
   const setAuthError = (text) => {
     dispatch({ type: SET_AUTH_ERROR, payload: text });
   };
 
   // authorize: check token & set isAuthorized and current user
+  // used on every page reload
   const authorize = async () => {
     let token = getToken();
     let user = token ? await getUserFromToken(token) : null;
@@ -34,7 +36,7 @@ const AuthState = (props) => {
 
   // create encrypted token with user data
   const createToken = (userData) => {
-    let tokenObj = { userId: userData.id };
+    let tokenObj = { userId: userData.id, iat: new Date() };
     let encryptedToken = btoa(JSON.stringify(tokenObj));
     return encryptedToken;
   };

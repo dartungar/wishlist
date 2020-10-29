@@ -12,3 +12,5 @@ export const SET_AUTH_ERROR = "SET_AUTH_ERROR";
 
 export const SET_ALERT = "SET_ALERT";
 export const CLEAR_ALERT = "CLEAR_ALERT";
+
+export const SET_SEARCH_RESULTS = "SET_SEARCH_RESULTS";
