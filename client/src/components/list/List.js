@@ -30,19 +30,17 @@ const List = ({ show_my_wishlist }) => {
     itemsError,
     newGifterModal,
   } = useContext(ItemsContext);
-  const { isAuthorised, user, authError } = useContext(AuthContext);
+  const { user, authError } = useContext(AuthContext);
   const { setAlert } = useContext(AlertContext);
-  const { user_id } = useParams();
+  const { user_public_url } = useParams();
 
   useEffect(() => {
-    console.log("will get wishlist for user id: ", user_id);
-    if (user_id) {
-      getWishlist(user_id);
+    if (user_public_url) {
+      getWishlist(user_public_url);
     } else if (show_my_wishlist) {
-      console.log("show my wishlist");
-      getWishlist(user.id);
+      getWishlist(user.public_url);
     }
-  }, [user_id]);
+  }, [user_public_url]);
 
   // TODO: отрефакторить, чтобы не было повторений
   useEffect(() => {

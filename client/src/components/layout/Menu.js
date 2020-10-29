@@ -36,7 +36,7 @@ const Menu = () => {
           </Link>
         </li>
         <li>
-          <Link to={`/list/${user.id}`} title="Мой список">
+          <Link to={`/list/${user.public_url}`} title="Мой список">
             Мой список
           </Link>
         </li>

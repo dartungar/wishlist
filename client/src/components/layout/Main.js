@@ -42,7 +42,7 @@ const Main = () => {
         <Navbar />
         {alert && <Alert />}
         <Switch>
-          <Route path="/list/:user_id" children={<List />} />
+          <Route path="/list/:user_public_url" children={<List />} />
           <PrivateRoute path="/profile" component={Profile} />
           <Route exact path="/login">
             {isAuthorized ? <Redirect to="/" /> : <Login />}
@@ -52,7 +52,7 @@ const Main = () => {
           </Route>
           <Route exact path="/search" children={<Search />} />
           {isAuthorized ? (
-            <Route children={<List show_my_wishlist="true" />} />
+            <Redirect to={`/list/${user.public_url}`} />
           ) : (
             <Route children={<PublicHome />} />
           )}

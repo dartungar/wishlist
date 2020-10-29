@@ -78,7 +78,8 @@ const Item = ({ item }) => {
 
   const onDelete = (e) => {
     e.preventDefault();
-    deleteItem(user_id, id);
+    deleteItem(id);
+    if (user) getWishlist(user.public_url);
   };
 
   const onCleargifters = (e) => {
@@ -87,7 +88,7 @@ const Item = ({ item }) => {
       ...item,
       gifters: null,
     });
-    getWishlist(user.id);
+    getWishlist(user.public_url);
   };
 
   const onClickBooking = (e) => {

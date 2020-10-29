@@ -2,6 +2,7 @@ from flask import Flask, request
 from flask_cors import CORS, cross_origin
 from .db import session
 from .models import User, Item
+from .helpers import generate_public_url
 import flask
 import json
 import os
@@ -42,15 +43,23 @@ def create_app(test_config=None, *args, **kwargs):
         id = request.args.get("id")
         google_id = request.args.get("google_id")
         facebook_id = request.args.get("facebook_id")
-        if id:
-            user = session.query(User).filter_by(id=id).first()
-        elif google_id:
-            user = session.query(User).filter_by(google_id=google_id).first()
-        elif facebook_id:
-            user = session.query(User).filter_by(
-                facebook_id=facebook_id).first()
-        else:
-            return flask.Response(status=400)
+        public_url = request.args.get("public_url")
+        try:
+            if id:
+                user = session.query(User).filter_by(id=id).first()
+            elif google_id:
+                user = session.query(User).filter_by(
+                    google_id=google_id).first()
+            elif facebook_id:
+                user = session.query(User).filter_by(
+                    facebook_id=facebook_id).first()
+            elif public_url:
+                user = session.query(User).filter_by(
+                    public_url=public_url).first()
+            else:
+                return flask.Response(status=400)
+        except Exception as e:
+            return flask.Response(f'Error while trying to find user: {e}', status=500)
         if user:
             return user.to_json(), 200, {"ContentType": "application/json"}
         return "User not found", 404, {"ContentType": "application/json"}
@@ -60,8 +69,12 @@ def create_app(test_config=None, *args, **kwargs):
     def add_user():
         try:
             data = request.get_json()
+            try:
+                public_url = str(generate_public_url(data["name"]))
+            except Exception as e:
+                return flask.Response('Error generating public URL', status=500)
             new_user = User(
-                name=data["name"], facebook_id=data.get("facebook_id"), google_id=data.get("google_id"))
+                name=data["name"], facebook_id=data.get("facebook_id"), google_id=data.get("google_id"), public_url=public_url)
         except Exception as e:
             return flask.Response(status=400)
         try:
@@ -86,6 +99,7 @@ def create_app(test_config=None, *args, **kwargs):
             user.name = data.get("name")
             user.facebook_id = data.get("facebookID")
             user.google_id = data.get("googleID")
+            user.public_url = generate_public_url(data["name"])
             session.commit()
         except Exception as e:
             session.rollback()

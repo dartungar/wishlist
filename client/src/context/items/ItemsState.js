@@ -53,17 +53,17 @@ const ItemsState = (props) => {
 
   // get wishlist (items & user info) by user
   // used on every page update (adding, deleting, editing items)
-  const getWishlist = async (user_id) => {
+  const getWishlist = async (user_public_url) => {
     console.log("getting wishlist...");
     setLoading();
     try {
       const usr_response = await fetch(
-        `http://localhost:5000/api/users?id=${user_id}`
+        `http://localhost:5000/api/users?public_url=${user_public_url}`
       );
 
       if (usr_response.ok) {
         const user = await usr_response.json();
-        const items = await getItems(user_id);
+        const items = await getItems(user.id);
         const wishlist = { user, items };
         console.log(wishlist);
         if (user) {
@@ -71,7 +71,7 @@ const ItemsState = (props) => {
         } else setItemsError("User not found!");
       } else {
         console.log(`request to get wishlist failed with ${usr_response.text}`);
-        setItemsError("Error loading wishlist");
+        setItemsError("Error loading wishlist: user not found");
       }
     } catch (error) {
       console.log(`getting wishlist failed: ${error}`);
@@ -112,6 +112,7 @@ const ItemsState = (props) => {
       ...item,
       user_id: user.id,
     };
+    console.log("will add new item for ", user);
     try {
       const response = await fetch(`http://localhost:5000/api/items`, {
         method: "POST",
@@ -123,7 +124,7 @@ const ItemsState = (props) => {
       });
       if (response.ok) {
         console.log("Added item!");
-        getWishlist(user.id);
+        getWishlist(user.public_url);
       } else {
         // const res = await response.text();
         console.log("Failed to add item", JSON.stringify(completeItem));
@@ -165,7 +166,7 @@ const ItemsState = (props) => {
   };
 
   // delete item from current user's wishlist
-  const deleteItem = async (user_id, item_id) => {
+  const deleteItem = async (item_id) => {
     setLoading();
 
     console.log(`deleting item ${item_id}...`);
@@ -182,7 +183,6 @@ const ItemsState = (props) => {
       );
       if (response.ok) {
         console.log("deleted item!");
-        getWishlist(user_id);
       } else {
         setItemsError("Error deleting item");
       }

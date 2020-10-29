@@ -114,6 +114,7 @@ const AuthState = (props) => {
     const { name, id } = facebookResponse;
     const encryptedId = btoa(id);
     const user = await getUserByFacebookID(encryptedId);
+    console.log("got user by fb ID:", user);
     if (user) {
       facebookLogin(id);
     } else {

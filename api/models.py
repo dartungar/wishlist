@@ -1,28 +1,26 @@
-from enum import unique
 from sqlalchemy import Column, ForeignKey, String, Integer, DateTime
 from sqlalchemy.orm import backref, relationship
 from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.sql.sqltypes import Boolean
 from uuid import uuid4
 from datetime import datetime
-import json
-
-from sqlalchemy.sql.sqltypes import Boolean
 from .db import Base, engine
+import json
 
 
 class User(Base):
     __tablename__ = "users"
     id = Column(UUID(as_uuid=True), primary_key=True,
                 default=uuid4, unique=True, nullable=False)
-
-    name = Column(String)
     facebook_id = Column(String, unique=True, default=None)
     google_id = Column(String, unique=True, default=None)
+    name = Column(String)
+    public_url = Column(String, unique=True, default=None)
     items = relationship("Item", backref="users")
 
     def to_json(self):
         user_obj = {"id": str(self.id), "name": self.name,
-                    "facebook_id": self.facebook_id, "google_id": self.google_id}
+                    "facebook_id": self.facebook_id, "google_id": self.google_id, "public_url": self.public_url}
         return json.dumps(user_obj)
 
 
@@ -34,7 +32,8 @@ class Item(Base):
     __tablename__ = "items"
     id = Column(UUID(as_uuid=True), primary_key=True,
                 default=uuid4, unique=True, nullable=False)
-    user_id = Column(UUID(as_uuid=True), ForeignKey("users.id"))
+    user_id = Column(UUID(as_uuid=True), ForeignKey(
+        "users.id"), nullable=False)
     name = Column(String)
     url = Column(String)
     price = Column(Integer)

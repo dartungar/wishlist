@@ -105,7 +105,7 @@ const EditItemPrompt = ({ item }) => {
   const onSubmit = (e) => {
     e.preventDefault();
     updateItem(editedItemValue);
-    getWishlist(user.id);
+    getWishlist(user.public_url);
   };
 
   if (!editedItemValue) return null;
