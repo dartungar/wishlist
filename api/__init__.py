@@ -1,15 +1,12 @@
-from datetime import datetime
-from os import getenv
 from flask import Flask, request, make_response
 from flask.wrappers import Response
 from flask_cors import CORS
 from sqlalchemy import exc
 from .db import session
 from .models import User, Item
-from .helpers import generate_public_url
+from .helpers import generate_public_url, encrypt, decrypt, create_hash
 import flask
 import json
-import jwt
 import os
 
 
@@ -43,8 +40,9 @@ def create_app(test_config=None, *args, **kwargs):
     @app.route("/api/auth/login", methods=["POST"])
     def login():
         data = request.get_json()
-        google_id = data.get("google_id")
-        facebook_id = data.get("facebook_id")
+        google_id = create_hash(data.get("google_id"))
+        facebook_id = create_hash(data.get("facebook_id"))
+        print(google_id)
         try:
             if google_id:
                 user = session.query(User).filter_by(
@@ -54,18 +52,16 @@ def create_app(test_config=None, *args, **kwargs):
                     facebook_id=facebook_id).first()
             else:
                 response = make_response(
-                    'Did not find matching user to authenticate', 400)
+                    'Must provide google or facebook ID to log in', 400)
                 return response
         except Exception as e:
-            return make_response('Error while trying to authenticate', 500)
+            return make_response(f'Error while trying to authenticate: {e}', 500)
         if user:
-
-            token = jwt.encode({'user_id': str(user.id)},
-                               os.getenv('JWT_SECRET'), algorithm='HS256')
+            token = encrypt(str(user.id))
             response = make_response(f'Authenticated', 200)
             response.set_cookie('token', token, httponly=True)
             return response
-        return make_response("", 204)
+        return make_response("User not found. Try registering", 204)
 
     # log out (clear token from user cookies)
     @app.route("/api/auth/logout", methods=["GET"])
@@ -81,8 +77,8 @@ def create_app(test_config=None, *args, **kwargs):
     @app.route("/api/auth/register", methods=["POST"])
     def add_user():
         data = request.get_json()
-        google_id = data.get("google_id")
-        facebook_id = data.get("facebook_id")
+        google_id = create_hash(data.get("google_id"))
+        facebook_id = create_hash(data.get("facebook_id"))
         # check if user already exists
         try:
             if google_id:
@@ -124,17 +120,16 @@ def create_app(test_config=None, *args, **kwargs):
         if not token:
             return flask.Response('Could not find token in cookies', status=401)
         try:
-            id = jwt.decode(token, os.getenv('JWT_SECRET'),
-                            algorithms=['HS256'])['user_id']
+            id = decrypt(token)
         except Exception as e:
-            return flask.Response('Error processing token', status=500)
+            return flask.Response(f'Error processing token "{token}", {e}', status=500)
         try:
             if id:
                 user = session.query(User).filter_by(id=id).first()
             else:
                 return flask.Response('Token must contain user id', status=401)
         except Exception as e:
-            return flask.Response(f'Error while trying to find user: {e}', status=500)
+            return flask.Response(f'Error while trying to find user: {e}, token {token}, id {id}', status=500)
         if user:
             response = make_response(user.to_json(), 200)
             response.headers.add("ContentType", "application/json")

@@ -1,4 +1,4 @@
-from sqlalchemy import Column, ForeignKey, String, Integer, DateTime
+from sqlalchemy import Column, ForeignKey, String, Integer, DateTime, LargeBinary
 from sqlalchemy.orm import backref, relationship
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.sql.sqltypes import Boolean

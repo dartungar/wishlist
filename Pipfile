@@ -17,6 +17,7 @@ flask = "*"
 flask-cors = "*"
 pyjwt = "*"
 transliterate = "*"
+cryptography = "*"
 
 [requires]
 python_version = "3.7"

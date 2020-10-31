@@ -31,19 +31,20 @@ const AuthState = (props) => {
       credentials: "include",
       withCredentials: "true",
     });
+
     if (response.ok) {
       const data = await response.json();
       dispatch({ type: SET_USER, payload: data });
       dispatch({ type: SET_IS_AUTHORIZED, payload: true });
-    } else {
+    } else if (response.status === 401) {
       dispatch({ type: SET_USER, payload: null });
       dispatch({ type: SET_IS_AUTHORIZED, payload: false });
-
       // if status = 401, it means we did not provide token
       // else there was legit error
-      if (response.status !== 401) {
-        setAuthError("Authorization error");
-      }
+    } else {
+      //const responseText = await response.text();
+      //console.log(responseText);
+      setAuthError("Authorization error");
     }
   };
 
@@ -66,13 +67,15 @@ const AuthState = (props) => {
       },
       body: JSON.stringify(data),
     });
+    const responseText = await response.text();
     if (response.status === 200) {
-      const responseText = await response.text();
       console.log("Logged in! Getting user...", responseText);
       getUser();
     } else if (response.status === 204) {
-      setAuthError("Could not find user. Please register.");
+      console.log("User not found ", responseText);
+      setAuthError("Could not find user. Please register.", responseText);
     } else {
+      console.log("Login error: ", responseText);
       setAuthError("Authorization error. Please try again later.");
     }
   };
@@ -82,6 +85,7 @@ const AuthState = (props) => {
     const response = await fetch(`http://localhost:5000/api/auth/register`, {
       method: "POST",
       mode: "cors",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
@@ -91,7 +95,8 @@ const AuthState = (props) => {
       login(data);
     } else {
       const errorText = await response.text();
-      setAuthError("Error registering user", errorText);
+      console.log("Registration error", errorText);
+      setAuthError("Error registering user");
     }
   };
 
