@@ -23,6 +23,11 @@ class User(Base):
                     "facebook_id": self.facebook_id, "google_id": self.google_id, "public_url": self.public_url}
         return json.dumps(user_obj)
 
+    def to_json_short(self):
+        user_obj = {"id": str(self.id), "name": self.name,
+                    "public_url": self.public_url}
+        return json.dumps(user_obj)
+
 
 if not engine.dialect.has_table(engine, "users"):
     Base.metadata.create_all(engine)

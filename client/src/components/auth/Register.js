@@ -33,12 +33,7 @@ const Button = styled.button`
 `;
 
 const Register = () => {
-  const {
-    googleRegister,
-    facebookRegister,
-    authError,
-    setAuthError,
-  } = useContext(AuthContext);
+  const { register, authError, setAuthError } = useContext(AuthContext);
   const { setAlert } = useContext(AlertContext);
 
   useEffect(() => {
@@ -49,7 +44,8 @@ const Register = () => {
 
   const onSuccessGoogle = (response) => {
     console.log(response);
-    googleRegister(response);
+    const { name, googleId } = response.profileObj;
+    register({ name, google_id: googleId });
   };
 
   const onFailure = (response) => {
@@ -59,7 +55,8 @@ const Register = () => {
   // TODO: handle errors
   const responseFacebook = (response) => {
     console.log(response);
-    facebookRegister(response);
+    const { name, id } = response;
+    register({ name, facebook_id: id });
   };
 
   return (

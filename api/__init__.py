@@ -1,10 +1,15 @@
-from flask import Flask, request
+from datetime import datetime
+from os import getenv
+from flask import Flask, request, make_response
+from flask.wrappers import Response
 from flask_cors import CORS
+from sqlalchemy import exc
 from .db import session
 from .models import User, Item
 from .helpers import generate_public_url
 import flask
 import json
+import jwt
 import os
 
 
@@ -17,7 +22,7 @@ def create_app(test_config=None, *args, **kwargs):
     )
 
     # CORSify app so we can receive data from client on another port
-    CORS(app)
+    CORS(app, supports_credentials=True)
 
     # if test_config is None:
     #     # если не тестим - загружаем боевой конфиг
@@ -31,55 +36,124 @@ def create_app(test_config=None, *args, **kwargs):
     except OSError:
         pass
 
-    ### USER  ###
+    ### USER & AUTH  ###
 
-    # get user info
-    @app.route("/api/users", methods=["GET"])
-    def get_user():
-        id = request.args.get("id")
-        google_id = request.args.get("google_id")
-        facebook_id = request.args.get("facebook_id")
-        public_url = request.args.get("public_url")
+    # authenticate user after successful Google / Facebook authorization
+    # return session token
+    @app.route("/api/auth/login", methods=["POST"])
+    def login():
+        data = request.get_json()
+        google_id = data.get("google_id")
+        facebook_id = data.get("facebook_id")
         try:
-            if id:
-                user = session.query(User).filter_by(id=id).first()
-            elif google_id:
+            if google_id:
                 user = session.query(User).filter_by(
                     google_id=google_id).first()
             elif facebook_id:
                 user = session.query(User).filter_by(
                     facebook_id=facebook_id).first()
-            elif public_url:
-                user = session.query(User).filter_by(
-                    public_url=public_url).first()
             else:
-                return flask.Response('User ID, Google / Facebook ID, or public url must be provided', status=400)
+                response = make_response(
+                    'Did not find matching user to authenticate', 400)
+                return response
         except Exception as e:
-            return flask.Response(f'Error while trying to find user: {e}', status=500)
+            return make_response('Error while trying to authenticate', 500)
         if user:
-            return user.to_json(), 200, {"ContentType": "application/json"}
-        return flask.Response("User not found", status=204)
+
+            token = jwt.encode({'user_id': str(user.id)},
+                               os.getenv('JWT_SECRET'), algorithm='HS256')
+            response = make_response(f'Authenticated', 200)
+            response.set_cookie('token', token, httponly=True)
+            return response
+        return make_response("", 204)
+
+    # log out (clear token from user cookies)
+    @app.route("/api/auth/logout", methods=["GET"])
+    def logout():
+        token = request.cookies.get("token")
+        if not token:
+            return flask.Response('Request must provide token for logout', 400)
+        response = make_response('Logged out', 200)
+        response.set_cookie('token', expires=0)
+        return response
 
     # add new user
-    @app.route("/api/users", methods=["POST"])
+    @app.route("/api/auth/register", methods=["POST"])
     def add_user():
+        data = request.get_json()
+        google_id = data.get("google_id")
+        facebook_id = data.get("facebook_id")
+        # check if user already exists
         try:
-            data = request.get_json()
+            if google_id:
+                user = session.query(User).filter_by(
+                    google_id=google_id).first()
+            elif facebook_id:
+                user = session.query(User).filter_by(
+                    facebook_id=facebook_id).first()
+        except Exception:
+            return flask.Response('Error checking if user already exists', 500)
+        if user:
+            return flask.Response('User already exists', 200)
+        # if user does not exist, create one
+        try:
             try:
                 public_url = str(generate_public_url(data["name"]))
             except Exception as e:
                 return flask.Response('Error generating public URL', status=500)
             new_user = User(
-                name=data["name"], facebook_id=data.get("facebook_id"), google_id=data.get("google_id"), public_url=public_url)
+                name=data["name"], facebook_id=facebook_id, google_id=google_id, public_url=public_url)
         except Exception as e:
             return flask.Response("Error processing new user before registering", status=500)
         try:
             session.add(new_user)
             session.commit()
+            return flask.Response("Added user", status=201)
+        except exc.IntegrityError:
+            session.rollback(
+                'Integrity error when adding new user. Check if user with similar facebook/google ID exists', 400)
         except Exception as e:
             session.rollback()
             return flask.Response("Error adding user", status=500)
-        return flask.Response("Added user", status=201)
+
+    # get current user info (for auth)
+
+    @app.route("/api/auth/user", methods=["GET"])
+    def get_current_user():
+        token = request.cookies.get('token')
+        if not token:
+            return flask.Response('Could not find token in cookies', status=401)
+        try:
+            id = jwt.decode(token, os.getenv('JWT_SECRET'),
+                            algorithms=['HS256'])['user_id']
+        except Exception as e:
+            return flask.Response('Error processing token', status=500)
+        try:
+            if id:
+                user = session.query(User).filter_by(id=id).first()
+            else:
+                return flask.Response('Token must contain user id', status=401)
+        except Exception as e:
+            return flask.Response(f'Error while trying to find user: {e}', status=500)
+        if user:
+            response = make_response(user.to_json(), 200)
+            response.headers.add("ContentType", "application/json")
+            return response
+        return flask.Response("User not found", status=204)
+
+    # get any user info by public url (for displaying wishlist)
+    @app.route("/api/users", methods=["GET"])
+    def get_user_by_public_url():
+        try:
+            public_url = request.args.get('public_url')
+            if not public_url:
+                return flask.Response('Must provide user\'s public url for search', 400)
+            user = session.query(User).filter_by(public_url=public_url).first()
+            response = make_response(user.to_json_short(), 200)
+            response.headers.add('Content-Type', 'application/json')
+            return response
+        except Exception:
+            return flask.Response('Error getting user info', 500)
 
     # update user
     # TODO

@@ -9,8 +9,9 @@ const SearchResultItemContainer = styled.div`
 const SearchResultItem = ({ result: { name, public_url } }) => {
   return (
     <SearchResultItemContainer>
-      <h5>{name}</h5>
-      <a href={`/list/${public_url}`}>{public_url}</a>
+      <h5>
+        {name} (<a href={`/list/${public_url}`}>{public_url}</a>)
+      </h5>
     </SearchResultItemContainer>
   );
 };

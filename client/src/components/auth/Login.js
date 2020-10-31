@@ -33,9 +33,7 @@ const Button = styled.button`
 `;
 
 const Login = () => {
-  const { googleLogin, facebookLogin, authError, setAuthError } = useContext(
-    AuthContext
-  );
+  const { login, authError, setAuthError } = useContext(AuthContext);
   const { setAlert } = useContext(AlertContext);
 
   useEffect(() => {
@@ -46,12 +44,17 @@ const Login = () => {
 
   const onSuccessGoogle = (response) => {
     console.log(response);
-    googleLogin(response.googleId);
+    login({ google_id: response.googleId });
   };
 
   const responseFacebook = (response) => {
     console.log(response);
-    facebookLogin(response.id);
+    if (!response.id) {
+      setAuthError(
+        "Could not log in with Facebook. Please check your credentials and try again."
+      );
+    }
+    login({ facebook_id: response.id });
   };
 
   const onFailure = (response) => {
@@ -67,7 +70,7 @@ const Login = () => {
         cookiePolicy="single_host_origin"
         render={(renderProps) => (
           <Button onClick={renderProps.onClick} disabled={renderProps.disabled}>
-            <i class="fab fa-google"></i> Войти
+            <i className="fab fa-google"></i> Войти
           </Button>
         )}
       />
@@ -78,7 +81,7 @@ const Login = () => {
         size="small"
         render={(renderProps) => (
           <Button onClick={renderProps.onClick} disabled={renderProps.disabled}>
-            <i class="fab fa-facebook"></i> Войти
+            <i className="fab fa-facebook"></i> Войти
           </Button>
         )}
       />
