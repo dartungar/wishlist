@@ -31,7 +31,6 @@ const AuthState = (props) => {
       credentials: "include",
       withCredentials: "true",
     });
-
     if (response.ok) {
       const data = await response.json();
       dispatch({ type: SET_USER, payload: data });
@@ -42,8 +41,6 @@ const AuthState = (props) => {
       // if status = 401, it means we did not provide token
       // else there was legit error
     } else {
-      //const responseText = await response.text();
-      //console.log(responseText);
       setAuthError("Authorization error");
     }
   };

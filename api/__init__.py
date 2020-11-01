@@ -1,4 +1,6 @@
+from functools import wraps
 from flask import Flask, request, make_response
+from flask.ctx import copy_current_request_context
 from flask.wrappers import Response
 from flask_cors import CORS
 from sqlalchemy import exc
@@ -35,8 +37,35 @@ def create_app(test_config=None, *args, **kwargs):
 
     ### USER & AUTH  ###
 
+    # checks if token exists
+    # wrapped func will hape access to it
+    def check_token(func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            token = request.cookies.get('token')
+            if not token:
+                return flask.Response('Could not find token in cookies', status=401)
+            return func(*args, **kwargs)
+        return wrapper
+
+    # check if user with token exists
+
+    def get_user_from_token(token):
+        try:
+            id = decrypt(token)
+            if not id:
+                raise Exception('Token must contain user ID')
+        except Exception:
+            raise Exception
+        try:
+            user = session.query(User).filter_by(id=id).first()
+            return user
+        except Exception:
+            raise Exception
+
     # authenticate user after successful Google / Facebook authorization
     # return session token
+
     @app.route("/api/auth/login", methods=["POST"])
     def login():
         data = request.get_json()
@@ -115,21 +144,10 @@ def create_app(test_config=None, *args, **kwargs):
     # get current user info (for auth)
 
     @app.route("/api/auth/user", methods=["GET"])
+    @check_token
     def get_current_user():
         token = request.cookies.get('token')
-        if not token:
-            return flask.Response('Could not find token in cookies', status=401)
-        try:
-            id = decrypt(token)
-        except Exception as e:
-            return flask.Response(f'Error processing token "{token}", {e}', status=500)
-        try:
-            if id:
-                user = session.query(User).filter_by(id=id).first()
-            else:
-                return flask.Response('Token must contain user id', status=401)
-        except Exception as e:
-            return flask.Response(f'Error while trying to find user: {e}, token {token}, id {id}', status=500)
+        user = get_user_from_token(token)
         if user:
             response = make_response(user.to_json(), 200)
             response.headers.add("ContentType", "application/json")
@@ -153,9 +171,16 @@ def create_app(test_config=None, *args, **kwargs):
     # update user
     # TODO
     @app.route("/api/users/<user_id>", methods=["PUT"])
+    @check_token
     def update_user(user_id):
         if not user_id:
             return flask.Response("Must provide user id", status=400)
+        token = request.cookies.get('token')
+        user = get_user_from_token(token)
+        if not user:
+            return flask.Response("Authorized user not found", 401)
+        if user.id != user_id:
+            return flask.Response("Error trying to edit user other than yourself", 400)
         try:
             data = request.get_json()
             user = session.query(User).filter_by(id=user_id).first()
@@ -185,10 +210,16 @@ def create_app(test_config=None, *args, **kwargs):
 
     # add item
     @app.route("/api/items", methods=["POST"])
+    @check_token
     def add_item():
+        token = request.cookies.get('token')
+        user = get_user_from_token(token)
         data = request.get_json()
-        if not data or not data["user_id"]:
+        user_id = data.get("user_id")
+        if not data or not user_id:
             return flask.Response("Must provide item data with user_id", status=400)
+        if not user:
+            return flask.Response("Authorized user not found", status=401)
         try:
             new_item = Item(user_id=data["user_id"], name=data.get("name"), price=int(data.get("price")),
                             url=data.get("url"), group_purchase=data.get("group_purchase"))
@@ -200,9 +231,13 @@ def create_app(test_config=None, *args, **kwargs):
         return flask.Response("Added item", status=201)
 
     # update item info
-    # TODO
     @app.route("/api/items/<item_id>", methods=["PUT"])
+    @check_token
     def update_item(item_id):
+        token = request.cookies.get('token')
+        user = get_user_from_token(token)
+        if not user:
+            return flask.Response("Authorized user not found", status=401)
         data = request.get_json()
         item = session.query(Item).filter_by(id=item_id).first()
         if not data or not item:
@@ -222,7 +257,12 @@ def create_app(test_config=None, *args, **kwargs):
     # delete item
     # TODO
     @app.route("/api/items/<item_id>", methods=["DELETE"])
+    @check_token
     def delete_item(item_id):
+        token = request.cookies.get('token')
+        user = get_user_from_token(token)
+        if not user:
+            return flask.Response("Authorized user not found", status=401)
         item = session.query(Item).filter_by(id=item_id).first()
         if not item:
             return flask.Response("Item not found", status=204)
@@ -236,7 +276,6 @@ def create_app(test_config=None, *args, **kwargs):
 
     ### SEARCH ###
     # TODO
-
     @app.route("/api/users/search", methods=["GET"])
     def search_users():
         query = request.args.get('q')

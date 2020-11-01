@@ -18,22 +18,35 @@ def generate_public_url(name):
     return public_url
 
 
+class EncryptionException(Exception):
+    pass
+
+
 def create_hash(data):
     if data:
-        hash = sha256(str.encode(data)).hexdigest()
-        return hash
+        try:
+            hash = sha256(str.encode(data)).hexdigest()
+            return hash
+        except Exception as e:
+            raise EncryptionException(e.message)
     return None
 
 
 def encrypt(data):
     if data:
-        f = Fernet(os.getenv('SECRET'))
-        return bytes.decode(f.encrypt(str.encode(data)))
+        try:
+            f = Fernet(os.getenv('SECRET'))
+            return bytes.decode(f.encrypt(str.encode(data)))
+        except Exception as e:
+            raise EncryptionException(e.message)
     return None
 
 
 def decrypt(data):
     if data:
-        f = Fernet(os.getenv('SECRET'))
-        return bytes.decode(f.decrypt(str.encode(data)))
+        try:
+            f = Fernet(os.getenv('SECRET'))
+            return bytes.decode(f.decrypt(str.encode(data)))
+        except Exception as e:
+            raise EncryptionException(e.message)
     return None

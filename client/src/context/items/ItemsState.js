@@ -116,6 +116,7 @@ const ItemsState = (props) => {
       const response = await fetch(`http://localhost:5000/api/items`, {
         method: "POST",
         mode: "cors",
+        credentials: "include",
         headers: {
           "Content-Type": "application/json",
         },
@@ -146,6 +147,7 @@ const ItemsState = (props) => {
         {
           method: "PUT",
           mode: "cors",
+          credentials: "include",
           headers: {
             "Content-Type": "application/json",
           },
@@ -175,6 +177,7 @@ const ItemsState = (props) => {
         {
           method: "DELETE",
           mode: "cors",
+          credentials: "include",
           headers: {
             "Content-Type": "application/json",
           },
