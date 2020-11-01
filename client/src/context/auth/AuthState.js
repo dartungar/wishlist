@@ -1,7 +1,8 @@
-import React, { useReducer } from "react";
+import React, { useReducer, useContext } from "react";
 import authContext from "./authContext";
 import authReducer from "./authReducer";
-import { SET_IS_AUTHORIZED, SET_USER, SET_AUTH_ERROR } from "../types";
+import { SET_IS_AUTHORIZED, SET_USER } from "../types";
+import AlertContext from "../alert/alertContext";
 
 const AuthState = (props) => {
   const initialState = {
@@ -12,16 +13,12 @@ const AuthState = (props) => {
     // }, // TODO: make null default
     isAuthorized: false,
     user: null,
-    authError: null,
   };
 
   const [state, dispatch] = useReducer(authReducer, initialState);
 
-  // set error message
-  // used in alerts
-  const setAuthError = (text) => {
-    dispatch({ type: SET_AUTH_ERROR, payload: text });
-  };
+  // using Alerts context
+  const { pushAlert } = useContext(AlertContext);
 
   // authorize: check token & set isAuthorized and current user
   // used on every page reload
@@ -41,7 +38,7 @@ const AuthState = (props) => {
       // if status = 401, it means we did not provide token
       // else there was legit error
     } else {
-      setAuthError("Authorization error");
+      pushAlert({ type: "danger", text: "Authorization error" });
     }
   };
 
@@ -70,10 +67,13 @@ const AuthState = (props) => {
       getUser();
     } else if (response.status === 204) {
       console.log("User not found ", responseText);
-      setAuthError("Could not find user. Please register.", responseText);
+      pushAlert({
+        type: "info",
+        text: "Could not find user. Please register.",
+      });
     } else {
       console.log("Login error: ", responseText);
-      setAuthError("Authorization error. Please try again later.");
+      pushAlert({ type: "danger", text: "Error logging in" });
     }
   };
 
@@ -90,10 +90,14 @@ const AuthState = (props) => {
     });
     if (response.ok) {
       login(data);
+      pushAlert({ type: "success", text: "Welcome to wishlist!" });
     } else {
       const errorText = await response.text();
       console.log("Registration error", errorText);
-      setAuthError("Error registering user");
+      pushAlert({
+        type: "danger",
+        text: "Error registering. Try refreshing page",
+      });
     }
   };
 
@@ -109,7 +113,10 @@ const AuthState = (props) => {
       dispatch({ type: SET_USER, payload: false });
       dispatch({ type: SET_IS_AUTHORIZED, payload: false });
     } else {
-      setAuthError("Error logging out. Try refreshing page");
+      pushAlert({
+        type: "danger",
+        text: "Error logging out. Try refreshing page",
+      });
     }
   };
 
@@ -124,12 +131,10 @@ const AuthState = (props) => {
       value={{
         isAuthorized: state.isAuthorized,
         user: state.user,
-        authError: state.authError,
         login,
         register,
         logout,
         getUser,
-        setAuthError,
       }}
     >
       {props.children}

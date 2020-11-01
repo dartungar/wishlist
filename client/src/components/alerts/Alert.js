@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import styled from "styled-components";
 import AlertContext from "../../context/alert/alertContext";
 import AuthContext from "../../context/auth/authContext";
@@ -26,25 +26,30 @@ const AlertContainer = styled.div`
 `;
 
 const Alert = () => {
-  const { alert, clearAlert } = useContext(AlertContext);
-  const { authError, setAuthError } = useContext(AuthContext);
-  const { itemsError, setItemsError } = useContext(ItemsContext);
+  const { alerts, popAlert } = useContext(AlertContext);
+  const [currentAlert, setCurrentAlert] = useState();
+
+  useEffect(() => {
+    const [alert] = alerts.slice(-1);
+    console.log("Alerts: ", alerts, alert);
+    setCurrentAlert(alert);
+  }, [alerts]);
 
   const onCloseAlert = (e) => {
     e.preventDefault();
-    clearAlert();
-    setAuthError(null);
-    setItemsError(null);
+    popAlert();
   };
 
-  return (
-    <AlertContainer alertColor={alert.type}>
-      {alert.text}
-      <a href="" onClick={onCloseAlert} title="Закрыть">
-        <i className="fas fa-times"></i>
-      </a>
-    </AlertContainer>
-  );
+  if (currentAlert) {
+    return (
+      <AlertContainer alertColor={currentAlert.type}>
+        {currentAlert.text}
+        <a href="" onClick={onCloseAlert} title="Закрыть">
+          <i className="fas fa-times"></i>
+        </a>
+      </AlertContainer>
+    );
+  } else return null;
 };
 
 export default Alert;

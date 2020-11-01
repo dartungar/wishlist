@@ -1,4 +1,4 @@
-import React, { useReducer } from "react";
+import React, { useReducer, useContext } from "react";
 import itemsContext from "./itemsContext";
 import itemsReducer from "./itemsReducer";
 import {
@@ -6,9 +6,9 @@ import {
   SET_WISHLIST,
   SET_ADDING_NEW_ITEM,
   SET_EDITED_ITEM,
-  SET_ITEMS_ERROR,
   SET_NEW_GIFTER_MODAL,
 } from "../types.js";
+import alertContext from "../alert/alertContext";
 
 const ItemsState = (props) => {
   const initialState = {
@@ -19,19 +19,16 @@ const ItemsState = (props) => {
     loading: false,
     addingNewItem: false,
     editedItem: null,
-    itemsError: null,
     newGifterModal: null,
   };
 
   const [state, dispatch] = useReducer(itemsReducer, initialState);
 
+  const { pushAlert } = useContext(alertContext);
+
   // set loading
   const setLoading = () => {
     dispatch({ type: SET_LOADING });
-  };
-
-  const setItemsError = (text) => {
-    dispatch({ type: SET_ITEMS_ERROR, payload: text });
   };
 
   // toggle 'adding new item' state to show new item prompt
@@ -59,7 +56,6 @@ const ItemsState = (props) => {
       const usr_response = await fetch(
         `http://localhost:5000/api/users?public_url=${user_public_url}`
       );
-
       if (usr_response.ok) {
         const user = await usr_response.json();
         const items = await getItems(user.id);
@@ -67,14 +63,21 @@ const ItemsState = (props) => {
         console.log(wishlist);
         if (user) {
           dispatch({ type: SET_WISHLIST, payload: wishlist });
-        } else setItemsError("User not found!");
+        } else
+          pushAlert({
+            type: "danger",
+            text: "Error loading wishlist: could not find wishlist owner",
+          });
       } else {
         console.log(`request to get wishlist failed with ${usr_response.text}`);
-        setItemsError("Error loading wishlist: user not found");
+        pushAlert({
+          type: "danger",
+          text: "Error loading wishlist: error finding user",
+        });
       }
     } catch (error) {
       console.log(`getting wishlist failed: ${error}`);
-      setItemsError("Error loading wishlist");
+      pushAlert({ type: "danger", text: "Error loading wishlist" });
     }
   };
 
@@ -87,7 +90,6 @@ const ItemsState = (props) => {
       const response = await fetch(
         `http://localhost:5000/api/users/${user_id}/items`
       );
-
       if (response.ok) {
         let unparsed_items = await response.json();
         console.log("fetched items: ", unparsed_items);
@@ -95,18 +97,17 @@ const ItemsState = (props) => {
         return items;
       } else {
         console.log(`getting items failed: ${response.status}`);
-        setItemsError("Error loading wishlist items");
+        pushAlert({ type: "danger", text: "Error loading wishlist items" });
       }
     } catch (error) {
       console.log(`getting wishlist failed: ${error}`);
-      setItemsError("Error loading wishlist items");
+      pushAlert({ type: "danger", text: "Error loading wishlist items" });
     }
   };
 
   // add item in current user's wishlist
   const addItem = async (user = state.user, item) => {
     setLoading();
-
     let completeItem = {
       ...item,
       user_id: user.id,
@@ -125,22 +126,20 @@ const ItemsState = (props) => {
       if (response.ok) {
         console.log("Added item!");
         getWishlist(user.public_url);
+        pushAlert({ type: "success", text: "Added item" });
       } else {
-        // const res = await response.text();
         console.log("Failed to add item", JSON.stringify(completeItem));
-        setItemsError("Error adding item");
+        pushAlert({ type: "danger", text: "Error adding item" });
       }
     } catch (error) {
       console.log("Failed to add item", error);
-      setItemsError("Error adding item");
+      pushAlert({ type: "danger", text: "Error adding item" });
     }
   };
 
   // update item in current user's wishlist
   const updateItem = async (item) => {
     setLoading();
-
-    // console.log(`updating item ${item} in ${user}'s wishlist...`);
     try {
       const response = await fetch(
         `http://localhost:5000/api/items/${item.id}`,
@@ -157,19 +156,19 @@ const ItemsState = (props) => {
       if (response.ok) {
         console.log("updated item!");
         dispatch({ type: SET_EDITED_ITEM, payload: null });
+        pushAlert({ type: "success", text: "Updated item" });
       } else {
         console.log("item was not updated", response.status);
-        setItemsError("Error while trying to load updated item");
+        pushAlert({ type: "danger", text: "Error updating item" });
       }
     } catch (error) {
-      setItemsError("Error while trying to load updated item");
+      pushAlert({ type: "danger", text: "Error updating item" });
     }
   };
 
   // delete item from current user's wishlist
   const deleteItem = async (item_id) => {
     setLoading();
-
     console.log(`deleting item ${item_id}...`);
     try {
       const response = await fetch(
@@ -186,10 +185,10 @@ const ItemsState = (props) => {
       if (response.ok) {
         console.log("deleted item!");
       } else {
-        setItemsError("Error deleting item");
+        pushAlert({ type: "danger", text: "Error deleting item" });
       }
     } catch (error) {
-      setItemsError("Error deleting item");
+      pushAlert({ type: "danger", text: "Error deleting item" });
     }
   };
 
@@ -201,7 +200,6 @@ const ItemsState = (props) => {
         currentWishlist: state.currentWishlist,
         addingNewItem: state.addingNewItem,
         editedItem: state.editedItem,
-        itemsError: state.itemsError,
         newGifterModal: state.newGifterModal,
         setLoading,
         setAddingNewItem,
@@ -211,7 +209,6 @@ const ItemsState = (props) => {
         addItem,
         updateItem,
         deleteItem,
-        setItemsError,
         setNewGifterModal,
       }}
     >

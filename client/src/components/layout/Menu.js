@@ -27,7 +27,7 @@ const MenuContainer = styled.ul`
 
 const Menu = () => {
   const { isAuthorized, user, logout } = useContext(AuthContext);
-  const { setAlert } = useContext(AlertContext);
+  const { popAlert } = useContext(AlertContext);
 
   if (isAuthorized === true) {
     return (
@@ -54,7 +54,7 @@ const Menu = () => {
             onClick={(e) => {
               e.preventDefault();
               logout();
-              setAlert(null);
+              popAlert();
             }}
           >
             Выйти

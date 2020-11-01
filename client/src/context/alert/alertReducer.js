@@ -1,16 +1,16 @@
-import { SET_ALERT, CLEAR_ALERT } from "../types";
+import { PUSH_ALERT, POP_ALERT } from "../types";
 
 const alertReducer = (state, action) => {
   switch (action.type) {
-    case SET_ALERT:
+    case PUSH_ALERT:
       return {
         ...state,
-        alert: action.payload,
+        alerts: [...state.alerts, action.payload],
       };
-    case CLEAR_ALERT:
+    case POP_ALERT:
       return {
         ...state,
-        alert: null,
+        alerts: state.alerts.slice(0, -1),
       };
     default:
       return state;

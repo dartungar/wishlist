@@ -3,7 +3,6 @@ import {
   SET_ADDING_NEW_ITEM,
   SET_EDITED_ITEM,
   SET_WISHLIST,
-  SET_ITEMS_ERROR,
   SET_NEW_GIFTER_MODAL,
 } from "../types.js";
 
@@ -36,13 +35,6 @@ const itemsReducer = (state, action) => {
       return {
         ...state,
         newGifterModal: action.payload,
-      };
-    case SET_ITEMS_ERROR:
-      return {
-        ...state,
-        itemsError: action.payload,
-        loading: false,
-        editedItem: false,
       };
     default:
       return state;

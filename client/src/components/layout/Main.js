@@ -27,7 +27,7 @@ const MainContainer = styled.div`
 `;
 
 const Main = () => {
-  const { alert } = useContext(AlertContext);
+  const { alerts } = useContext(AlertContext);
   const { isAuthorized, getUser, user } = useContext(AuthContext);
 
   useEffect(() => {
@@ -40,7 +40,7 @@ const Main = () => {
     <Router>
       <MainContainer>
         <Navbar />
-        {alert && <Alert />}
+        {alerts && <Alert />}
         <Switch>
           <Route path="/list/:user_public_url" children={<List />} />
           <PrivateRoute path="/profile" component={Profile} />
