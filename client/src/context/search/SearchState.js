@@ -5,7 +5,7 @@ import { SET_SEARCH_RESULTS } from "../types";
 
 const SearchState = (props) => {
   const initialState = {
-    searchResults: [],
+    searchResults: null,
   };
 
   const [state, dispatch] = useReducer(searchReducer, initialState);

@@ -10,12 +10,14 @@ const SearchContainer = styled.div`
   justify-content: flex-start;
   padding-top: 15%;
   height: 100%;
+  min-width: 50ch;
+  max-width: 100ch;
 `;
 
 const Search = () => {
   return (
     <SearchContainer>
-      <h4>Поиск пользователей</h4>
+      <h3>Поиск пользователей</h3>
       <SearchBox />
       <SearchResultList />
     </SearchContainer>
