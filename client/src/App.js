@@ -62,8 +62,8 @@ const AppContainer = styled.div`
 const App = () => {
   return (
     <ThemeProvider theme={lightTheme}>
-      <SearchState>
-        <AlertState>
+      <AlertState>
+        <SearchState>
           <AuthState>
             <ItemsState>
               <AppContainer>
@@ -73,8 +73,8 @@ const App = () => {
               </AppContainer>
             </ItemsState>
           </AuthState>
-        </AlertState>
-      </SearchState>
+        </SearchState>
+      </AlertState>
     </ThemeProvider>
   );
 };

@@ -2,15 +2,12 @@ import React, { useContext, useState, useEffect } from "react";
 import styled, { keyframes } from "styled-components";
 import SearchResultItem from "./SearchResultItem";
 import SearchContext from "../../context/search/searchContext";
+import { fadein } from "../../style/animations";
 
-const fadein = keyframes`
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 100%;
-  }
+// wrapper so search results can be aligned
+// with search box
+const SearchResultContainerWrapper = styled.div`
+  width: 40ch;
 `;
 
 const SearchResultsContainer = styled.div`
@@ -33,15 +30,17 @@ const SearchResultList = () => {
   }, [searchResults]);
 
   return (
-    <SearchResultsContainer>
-      {searchResults &&
-        searchResults.map((r) => <SearchResultItem result={r} key={r.id} />)}
-      {showNoResultMessage && (
-        <NoResultContainer>
-          <p>did not find any users</p>
-        </NoResultContainer>
-      )}
-    </SearchResultsContainer>
+    <SearchResultContainerWrapper>
+      <SearchResultsContainer>
+        {searchResults &&
+          searchResults.map((r) => <SearchResultItem result={r} key={r.id} />)}
+        {showNoResultMessage && (
+          <NoResultContainer>
+            <p>did not find any users</p>
+          </NoResultContainer>
+        )}
+      </SearchResultsContainer>
+    </SearchResultContainerWrapper>
   );
 };
 

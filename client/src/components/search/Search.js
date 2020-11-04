@@ -10,7 +10,6 @@ const SearchContainer = styled.div`
   justify-content: flex-start;
   padding-top: 15%;
   height: 100%;
-  min-width: 50ch;
   max-width: 100ch;
 `;
 

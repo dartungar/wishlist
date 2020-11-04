@@ -19,6 +19,7 @@ const AlertContainer = styled.div`
       return props.theme.DANGER;
     } else return props.theme.PRIMARY;
   }};
+  opacity: 0.8;
   a {
     position: absolute;
     right: 1rem;

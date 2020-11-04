@@ -46,7 +46,7 @@ const SearchBox = () => {
           type="text"
           value={query}
           onChange={onChange}
-          placeholder="Поиск по имени, фамилии, id..."
+          placeholder="Поиск по имени, фамилии, id - от 2 символов"
         />
         <SubmitBtn type="submit" title="Найти по имени, фамилии, id">
           <i class="fas fa-search"></i>
