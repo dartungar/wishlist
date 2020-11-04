@@ -2,17 +2,7 @@ import React, { useState, useContext } from "react";
 import styled, { keyframes } from "styled-components";
 import ItemsContext from "../../context/items/itemsContext";
 import AuthContext from "../../context/auth/authContext";
-
-const fadein = keyframes`
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 100%;
-
-  }
-`;
+import { fadein } from "../../style/animations";
 
 const AddNewItemContainer = styled.form`
   display: flex;

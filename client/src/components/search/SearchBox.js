@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 import styled from "styled-components";
 import SearchContext from "../../context/search/searchContext";
+import AlertContext from "../../context/alert/alertContext";
 
 const SearchBoxContainer = styled.div`
   position: relative;
@@ -28,6 +29,7 @@ const SubmitBtn = styled.button`
 
 const SearchBox = () => {
   const { search, setSearchResults } = useContext(SearchContext);
+  const { pushAlert } = useContext(AlertContext);
   const [query, setQuery] = useState("");
 
   const onChange = (e) => {
@@ -36,7 +38,14 @@ const SearchBox = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    search(query).then((results) => setSearchResults(results));
+    if (query.length > 2) {
+      search(query).then((results) => setSearchResults(results));
+    } else {
+      pushAlert({
+        type: "info",
+        text: `Для поиска нужно > 2 символов. Вы искали "${query}", этого мало.`,
+      });
+    }
   };
 
   return (

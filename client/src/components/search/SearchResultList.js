@@ -36,7 +36,7 @@ const SearchResultList = () => {
           searchResults.map((r) => <SearchResultItem result={r} key={r.id} />)}
         {showNoResultMessage && (
           <NoResultContainer>
-            <p>did not find any users</p>
+            <p>Пользователь не найден</p>
           </NoResultContainer>
         )}
       </SearchResultsContainer>

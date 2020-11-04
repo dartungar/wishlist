@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect } from "react";
 import styled, { keyframes } from "styled-components";
 import ItemsContext from "../../context/items/itemsContext";
 import AuthContext from "../../context/auth/authContext";
+import { fadein } from "../../style/animations";
 
 const DarkenedBackground = styled.div`
   z-index: 100;
@@ -22,6 +23,7 @@ const PromptContainer = styled.div`
   background-color: #fcffff;
   border-radius: 3px;
   padding: 1rem;
+  animation: 0.5s ${fadein} linear;
 
   h4 {
     margin: 0;

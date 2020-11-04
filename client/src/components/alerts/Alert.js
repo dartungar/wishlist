@@ -1,8 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import styled from "styled-components";
 import AlertContext from "../../context/alert/alertContext";
-import AuthContext from "../../context/auth/authContext";
-import ItemsContext from "../../context/items/itemsContext";
+import { fadein } from "../../style/animations";
 
 const AlertContainer = styled.div`
   z-index: 100;
@@ -19,7 +18,10 @@ const AlertContainer = styled.div`
       return props.theme.DANGER;
     } else return props.theme.PRIMARY;
   }};
-  opacity: 0.8;
+  animation: 0.2s ${fadein} linear;
+  opacity: 0.85;
+  transition: opacity 0.1s;
+
   a {
     position: absolute;
     right: 1rem;
