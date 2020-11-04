@@ -48,15 +48,17 @@ const List = ({ show_my_wishlist }) => {
       {user &&
         currentWishlist.user.id === user.id &&
         (addingNewItem ? <NewItemPrompt /> : <AddNewItemBtn />)}
-      {currentWishlist.items &&
-        currentWishlist.items.length > 0 &&
+      {currentWishlist.items && currentWishlist.items.length > 0 ? (
         currentWishlist.items.map((item) => {
           if (editedItem && item.id === editedItem.id) {
             return <EditItemPrompt key={item.id} item={editedItem} />;
           } else {
             return <Item key={item.id} item={item} />;
           }
-        })}
+        })
+      ) : (
+        <p>Список желаний пока пуст.</p>
+      )}
     </ListContainer>
   );
 };
