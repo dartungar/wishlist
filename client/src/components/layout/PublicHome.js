@@ -10,15 +10,6 @@ const PublicHomeContainer = styled.div`
   align-items: center;
 `;
 
-const Header = styled.h1`
-  margin-bottom: 0.4rem;
-`;
-
-const SubHeader = styled.p`
-  margin-top: 0;
-  font-size: 1.1rem;
-`;
-
 const GreetingTextContainer = styled.p`
   margin: 7rem 0 2rem 0;
 `;
