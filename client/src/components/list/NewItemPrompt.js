@@ -115,7 +115,7 @@ const NewItemPrompt = () => {
         type="url"
         name="url"
         title="Ссылка на товар"
-        placeholder="Ссылка"
+        placeholder="Ссылка на товар в магазине (необязательно)"
         value={newItem.url}
         onChange={onChange}
       ></UrlInput>

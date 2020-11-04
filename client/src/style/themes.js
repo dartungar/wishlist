@@ -3,7 +3,7 @@ const lightTheme = {
   TEXT: "#1a1c1c",
   TEXT_LIGHT: "#8a8a8a",
   PRIMARY: "#f7d063",
-  PRIMARY_LIGHT: "#f5c33b",
+  PRIMARY_LIGHT: "#ffecba",
   INFO: "#fce5a2",
   DANGER: "#ff8266",
   DANGER_DARK: "#d64a2b",

@@ -7,7 +7,7 @@ import {
 } from "react-router-dom";
 import styled from "styled-components";
 import PrivateRoute from "../auth/PrivateRoute";
-import Navbar from "./Navbar";
+import Navbar from "../navigation/Navbar";
 import List from "../list/List";
 import Profile from "../user/Profile";
 import Login from "../auth/Login";
