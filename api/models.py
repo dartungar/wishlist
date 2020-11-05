@@ -1,4 +1,4 @@
-from sqlalchemy import Column, ForeignKey, String, Integer, DateTime, LargeBinary
+from sqlalchemy import Column, ForeignKey, String, Integer, DateTime, Date
 from sqlalchemy.orm import backref, relationship
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.sql.sqltypes import Boolean
@@ -15,16 +15,17 @@ class User(Base):
     facebook_id = Column(String, unique=True, default=None)
     google_id = Column(String, unique=True, default=None)
     name = Column(String)
+    birthday = Column(Date)
     public_url = Column(String, unique=True, default=None)
     items = relationship("Item", backref="users")
 
     def to_json(self):
-        user_obj = {"id": str(self.id), "name": self.name,
+        user_obj = {"id": str(self.id), "name": self.name, "birthday": str(self.birthday),
                     "facebook_id": self.facebook_id, "google_id": self.google_id, "public_url": self.public_url}
         return json.dumps(user_obj)
 
     def to_json_short(self):
-        user_obj = {"id": str(self.id), "name": self.name,
+        user_obj = {"id": str(self.id), "name": self.name, "birthday": str(self.birthday),
                     "public_url": self.public_url}
         return json.dumps(user_obj)
 

@@ -23,22 +23,35 @@ const AuthState = (props) => {
   // authorize: check token & set isAuthorized and current user
   // used on every page reload
   const getUser = async () => {
-    const response = await fetch(`http://localhost:5000/api/auth/user`, {
-      method: "GET",
-      credentials: "include",
-      withCredentials: "true",
-    });
-    if (response.ok) {
-      const data = await response.json();
-      dispatch({ type: SET_USER, payload: data });
-      dispatch({ type: SET_IS_AUTHORIZED, payload: true });
-    } else if (response.status === 401) {
-      dispatch({ type: SET_USER, payload: null });
-      dispatch({ type: SET_IS_AUTHORIZED, payload: false });
-      // if status = 401, it means we did not provide token
-      // else there was legit error
-    } else {
-      pushAlert({ type: "danger", text: "Authorization error" });
+    try {
+      const response = await fetch(`http://localhost:5000/api/auth/user`, {
+        method: "GET",
+        credentials: "include",
+        withCredentials: "true",
+      });
+      if (response.ok) {
+        const data = await response.json();
+        dispatch({ type: SET_USER, payload: data });
+        dispatch({ type: SET_IS_AUTHORIZED, payload: true });
+      } else if (response.status === 401) {
+        dispatch({ type: SET_USER, payload: null });
+        dispatch({ type: SET_IS_AUTHORIZED, payload: false });
+        // if status = 401, it means we did not provide token
+        // else there was legit error
+      } else {
+        pushAlert({
+          type: "danger",
+          text:
+            "Ошибка авторизации. Пожалуйста, перезагрузите страницу и попробуйте снова",
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      pushAlert({
+        type: "danger",
+        text:
+          "Ошибка соединения с сервером. Пожалуйста, перезагрузите страницу и попробуйте снова",
+      });
     }
   };
 
@@ -69,11 +82,15 @@ const AuthState = (props) => {
       console.log("User not found ", responseText);
       pushAlert({
         type: "info",
-        text: "Could not find user. Please register.",
+        text: "Пользователь не найден. Вы зарегистрировались?",
       });
     } else {
       console.log("Login error: ", responseText);
-      pushAlert({ type: "danger", text: "Error logging in" });
+      pushAlert({
+        type: "danger",
+        text:
+          "Ошибка авторизации. Пожалуйста, перезагрузите страницу и попробуйте снова",
+      });
     }
   };
 
@@ -90,13 +107,18 @@ const AuthState = (props) => {
     });
     if (response.ok) {
       login(data);
-      pushAlert({ type: "success", text: "Welcome to wishlist!" });
+      pushAlert({
+        type: "success",
+        text:
+          "Добро пожаловать в WishLis! Создайте список желаний или найдите друзей. Не забудьте установить дату рождения!",
+      });
     } else {
       const errorText = await response.text();
       console.log("Registration error", errorText);
       pushAlert({
         type: "danger",
-        text: "Error registering. Try refreshing page",
+        text:
+          "Ошибка при регистрации. Пожалуйста, перезагрузите страницу и попробуйте снова",
       });
     }
   };
@@ -115,15 +137,33 @@ const AuthState = (props) => {
     } else {
       pushAlert({
         type: "danger",
-        text: "Error logging out. Try refreshing page",
+        text:
+          "Ошибка при выходе из учетной записи. Пожалуйста, перезагрузите страницу и попробуйте снова",
       });
     }
   };
 
   // change user info, i.e name
-  const changeUserInfo = (newInfo) => {
+  const changeUserInfo = async (data) => {
     console.log("changing user info...");
     // TODO
+    const response = await fetch(`http://localhost:5000/api/users/${data.id}`, {
+      method: "PUT",
+      mode: "cors",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    if (response.ok) {
+      pushAlert({ type: "success", text: "Изменения сохранены" });
+      getUser(); // refresh shown name
+    } else {
+      const responseText = await response.text();
+      console.log(responseText);
+      pushAlert({ type: "danger", text: "Ошибка при сохранении изменений" });
+    }
   };
 
   return (
@@ -135,6 +175,7 @@ const AuthState = (props) => {
         register,
         logout,
         getUser,
+        changeUserInfo,
       }}
     >
       {props.children}

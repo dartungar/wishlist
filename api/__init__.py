@@ -60,7 +60,8 @@ def create_app(test_config=None, *args, **kwargs):
         try:
             user = session.query(User).filter_by(id=id).first()
             return user
-        except Exception:
+        except Exception as e:
+            print(e)
             raise Exception
 
     # authenticate user after successful Google / Facebook authorization
@@ -169,7 +170,7 @@ def create_app(test_config=None, *args, **kwargs):
             return flask.Response('Error getting user info', 500)
 
     # update user
-    # TODO
+    # for now, only change username
     @app.route("/api/users/<user_id>", methods=["PUT"])
     @check_token
     def update_user(user_id):
@@ -179,17 +180,15 @@ def create_app(test_config=None, *args, **kwargs):
         user = get_user_from_token(token)
         if not user:
             return flask.Response("Authorized user not found", 401)
-        if user.id != user_id:
-            return flask.Response("Error trying to edit user other than yourself", 400)
+        if str(user.id) != user_id:
+            return flask.Response(f"Error trying to edit user other than yourself: id from cookies {user.id}, id from url {user_id}", 400)
         try:
             data = request.get_json()
             user = session.query(User).filter_by(id=user_id).first()
             if not user:
                 return flask.Response("User not found", status=204)
             user.name = data.get("name")
-            user.facebook_id = data.get("facebookID")
-            user.google_id = data.get("googleID")
-            user.public_url = generate_public_url(data["name"])
+            user.birthday = data.get("birthday")
             session.commit()
         except Exception as e:
             session.rollback()
