@@ -46,9 +46,18 @@ const EditUsernameInput = ({ closeInput }) => {
     closeInput();
   };
 
+  const handleKeyUp = (e) => {
+    e.preventDefault();
+    if (e.key === "Enter") {
+      onSubmit(e);
+    } else if (e.key === "Escape") {
+      closeInput();
+    }
+  };
+
   return (
     <UsernameInputContainer>
-      <form action="" onSubmit={onSubmit}>
+      <form action="" onSubmit={onSubmit} onKeyUp={handleKeyUp}>
         <input type="text" value={editedName} onChange={onChange} />
         <CancelBtn onClick={closeInput} title="Отмена">
           <i className="fas fa-times"></i>

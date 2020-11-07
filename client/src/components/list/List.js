@@ -82,9 +82,15 @@ const List = ({ show_my_wishlist }) => {
       {newGifterModal && <NewGifterModal />}
 
       <ListTitle user={currentWishlist.user} />
+
       <small>
-        День рождения: {dispayedBirthday}. Дней до следующего дня рождения:{" "}
-        {dateDiff}
+        {currentWishlist.user.birthday &&
+          currentWishlist.user.birthday !== "None" && (
+            <span>
+              День рождения: {dispayedBirthday}. Дней до следующего дня
+              рождения: {dateDiff}
+            </span>
+          )}
       </small>
       {loading && <Spinner />}
       {user &&

@@ -24,6 +24,7 @@ const PromptContainer = styled.div`
   border-radius: 3px;
   padding: 1rem;
   animation: 0.5s ${fadein} linear;
+  box-shadow: 1px 1px 4px lightgray;
 
   h4 {
     margin: 0;
@@ -102,13 +103,21 @@ const NewGifterModal = () => {
     getWishlist(newGifterModal.item.user_id);
   };
 
-  const onCancel = () => {
+  const onCancel = (e) => {
     setNewGifterModal(null);
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      onSubmit(e);
+    } else if (e.key === "Escape") {
+      onCancel(e);
+    }
   };
 
   return (
     <DarkenedBackground>
-      <PromptContainer>
+      <PromptContainer onKeyDown={handleKeyDown}>
         <h4>Ваше имя </h4>
         <small>опционально, увидят только другие дарители</small>
         <form action="" onSubmit={onSubmit}>

@@ -99,8 +99,16 @@ const NewItemPrompt = () => {
     addItem(user, newItem);
   };
 
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      onSubmit(e);
+    } else if (e.key === "Escape") {
+      onCancel(e);
+    }
+  };
+
   return (
-    <AddNewItemContainer onSubmit={onSubmit}>
+    <AddNewItemContainer onSubmit={onSubmit} onKeyDown={handleKeyDown}>
       <TextInput
         type="text"
         name="name"

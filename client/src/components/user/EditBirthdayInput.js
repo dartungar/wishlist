@@ -69,6 +69,14 @@ const EditBirthdayInput = () => {
     setShowBtns(false);
   };
 
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      onSubmit(e);
+    } else if (e.key === "Escape") {
+      onCancel(e);
+    }
+  };
+
   const now = new Date();
   const day = now.getDate() > 10 ? now.getDate() : `0${now.getDate()}`;
   const currentDate = `${now.getFullYear()}-${now.getMonth() + 1}-${day}`;
@@ -77,7 +85,7 @@ const EditBirthdayInput = () => {
     <BirthdayInputContainer title="Редактировать дату рождения">
       <h4>День рождения</h4>
 
-      <form action="" onSubmit={onSubmit}>
+      <form action="" onSubmit={onSubmit} onKeyDown={handleKeyDown}>
         <input
           type="date"
           value={editedBirthday}

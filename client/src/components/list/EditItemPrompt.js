@@ -88,20 +88,30 @@ const EditItemPrompt = ({ item }) => {
     });
   };
 
-  const onCancel = () => {
+  const onCancel = (e) => {
+    e.preventDefault();
     setEditedItem(null);
   };
 
   const onSubmit = (e) => {
     e.preventDefault();
+    console.log("Submitted", e.key, editedItemValue);
     updateItem(editedItemValue);
     getWishlist(user.public_url);
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      onSubmit(e);
+    } else if (e.key === "Escape") {
+      onCancel(e);
+    }
   };
 
   if (!editedItemValue) return null;
 
   return (
-    <EditItemContainer onSubmit={onSubmit}>
+    <EditItemContainer onSubmit={onSubmit} onKeyDown={handleKeyDown}>
       <TextInput
         type="text"
         name="name"
