@@ -3,6 +3,8 @@ import styled, { keyframes } from "styled-components";
 import ItemsContext from "../../context/items/itemsContext";
 import AuthContext from "../../context/auth/authContext";
 import { fadein } from "../../style/animations";
+import CancelBtn from "../layout/CancelBtn";
+import ConfirmBtn from "../layout/ConfirmBtn";
 
 const DarkenedBackground = styled.div`
   z-index: 100;
@@ -35,36 +37,11 @@ const PromptContainer = styled.div`
     width: 95%;
     margin: 1rem 0;
   }
-
-  button {
-    background-color: #fcffff;
-    border: none;
-    font-size: 1rem;
-  }
 `;
 
 const BtnsContainer = styled.div`
   display: flex;
   justify-content: flex-end;
-`;
-
-const CancelBtn = styled.button`
-  margin: 0 1rem 0 auto;
-  i {
-    color: #733625;
-  }
-  i:hover {
-    color: red;
-  }
-`;
-
-const SaveBtn = styled.button`
-  i {
-    color: #2b6131;
-  }
-  i:hover {
-    color: #5eb823;
-  }
 `;
 
 const NewGifterModal = () => {
@@ -134,12 +111,8 @@ const NewGifterModal = () => {
             onChange={onChange}
           />
           <BtnsContainer>
-            <CancelBtn onClick={onCancel} title="Отмена">
-              <i className="fas fa-times"></i>
-            </CancelBtn>
-            <SaveBtn type="submit" title="Сохранить">
-              <i className="fas fa-check"></i>
-            </SaveBtn>
+            <CancelBtn onClick={onCancel} />
+            <ConfirmBtn type="submit" onClick={onSubmit} />
           </BtnsContainer>
         </form>
       </PromptContainer>

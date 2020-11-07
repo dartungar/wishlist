@@ -1,38 +1,16 @@
 import React, { useState, useContext, useEffect } from "react";
 import AuthContext from "../../context/auth/authContext";
 import styled from "styled-components";
+import CancelBtn from "../layout/CancelBtn";
+import ConfirmBtn from "../layout/ConfirmBtn";
 
 const BirthdayInputContainer = styled.div`
   input {
     border-radius: 3px;
   }
 
-  button {
-    background-color: ${(props) => props.theme.BACKGROUND};
-    border: none;
-    font-size: 1rem;
-  }
-
   small {
     color: ${(props) => props.theme.TEXT_LIGHT};
-  }
-`;
-
-const CancelBtn = styled.button`
-  i {
-    color: ${(props) => props.theme.DANGER};
-  }
-  i:hover {
-    color: ${(props) => props.theme.DANGER_DARK};
-  }
-`;
-
-const SaveBtn = styled.button`
-  i {
-    color: ${(props) => props.theme.SUCCESS};
-  }
-  i:hover {
-    color: ${(props) => props.theme.SUCCESS_DARK};
   }
 `;
 
@@ -90,12 +68,8 @@ const EditBirthdayInput = () => {
         {showBtns && (
           <>
             {" "}
-            <CancelBtn onClick={onCancel} title="Отмена">
-              <i className="fas fa-times"></i>
-            </CancelBtn>
-            <SaveBtn type="submit" title="Сохранить">
-              <i className="fas fa-check"></i>
-            </SaveBtn>
+            <CancelBtn onClick={onCancel} />
+            <ConfirmBtn type="submit" onClick={onSubmit} />
           </>
         )}
       </form>
