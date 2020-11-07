@@ -42,12 +42,6 @@ const EditBirthdayInput = () => {
   const [previousValue, setPreviousValue] = useState();
   const [showBtns, setShowBtns] = useState(false);
 
-  //   useEffect(() => {
-  //     const parsedDate = new Date(Date.parse(user.birthday));
-  //     const date = parsedDate.getDate();
-  //     setEditedBirthday(parsedDate);
-  //   }, []);
-
   const onChange = (e) => {
     setPreviousValue(editedBirthday);
     setEditedBirthday(e.target.value);

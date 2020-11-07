@@ -32,6 +32,8 @@ const Profile = () => {
 
   const onCopyUrl = (e) => {
     e.preventDefault();
+    const currentURL = `${window.location.protocol}//${window.location.hostname}`;
+    navigator.clipboard.writeText(`${currentURL}/list/${public_url}`);
   };
 
   return (
