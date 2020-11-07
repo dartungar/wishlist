@@ -20,7 +20,7 @@ const DarkenedBackground = styled.div`
 const PromptContainer = styled.div`
   z-index: 200;
   max-width: 80%;
-  background-color: #fcffff;
+  background-color: ${(props) => props.theme.BACKGROUND};
   border-radius: 3px;
   padding: 1rem;
   animation: 0.5s ${fadein} linear;

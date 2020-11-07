@@ -22,6 +22,7 @@ const ListContainer = styled.div`
   }
   small {
     color: ${(props) => props.theme.TEXT_LIGHT};
+    margin-bottom: 1.5rem;
   }
 `;
 
