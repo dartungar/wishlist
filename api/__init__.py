@@ -247,14 +247,39 @@ def create_app(test_config=None, *args, **kwargs):
             item.url = data["url"]
             item.group_purchase = data["group_purchase"]
             item.gifters = data["gifters"]
+            print(data["gifters"])
             session.commit()
         except Exception as e:
             session.rollback()
             return flask.Response('Error updating item', status=500)
         return flask.Response("Updated item", status=200)
 
+    # update item's gifters
+    # unprotected because it's available to unregistered users
+    @app.route("/api/items/<item_id>/update_gifters", methods=["PUT"])
+    def update_item_gifters(item_id):
+        data = request.get_json()
+        item = session.query(Item).filter_by(id=item_id).first()
+        if not data or not item:
+            return flask.Response(data, status=400)
+        try:
+            gifters = data.get('gifters')
+            if gifters:
+                if item.gifters:
+                    item.gifters = ', '.join(data['gifters'])
+                else:
+                    item.gifters = gifters[0]
+            print(data["gifters"])
+            session.commit()
+        except Exception as e:
+            session.rollback()
+            print(e)
+            return flask.Response('Error updating item', status=500)
+        return flask.Response("Updated item", status=200)
+
     # delete item
     # TODO
+
     @app.route("/api/items/<item_id>", methods=["DELETE"])
     @check_token
     def delete_item(item_id):

@@ -71,15 +71,16 @@ const NewGifterModal = () => {
   const {
     newGifterModal,
     setNewGifterModal,
-    updateItem,
+    updateItemGifters,
     getWishlist,
+    currentWishlist,
   } = useContext(ItemsContext);
   const { user } = useContext(AuthContext);
   const [gifterName, setGifterName] = useState("");
 
   useEffect(() => {
     if (!gifterName) {
-      if (user.name) {
+      if (user && user.name) {
         setGifterName(user.name);
       } else {
         setGifterName("Аноним");
@@ -93,14 +94,17 @@ const NewGifterModal = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    updateItem({
+    const gifters = [newGifterModal.item.gifters];
+    let updatedGifters = gifters[0]
+      ? [...gifters, ...[gifterName]]
+      : [gifterName];
+    console.log("updated gifters: ", updatedGifters);
+    updateItemGifters({
       ...newGifterModal.item,
-      gifters: newGifterModal.item.gifters
-        ? [...newGifterModal.item.gifters, gifterName]
-        : [gifterName],
+      gifters: updatedGifters,
     });
     setNewGifterModal(null);
-    getWishlist(newGifterModal.item.user_id);
+    getWishlist(currentWishlist.user.public_url);
   };
 
   const onCancel = (e) => {

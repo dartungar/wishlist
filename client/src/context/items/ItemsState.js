@@ -174,6 +174,40 @@ const ItemsState = (props) => {
     }
   };
 
+  // update only item's gifters
+  const updateItemGifters = async (item) => {
+    setLoading(true);
+    console.log("stringified item: ", JSON.stringify(item));
+    try {
+      const response = await fetch(
+        `http://localhost:5000/api/items/${item.id}/update_gifters`,
+        {
+          method: "PUT",
+          mode: "cors",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(item),
+        }
+      );
+      if (response.ok) {
+        dispatch({ type: SET_EDITED_ITEM, payload: null });
+        pushAlert({ type: "success", text: `Записал вас дарителем` });
+      } else {
+        console.log("item was not updated", response.status);
+        pushAlert({
+          type: "danger",
+          text: "Не удалось записать вас дарителем",
+        });
+      }
+    } catch (error) {
+      pushAlert({ type: "danger", text: "Не удалось записать вас дарителем" });
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // delete item from current user's wishlist
   const deleteItem = async (item_id) => {
     setLoading(true);
@@ -218,6 +252,7 @@ const ItemsState = (props) => {
         getWishlist,
         addItem,
         updateItem,
+        updateItemGifters,
         deleteItem,
         setNewGifterModal,
       }}
