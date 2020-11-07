@@ -3,6 +3,10 @@ import AuthContext from "../../context/auth/authContext";
 import styled from "styled-components";
 
 const BirthdayInputContainer = styled.div`
+  input {
+    border-radius: 3px;
+  }
+
   button {
     background-color: ${(props) => props.theme.BACKGROUND};
     border: none;

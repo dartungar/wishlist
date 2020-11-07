@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from "react";
+import React, { useEffect, useContext, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import Item from "./Item";
@@ -17,6 +17,12 @@ const ListContainer = styled.div`
   flex-direction: column;
   flex-wrap: wrap;
   justify-content: flex-start;
+  h1 {
+    margin-bottom: 0.5rem;
+  }
+  small {
+    color: ${(props) => props.theme.TEXT_LIGHT};
+  }
 `;
 
 const List = ({ show_my_wishlist }) => {
@@ -30,6 +36,9 @@ const List = ({ show_my_wishlist }) => {
   } = useContext(ItemsContext);
   const { user } = useContext(AuthContext);
   const { user_public_url } = useParams();
+  const [birthday, setBirthday] = useState();
+  const [dispayedBirthday, setDisplayedBirthday] = useState();
+  const [dateDiff, setDateDiff] = useState();
 
   useEffect(() => {
     if (user_public_url) {
@@ -39,11 +48,44 @@ const List = ({ show_my_wishlist }) => {
     }
   }, [user_public_url]);
 
+  // calculate birthday data for display
+  useEffect(() => {
+    if (currentWishlist) {
+      console.log("wishlist user birthday", currentWishlist.user.birthday);
+      const bday = new Date(currentWishlist.user.birthday);
+      console.log("birthday day object", bday);
+      setBirthday(bday);
+      const displayedBday = `${bday.getDate()}.${bday.getMonth() + 1}`;
+      setDisplayedBirthday(displayedBday);
+      const now = new Date();
+      const bdayThisYear = new Date(
+        now.getFullYear(),
+        bday.getMonth(),
+        bday.getDate()
+      );
+      let closestNextBday;
+      if (bdayThisYear > now) {
+        closestNextBday = bdayThisYear;
+      } else if (bdayThisYear < now) {
+        closestNextBday = new Date(
+          now.getFullYear() + 1,
+          bday.getMonth(),
+          bday.getDate()
+        );
+      } else closestNextBday = now;
+      setDateDiff(Math.round((closestNextBday - now) / 8.64e7));
+    }
+  }, [currentWishlist]);
+
   return (
     <ListContainer>
       {newGifterModal && <NewGifterModal />}
 
       <ListTitle user={currentWishlist.user} />
+      <small>
+        День рождения: {dispayedBirthday}. Дней до следующего дня рождения:{" "}
+        {dateDiff}
+      </small>
       {loading && <Spinner />}
       {user &&
         currentWishlist.user.id === user.id &&
