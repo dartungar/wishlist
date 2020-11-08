@@ -108,9 +108,13 @@ const AuthState = (props) => {
     if (response.ok) {
       login(data);
       pushAlert({
+        type: "info",
+        text: "Не забудьте установить дату рождения!",
+      });
+      pushAlert({
         type: "success",
         text:
-          "Добро пожаловать в WishLis! Создайте список желаний или найдите друзей. Не забудьте установить дату рождения!",
+          "Добро пожаловать в WishLis! Создайте список желаний или найдите друзей.",
       });
     } else {
       const errorText = await response.text();

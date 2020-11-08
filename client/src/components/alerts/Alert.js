@@ -7,7 +7,6 @@ const AlertContainer = styled.div`
   z-index: 100;
   position: sticky;
   top: 50px;
-  height: 2rem;
   padding: 0.5rem 1rem;
   border-radius: 3px;
   line-height: 2rem;
@@ -24,6 +23,7 @@ const AlertContainer = styled.div`
 
   a {
     position: absolute;
+    top: 0.5rem;
     right: 1rem;
   }
 `;

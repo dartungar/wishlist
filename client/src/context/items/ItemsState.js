@@ -67,18 +67,19 @@ const ItemsState = (props) => {
         } else
           pushAlert({
             type: "danger",
-            text: "Error loading wishlist: could not find wishlist owner",
+            text: "Ошибка при загрузке списка: не найден владелец списка",
           });
       } else {
         console.log(`request to get wishlist failed with ${usr_response.text}`);
         pushAlert({
           type: "danger",
-          text: "Error loading wishlist: error finding user",
+          text:
+            "Ошибка при загрузке списка: ошибка при загрузке данных о владельце списка",
         });
       }
     } catch (error) {
       console.log(`getting wishlist failed: ${error}`);
-      pushAlert({ type: "danger", text: "Error loading wishlist" });
+      pushAlert({ type: "danger", text: "Ошибка при загрузке списка" });
     } finally {
       setLoading(false);
     }
@@ -102,11 +103,17 @@ const ItemsState = (props) => {
         return items;
       } else {
         console.log(`getting items failed: ${response.status}`);
-        pushAlert({ type: "danger", text: "Error loading wishlist items" });
+        pushAlert({
+          type: "danger",
+          text: "Ошибка при загрузке записей в списке",
+        });
       }
     } catch (error) {
       console.log(`getting wishlist failed: ${error}`);
-      pushAlert({ type: "danger", text: "Error loading wishlist items" });
+      pushAlert({
+        type: "danger",
+        text: "Ошибка при загрузке записей в списке",
+      });
     } finally {
       setLoading(false);
     }
@@ -132,14 +139,17 @@ const ItemsState = (props) => {
       if (response.ok) {
         console.log("Added item!");
         getWishlist(user.public_url);
-        pushAlert({ type: "success", text: "Added item" });
+        pushAlert({
+          type: "success",
+          text: "Запись успешно добавлена",
+        });
       } else {
         console.log("Failed to add item", JSON.stringify(completeItem));
-        pushAlert({ type: "danger", text: "Error adding item" });
+        pushAlert({ type: "danger", text: "Ошибка при добавлении" });
       }
     } catch (error) {
       console.log("Failed to add item", error);
-      pushAlert({ type: "danger", text: "Error adding item" });
+      pushAlert({ type: "danger", text: "Ошибка при добавлении" });
     } finally {
       setLoading(false);
     }
@@ -167,10 +177,10 @@ const ItemsState = (props) => {
         pushAlert({ type: "success", text: "Updated item" });
       } else {
         console.log("item was not updated", response.status);
-        pushAlert({ type: "danger", text: "Error updating item" });
+        pushAlert({ type: "danger", text: "Ошибка при сохранении изменений" });
       }
     } catch (error) {
-      pushAlert({ type: "danger", text: "Error updating item" });
+      pushAlert({ type: "danger", text: "Ошибка при сохранении изменений" });
     } finally {
       setLoading(false);
     }
@@ -227,10 +237,10 @@ const ItemsState = (props) => {
       if (response.ok) {
         console.log("deleted item!");
       } else {
-        pushAlert({ type: "danger", text: "Error deleting item" });
+        pushAlert({ type: "danger", text: "Ошибка при удалении" });
       }
     } catch (error) {
-      pushAlert({ type: "danger", text: "Error deleting item" });
+      pushAlert({ type: "danger", text: "Ошибка при удалении" });
     } finally {
       setLoading(false);
     }
