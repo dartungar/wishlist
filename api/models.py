@@ -1,11 +1,19 @@
 from sqlalchemy import Column, ForeignKey, String, Integer, DateTime, Date
 from sqlalchemy.orm import backref, relationship
 from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.sql.schema import Table
 from sqlalchemy.sql.sqltypes import Boolean
 from uuid import uuid4
 from datetime import datetime
 from .db import Base, engine
 import json
+
+
+# user - user many to many association
+# to implement Favorite users
+# https://docs.sqlalchemy.org/en/13/orm/basic_relationships.html#many-to-many
+favorite_users_association = Table('favorite_users', Base.metadata, Column('owner_id', UUID(
+    as_uuid=True), ForeignKey('users.id')), Column('person_id', UUID(as_uuid=True), ForeignKey('users.id')))
 
 
 class User(Base):
@@ -18,6 +26,10 @@ class User(Base):
     birthday = Column(Date)
     public_url = Column(String, unique=True, default=None)
     items = relationship("Item", backref="users")
+    favorite_persons = relationship(
+        "User", secondary=favorite_users_association, primaryjoin=favorite_users_association.c.owner_id == id, secondaryjoin=favorite_users_association.c.person_id == id,
+        backref='parents'
+    )
 
     def to_json(self):
         user_obj = {"id": str(self.id), "name": self.name, "birthday": str(self.birthday),
@@ -30,8 +42,8 @@ class User(Base):
         return json.dumps(user_obj)
 
 
-if not engine.dialect.has_table(engine, "users"):
-    Base.metadata.create_all(engine)
+# if not engine.dialect.has_table(engine, "users"):
+#     Base.metadata.create_all(engine)
 
 
 class Item(Base):
@@ -54,5 +66,7 @@ class Item(Base):
         return json.dumps(item_obj)
 
 
-if not engine.dialect.has_table(engine, "items"):
-    Base.metadata.create_all(engine)
+# if not engine.dialect.has_table(engine, "items"):
+#     Base.metadata.create_all(engine)
+
+Base.metadata.create_all(engine)

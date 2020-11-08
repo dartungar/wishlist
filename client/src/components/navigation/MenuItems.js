@@ -22,6 +22,11 @@ const MenuItems = () => {
             </Link>
           </li>
           <li>
+            <Link to="/favorites" title="Избранные люди">
+              Избранные
+            </Link>
+          </li>
+          <li>
             <Link to="/profile" title="Профиль">
               Профиль
             </Link>

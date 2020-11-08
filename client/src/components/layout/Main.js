@@ -9,6 +9,7 @@ import styled from "styled-components";
 import PrivateRoute from "../auth/PrivateRoute";
 import Navbar from "../navigation/Navbar";
 import List from "../list/List";
+import FavoritesList from "../favorites/FavoritesList";
 import Profile from "../user/Profile";
 import Login from "../auth/Login";
 import Register from "../auth/Register";
@@ -43,6 +44,7 @@ const Main = () => {
         {alerts && <Alert />}
         <Switch>
           <Route path="/list/:user_public_url" children={<List />} />
+          <PrivateRoute path="/favorites" component={FavoritesList} />
           <PrivateRoute path="/profile" component={Profile} />
           <Route exact path="/login">
             {isAuthorized ? <Redirect to="/" /> : <Login />}

@@ -315,4 +315,68 @@ def create_app(test_config=None, *args, **kwargs):
         except Exception as e:
             flask.Response('Error searching users', status=500)
 
+    ### FAVORITE USERS ###
+
+    # get a list of user's favorite users
+    @app.route("/api/users/<owner_user_id>/favorites", methods=["GET"])
+    @check_token
+    def get_favorite_users(owner_user_id):
+        token = request.cookies.get('token')
+        user = get_user_from_token(token)
+        if not user:
+            return flask.Response("Authorized user not found", status=401)
+        try:
+            favorites = [u.to_json() for u in user.favorite_persons]
+            if not favorites:
+                return flask.Response("User doesn't have favorite people yet", status=204)
+            return str(favorites), 200, {"ContentType": "application/json"}
+        except Exception as e:
+            return flask.Response('Error getting favorite people', status=500)
+
+    # add a new favorite user
+    @app.route("/api/users/<owner_user_id>/favorites", methods=["POST"])
+    @check_token
+    def add_favorite_user(owner_user_id):
+        token = request.cookies.get('token')
+        user = get_user_from_token(token)
+        if not user:
+            return flask.Response("Authorized user not found", status=401)
+        try:
+            new_favorite_user_id = request.get_json().get("user_id")
+            if not new_favorite_user_id:
+                return flask.Response("Must provide new favorite user id", status=400)
+            new_favorite_user = session.query(
+                User).filter_by(id=new_favorite_user_id).first()
+            if not new_favorite_user:
+                return flask.Response("Could not find new favorite user in database. Check if ID is valid", status=400)
+            user.favorite_persons.append(new_favorite_user)
+            session.commit()
+            return flask.Response('Added user to vaforite users', status=200)
+        except Exception as e:
+            session.rollback()
+            return flask.Response(f'Error adding user to favorite people: {e}', status=500)
+
+    # remove person from user's favorites
+    @app.route("/api/users/<owner_user_id>/favorites", methods=["DELETE"])
+    @check_token
+    def remove_favorite_user(owner_user_id):
+        token = request.cookies.get('token')
+        user = get_user_from_token(token)
+        if not user:
+            return flask.Response("Authorized user not found", status=401)
+        try:
+            new_favorite_user_id = request.get_json().get("user_id")
+            if not new_favorite_user_id:
+                return flask.Response("Must provide favorite user id", status=400)
+            new_favorite_user = session.query(
+                User).filter_by(id=new_favorite_user_id).first()
+            if not new_favorite_user:
+                return flask.Response("Could not find favorite user in database. Check if ID is valid", status=400)
+            user.favorite_persons.remove(new_favorite_user)
+            session.commit()
+            return flask.Response('Removed person from favorite people', status=200)
+        except Exception as e:
+            session.rollback()
+            return flask.Response(f'Error removing person from user\'s favorite people: {e}', status=500)
+
     return app
