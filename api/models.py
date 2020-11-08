@@ -62,7 +62,6 @@ class Item(Base):
     def to_json(self):
         item_obj = {"id": str(self.id), "name": self.name,
                     "user_id": str(self.user_id), "price": self.price, "url": self.url, "group_purchase": self.group_purchase, "gifters": self.gifters if self.gifters else None, "date_added": str(self.date_added)}
-        print(f'JSONified item: {json.dumps(item_obj)}')
         return json.dumps(item_obj)
 
 

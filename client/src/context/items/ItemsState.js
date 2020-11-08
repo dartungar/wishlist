@@ -7,6 +7,7 @@ import {
   SET_ADDING_NEW_ITEM,
   SET_EDITED_ITEM,
   SET_NEW_GIFTER_MODAL,
+  SET_FAVORITE_USERS,
 } from "../types.js";
 import alertContext from "../alert/alertContext";
 
@@ -20,6 +21,7 @@ const ItemsState = (props) => {
     addingNewItem: false,
     editedItem: null,
     newGifterModal: null,
+    favoriteUsers: null,
   };
 
   const [state, dispatch] = useReducer(itemsReducer, initialState);
@@ -60,7 +62,6 @@ const ItemsState = (props) => {
         const user = await usr_response.json();
         const items = await getItems(user.id);
         const wishlist = { user, items };
-        console.log(wishlist);
         if (user) {
           dispatch({ type: SET_WISHLIST, payload: wishlist });
         } else
@@ -82,6 +83,8 @@ const ItemsState = (props) => {
       setLoading(false);
     }
   };
+
+  /* ITEMS */
 
   // get current user's wishlist items
   // used in getWishlist
@@ -116,7 +119,6 @@ const ItemsState = (props) => {
       ...item,
       user_id: user.id,
     };
-    console.log("will add new item for ", user);
     try {
       const response = await fetch(`http://localhost:5000/api/items`, {
         method: "POST",
@@ -177,7 +179,6 @@ const ItemsState = (props) => {
   // update only item's gifters
   const updateItemGifters = async (item) => {
     setLoading(true);
-    console.log("stringified item: ", JSON.stringify(item));
     try {
       const response = await fetch(
         `http://localhost:5000/api/items/${item.id}/update_gifters`,
@@ -211,7 +212,6 @@ const ItemsState = (props) => {
   // delete item from current user's wishlist
   const deleteItem = async (item_id) => {
     setLoading(true);
-    console.log(`deleting item ${item_id}...`);
     try {
       const response = await fetch(
         `http://localhost:5000/api/items/${item_id}`,
@@ -236,6 +236,112 @@ const ItemsState = (props) => {
     }
   };
 
+  /* FAVORITE USERS 
+     methods are designed for authenticaded user 
+  */
+
+  // get favorite users
+  const getFavoriteUsers = async (current_user_id) => {
+    try {
+      const response = await fetch(
+        `http://localhost:5000/api/users/${current_user_id}/favorites`,
+        {
+          method: "GET",
+          mode: "cors",
+          credentials: "include",
+        }
+      );
+      if (response.ok) {
+        const data = await response.json();
+        const favorites = data.map((u) => JSON.parse(u));
+        dispatch({ type: SET_FAVORITE_USERS, payload: favorites });
+      } else if (response.status === 401) {
+        pushAlert({
+          type: "danger",
+          text: "Ошибка авторизации при получении списка избранных",
+        });
+      } else throw new Error("Ошибка при получении списка избранных");
+    } catch (error) {
+      console.log(error);
+      pushAlert({
+        type: "danger",
+        text: "Ошибка при получении списка избранных",
+      });
+    }
+  };
+
+  // add favorite user
+  const addFavoriteUser = async (current_user_id, favorite_user_id) => {
+    try {
+      const response = await fetch(
+        `http://localhost:5000/api/users/${current_user_id}/favorites`,
+        {
+          method: "POST",
+          mode: "cors",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ user_id: favorite_user_id }),
+        }
+      );
+      if (response.ok) {
+        getFavoriteUsers(current_user_id);
+      } else if (response.status === 401) {
+        pushAlert({
+          type: "danger",
+          text: "Ошибка авторизации при добавлении пользователя в избранные",
+        });
+      } else throw new Error("Ошибка при добавлении пользователя в избранные");
+    } catch (error) {
+      pushAlert({
+        type: "danger",
+        text: "Ошибка при добавлении пользователя в избранные",
+      });
+    }
+  };
+
+  // remove user from favorites
+  const removeFavoriteUser = async (current_user_id, favorite_user_id) => {
+    try {
+      const response = await fetch(
+        `http://localhost:5000/api/users/${current_user_id}/favorites`,
+        {
+          method: "DELETE",
+          mode: "cors",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ user_id: favorite_user_id }),
+        }
+      );
+      if (response.ok) {
+        getFavoriteUsers(current_user_id);
+      } else if (response.status === 401) {
+        pushAlert({
+          type: "danger",
+          text: "Ошибка авторизации при удалении пользователя из избранных",
+        });
+      } else throw new Error("Ошибка при удалении пользователя из избранных");
+    } catch (error) {
+      pushAlert({
+        type: "danger",
+        text: "Ошибка при удалении пользователя из избранных",
+      });
+    }
+  };
+
+  const checkIfUserIsInFavorites = (user_id) => {
+    let isInFavoriteUsers = false;
+    state.favoriteUsers.map((fu) => {
+      if (fu.id === user_id) {
+        isInFavoriteUsers = true;
+      }
+    });
+    return isInFavoriteUsers;
+  };
+
   return (
     <itemsContext.Provider
       value={{
@@ -245,6 +351,7 @@ const ItemsState = (props) => {
         addingNewItem: state.addingNewItem,
         editedItem: state.editedItem,
         newGifterModal: state.newGifterModal,
+        favoriteUsers: state.favoriteUsers,
         setLoading,
         setAddingNewItem,
         setEditedItem,
@@ -255,6 +362,10 @@ const ItemsState = (props) => {
         updateItemGifters,
         deleteItem,
         setNewGifterModal,
+        getFavoriteUsers,
+        addFavoriteUser,
+        removeFavoriteUser,
+        checkIfUserIsInFavorites,
       }}
     >
       {props.children}

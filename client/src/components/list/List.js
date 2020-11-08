@@ -43,6 +43,7 @@ const List = ({ show_my_wishlist }) => {
 
   useEffect(() => {
     if (user_public_url) {
+      console.log("getting wishlist for", user_public_url);
       getWishlist(user_public_url);
     } else if (show_my_wishlist) {
       getWishlist(user.public_url);
@@ -82,7 +83,7 @@ const List = ({ show_my_wishlist }) => {
     <ListContainer>
       {newGifterModal && <NewGifterModal />}
 
-      <ListTitle user={currentWishlist.user} />
+      <ListTitle listOwner={currentWishlist.user} />
 
       <small>
         {currentWishlist.user.birthday &&

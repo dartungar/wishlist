@@ -4,6 +4,7 @@ import {
   SET_EDITED_ITEM,
   SET_WISHLIST,
   SET_NEW_GIFTER_MODAL,
+  SET_FAVORITE_USERS,
 } from "../types.js";
 
 const itemsReducer = (state, action) => {
@@ -35,6 +36,12 @@ const itemsReducer = (state, action) => {
       return {
         ...state,
         newGifterModal: action.payload,
+      };
+
+    case SET_FAVORITE_USERS:
+      return {
+        ...state,
+        favoriteUsers: action.payload,
       };
     default:
       return state;

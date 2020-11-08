@@ -247,7 +247,6 @@ def create_app(test_config=None, *args, **kwargs):
             item.url = data["url"]
             item.group_purchase = data["group_purchase"]
             item.gifters = data["gifters"]
-            print(data["gifters"])
             session.commit()
         except Exception as e:
             session.rollback()
@@ -269,7 +268,6 @@ def create_app(test_config=None, *args, **kwargs):
                     item.gifters = ', '.join(data['gifters'])
                 else:
                     item.gifters = gifters[0]
-            print(data["gifters"])
             session.commit()
         except Exception as e:
             session.rollback()
@@ -278,8 +276,6 @@ def create_app(test_config=None, *args, **kwargs):
         return flask.Response("Updated item", status=200)
 
     # delete item
-    # TODO
-
     @app.route("/api/items/<item_id>", methods=["DELETE"])
     @check_token
     def delete_item(item_id):
@@ -310,7 +306,7 @@ def create_app(test_config=None, *args, **kwargs):
                 User.name.ilike(f"%{query}%") | User.public_url.ilike(f"%{query}%"))
             if not results:
                 return '[]', 204, {"ContentType": "application/json"}
-            users = [u.to_json() for u in results]
+            users = [u.to_json_short() for u in results]
             return json.dumps(users), 200, {"ContentType": "application/json"}
         except Exception as e:
             flask.Response('Error searching users', status=500)
@@ -326,10 +322,8 @@ def create_app(test_config=None, *args, **kwargs):
         if not user:
             return flask.Response("Authorized user not found", status=401)
         try:
-            favorites = [u.to_json() for u in user.favorite_persons]
-            if not favorites:
-                return flask.Response("User doesn't have favorite people yet", status=204)
-            return str(favorites), 200, {"ContentType": "application/json"}
+            favorites = [u.to_json_short() for u in user.favorite_persons]
+            return json.dumps(favorites), 200, {"ContentType": "application/json"}
         except Exception as e:
             return flask.Response('Error getting favorite people', status=500)
 
@@ -354,7 +348,7 @@ def create_app(test_config=None, *args, **kwargs):
             return flask.Response('Added user to vaforite users', status=200)
         except Exception as e:
             session.rollback()
-            return flask.Response(f'Error adding user to favorite people: {e}', status=500)
+            return flask.Response(f'Error adding user to favorite people', status=500)
 
     # remove person from user's favorites
     @app.route("/api/users/<owner_user_id>/favorites", methods=["DELETE"])

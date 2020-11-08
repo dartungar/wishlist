@@ -12,3 +12,5 @@ export const PUSH_ALERT = "PUSH_ALERT";
 export const POP_ALERT = "POP_ALERT";
 
 export const SET_SEARCH_RESULTS = "SET_SEARCH_RESULTS";
+
+export const SET_FAVORITE_USERS = "SET_FAVORITE_USERS";
