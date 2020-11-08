@@ -3,6 +3,10 @@ import styled from "styled-components";
 import ItemsContext from "../../context/items/itemsContext";
 
 const FavoritesItemContainer = styled.div`
+  h4 {
+    margin-top: 2.5rem;
+  }
+
   i {
     margin-left: 1rem;
   }

@@ -6,7 +6,7 @@ import EditBirthdayInput from "./EditBirthdayInput";
 
 const ProfileContainer = styled.div`
   h4 {
-    margin-top: 2rem;
+    margin-top: 2.5rem;
     margin-bottom: 1rem;
   }
 
@@ -17,7 +17,7 @@ const ProfileContainer = styled.div`
 
 const Profile = () => {
   const {
-    user: { name, public_url, birthday },
+    user: { name, public_url },
   } = useContext(AuthContext);
   const [showEditUsernameInput, setShowEditUsernameInput] = useState(false);
 

@@ -4,6 +4,8 @@ import ItemsContext from "../../context/items/itemsContext";
 import AuthContext from "../../context/auth/authContext";
 import FavoritesItem from "./FavoritesItem";
 
+const FavoritesContainer = styled.div``;
+
 const FavoritesList = () => {
   const { favoriteUsers, getFavoriteUsers } = useContext(ItemsContext);
   const { user } = useContext(AuthContext);
@@ -13,9 +15,9 @@ const FavoritesList = () => {
   }, []);
 
   return (
-    <div>
+    <FavoritesContainer>
       <h2>Избранные пользователи</h2>
-      {favoriteUsers ? (
+      {favoriteUsers && favoriteUsers.length > 0 ? (
         favoriteUsers.map((u) => (
           <FavoritesItem key={u.id} user={u} owner={user} />
         ))
@@ -23,9 +25,12 @@ const FavoritesList = () => {
         <p>
           Чтобы добавить пользователя в избранные, кликните на{" "}
           <i class="far fa-star"></i> рядом с его именем в списке желаний.
+          <p>
+            <a href="/search">Найти пользователей</a>
+          </p>
         </p>
       )}
-    </div>
+    </FavoritesContainer>
   );
 };
 
