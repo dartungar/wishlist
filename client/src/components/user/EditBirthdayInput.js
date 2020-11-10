@@ -34,10 +34,12 @@ const EditBirthdayInput = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    changeUserInfo({
-      ...user,
-      birthday: editedBirthday,
-    });
+    if (user.birthday !== editedBirthday) {
+      changeUserInfo({
+        ...user,
+        birthday: editedBirthday,
+      });
+    }
     setShowBtns(false);
   };
 

@@ -17,10 +17,13 @@ const EditUsernameInput = ({ closeInput }) => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    changeUserInfo({
-      ...user,
-      name: editedName,
-    });
+    if (user.name !== editedName) {
+      changeUserInfo({
+        ...user,
+        name: editedName,
+      });
+    }
+
     closeInput();
   };
 

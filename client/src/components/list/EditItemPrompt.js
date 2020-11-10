@@ -74,8 +74,27 @@ const EditItemPrompt = ({ item }) => {
   const onSubmit = (e) => {
     e.preventDefault();
     console.log("Submitted", e.key, editedItemValue);
-    updateItem(editedItemValue);
-    getWishlist(user.public_url);
+    // if data didnt change, do not send request
+    if (!shallowEqual(editedItemValue, item)) {
+      updateItem(editedItemValue);
+      getWishlist(user.public_url);
+    } else {
+      setEditedItem(null);
+    }
+  };
+
+  const shallowEqual = (object1, object2) => {
+    const keys1 = Object.keys(object1);
+    const keys2 = Object.keys(object2);
+    if (keys1.length !== keys2.length) {
+      return false;
+    }
+    for (let key of keys1) {
+      if (object1[key] !== object2[key]) {
+        return false;
+      }
+    }
+    return true;
   };
 
   const handleKeyDown = (e) => {

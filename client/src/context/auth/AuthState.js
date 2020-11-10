@@ -168,7 +168,6 @@ const AuthState = (props) => {
       value={{
         isAuthorized: state.isAuthorized,
         user: state.user,
-        checkToken,
         getUser,
         login,
         register,
