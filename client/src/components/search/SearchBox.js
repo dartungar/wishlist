@@ -9,12 +9,14 @@ const SearchBoxContainer = styled.div`
     border: 1px solid ${(props) => props.theme.PRIMARY_LIGHT};
     border-radius: 3px;
     width: 45ch;
+    height: 1.5rem;
   }
 `;
 
 const SubmitBtn = styled.button`
   position: absolute;
   /* right: 1.7rem; */
+  top: 0.5rem;
   right: 0.1rem;
   background-color: ${(props) => props.theme.BACKGROUND};
   border: none;

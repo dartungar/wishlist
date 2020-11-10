@@ -9,13 +9,12 @@ const BtnContainer = styled.div`
   color: ${(props) => props.theme.TEXT_LIGHT};
   font-size: 0.8rem;
   width: 12ch;
-  border: 1px solid ${(props) => props.theme.BACKGROUND};
   border-radius: 3px;
 
   &:hover {
     background-color: ${(props) => props.theme.BACKGROUND};
     /* border-color: ${(props) => props.theme.PRIMARY_LIGHT}; */
-    box-shadow: 1px 1px 4px darkgrey;
+    box-shadow: 1px 1px 4px ${(props) => props.theme.BOX_SHADOW};
     transition: box-shadow 0.3s;
   }
   i {

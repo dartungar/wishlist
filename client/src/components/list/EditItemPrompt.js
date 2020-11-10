@@ -16,7 +16,7 @@ const EditItemContainer = styled.form`
   border-radius: 3px;
   background-color: ${(props) => props.theme.BACKGROUND};
   animation: 0.5s ${fadein} linear;
-  box-shadow: 1px 1px 4px lightgray;
+  box-shadow: 1px 1px 4px ${(props) => props.theme.BOX_SHADOW};
 `;
 
 const TextInput = styled.input`

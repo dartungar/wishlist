@@ -14,7 +14,7 @@ const DarkenedBackground = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgba(252, 255, 255, 0.6);
+  background-color: rgba(102, 85, 60, 0.15);
 `;
 
 const DialogWindowContainer = styled.div`
@@ -24,7 +24,7 @@ const DialogWindowContainer = styled.div`
   border-radius: 3px;
   padding: 1rem;
   animation: 0.5s ${fadein} linear;
-  box-shadow: 1px 1px 4px lightgray;
+  box-shadow: 1px 1px 4px ${(props) => props.theme.BOX_SHADOW};
 `;
 
 const BtnsContainer = styled.div`

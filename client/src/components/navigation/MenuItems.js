@@ -27,8 +27,8 @@ const MenuItems = () => {
             </Link>
           </li>
           <li>
-            <Link to="/profile" title="Профиль">
-              Профиль
+            <Link to="/settings" title="Настройки">
+              Настройки
             </Link>
           </li>
           <li>

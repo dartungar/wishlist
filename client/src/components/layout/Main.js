@@ -1,16 +1,11 @@
-import React, { useContext, useEffect } from "react";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Redirect,
-} from "react-router-dom";
+import React, { useContext, useEffect, useState } from "react";
+import { Switch, Route, Redirect } from "react-router-dom";
 import styled from "styled-components";
 import PrivateRoute from "../auth/PrivateRoute";
 import Navbar from "../navigation/Navbar";
 import List from "../list/List";
 import FavoritesList from "../favorites/FavoritesList";
-import Profile from "../user/Profile";
+import Settings from "../settings/Settings";
 import Login from "../auth/Login";
 import Register from "../auth/Register";
 import PublicHome from "../layout/PublicHome";
@@ -30,22 +25,24 @@ const MainContainer = styled.div`
 const Main = () => {
   const { alerts } = useContext(AlertContext);
   const { isAuthorized, user, getUser, checkToken } = useContext(AuthContext);
+  const [isUserChecked, setUserChecked] = useState(false);
 
+  // try to check user on every page load
   useEffect(() => {
     if (!user) {
-      getUser();
+      getUser().finally(() => setUserChecked(true));
     }
   }, []);
 
   return (
-    <Router>
+    isUserChecked && (
       <MainContainer>
         <Navbar />
         {alerts && <Alert />}
         <Switch>
           <Route path="/list/:user_public_url" children={<List />} />
           <PrivateRoute path="/favorites" component={FavoritesList} />
-          <PrivateRoute path="/profile" component={Profile} />
+          <PrivateRoute path="/settings" component={Settings} />
           <Route exact path="/login">
             {isAuthorized ? <Redirect to="/" /> : <Login />}
           </Route>
@@ -60,7 +57,7 @@ const Main = () => {
           )}
         </Switch>
       </MainContainer>
-    </Router>
+    )
   );
 };
 

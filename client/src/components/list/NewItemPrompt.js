@@ -14,7 +14,7 @@ const AddNewItemContainer = styled.form`
   margin: 1rem 0 0 0;
   /* border: 1px solid #b1dff2; */
   border-radius: 3px;
-  box-shadow: 1px 1px 4px lightgray;
+  box-shadow: 1px 1px 4px ${(props) => props.theme.BOX_SHADOW};
 
   background-color: ${(props) => props.theme.BACKGROUND};
   animation: 0.5s ${fadein} linear;

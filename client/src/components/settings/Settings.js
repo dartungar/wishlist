@@ -3,6 +3,7 @@ import styled from "styled-components";
 import AuthContext from "../../context/auth/authContext";
 import EditUserNameInput from "./EditUsernameInput";
 import EditBirthdayInput from "./EditBirthdayInput";
+import EditThemeInput from "./EditThemeInput";
 
 const ProfileContainer = styled.div`
   h4 {
@@ -15,7 +16,7 @@ const ProfileContainer = styled.div`
   }
 `;
 
-const Profile = () => {
+const Settings = () => {
   const {
     user: { name, public_url },
   } = useContext(AuthContext);
@@ -38,7 +39,7 @@ const Profile = () => {
 
   return (
     <ProfileContainer>
-      <h1>Профиль</h1>
+      <h1>Настройки</h1>
       <h4>Отображаемое имя</h4>
       {showEditUsernameInput ? (
         <EditUserNameInput closeInput={closeInput} />
@@ -58,10 +59,10 @@ const Profile = () => {
       <a href="" onClick={onCopyUrl} title="Копировать ссылку на мой список">
         <i className="far fa-copy"></i>
       </a>
-
       <EditBirthdayInput />
+      <EditThemeInput />
     </ProfileContainer>
   );
 };
 
-export default Profile;
+export default Settings;

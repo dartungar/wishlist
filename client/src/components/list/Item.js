@@ -14,7 +14,7 @@ const ItemContainer = styled.div`
   /* border: 1px solid ${(props) => props.theme.PRIMARY_LIGHT}; */
   border-radius: 3px;
   background-color: ${(props) => props.theme.BACKGROUND};
-  box-shadow: 1px 1px 4px lightgray;
+  box-shadow: 1px 1px 4px ${(props) => props.theme.BOX_SHADOW};
   animation: 0.5s ${fadein} linear;
   a {
     text-decoration: none;

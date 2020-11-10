@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 import HamburgerMenu from "./HamburgerMenu";
 import { fadein } from "../../style/animations";
@@ -33,8 +34,14 @@ const HamburgerIcon = styled.div`
 // animation on change state
 const HamburgerBtn = () => {
   const [showHamburgerMenu, setShowHamburgerMenu] = useState(false);
+  const location = useLocation();
 
-  useEffect(() => {}, []);
+  // hide menu on change url path
+  useEffect(() => {
+    if (location) {
+      setShowHamburgerMenu(false);
+    }
+  }, [location]);
 
   const handleClick = (e) => {
     e.preventDefault();

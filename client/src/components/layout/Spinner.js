@@ -11,7 +11,7 @@ const DarkenedBackground = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgba(252, 255, 255, 0.7);
+  background-color: rgba(102, 85, 60, 0.15);
 `;
 
 const TextContainer = styled.div`
