@@ -51,30 +51,29 @@ const ListTitle = ({ listOwner }) => {
   };
 
   return (
-    user && (
-      <Title>
-        {listOwner.name}{" "}
-        {favoriteUsers &&
-          listOwner.id !== user.id &&
-          (isWishlistOwnerInFavorites ? (
-            <a
-              href=""
-              onClick={onClickRemoveFromFavorites}
-              title="Добавить в избранные"
-            >
-              <i class="fas fa-star"></i>
-            </a>
-          ) : (
-            <a
-              href=""
-              onClick={onClickAddToFavorites}
-              title="Убрать из избранных"
-            >
-              <i class="far fa-star"></i>
-            </a>
-          ))}
-      </Title>
-    )
+    <Title>
+      {listOwner.name}{" "}
+      {user &&
+        favoriteUsers &&
+        listOwner.id !== user.id &&
+        (isWishlistOwnerInFavorites ? (
+          <a
+            href=""
+            onClick={onClickRemoveFromFavorites}
+            title="Добавить в избранные"
+          >
+            <i className="fas fa-star"></i>
+          </a>
+        ) : (
+          <a
+            href=""
+            onClick={onClickAddToFavorites}
+            title="Убрать из избранных"
+          >
+            <i className="far fa-star"></i>
+          </a>
+        ))}
+    </Title>
   );
 };
 

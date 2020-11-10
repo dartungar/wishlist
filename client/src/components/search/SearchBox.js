@@ -58,7 +58,7 @@ const SearchBox = () => {
           placeholder="Поиск по имени, фамилии, id - от 2 символов"
         />
         <SubmitBtn type="submit" title="Найти по имени, фамилии, id">
-          <i class="fas fa-search"></i>
+          <i className="fas fa-search"></i>
         </SubmitBtn>
       </form>
     </SearchBoxContainer>

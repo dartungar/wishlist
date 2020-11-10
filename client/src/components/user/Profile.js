@@ -56,7 +56,7 @@ const Profile = () => {
 
       <a href={`/list/${public_url}`}>{public_url}</a>
       <a href="" onClick={onCopyUrl} title="Копировать ссылку на мой список">
-        <i class="far fa-copy"></i>
+        <i className="far fa-copy"></i>
       </a>
 
       <EditBirthdayInput />

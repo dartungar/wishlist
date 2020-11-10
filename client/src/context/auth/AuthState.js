@@ -27,7 +27,6 @@ const AuthState = (props) => {
       const response = await fetch(`http://localhost:5000/api/auth/user`, {
         method: "GET",
         credentials: "include",
-        withCredentials: "true",
       });
       if (response.ok) {
         const data = await response.json();
@@ -36,8 +35,8 @@ const AuthState = (props) => {
       } else if (response.status === 401) {
         dispatch({ type: SET_USER, payload: null });
         dispatch({ type: SET_IS_AUTHORIZED, payload: false });
-        // if status = 401, it means we did not provide token
-        // else there was legit error
+        // if status = 401, we did not provide token
+        // else there was a legit error
       } else {
         pushAlert({
           type: "danger",
@@ -53,12 +52,6 @@ const AuthState = (props) => {
           "Ошибка соединения с сервером. Пожалуйста, перезагрузите страницу и попробуйте снова",
       });
     }
-  };
-
-  // refresh token
-  // TODO
-  const refreshToken = async () => {
-    // TODO: if error, set user & is authorized to null
   };
 
   // general login
@@ -175,10 +168,11 @@ const AuthState = (props) => {
       value={{
         isAuthorized: state.isAuthorized,
         user: state.user,
+        checkToken,
+        getUser,
         login,
         register,
         logout,
-        getUser,
         changeUserInfo,
       }}
     >

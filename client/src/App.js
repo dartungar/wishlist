@@ -1,4 +1,5 @@
 import React from "react";
+import { BrowserRouter as Router } from "react-router-dom";
 import styled, { ThemeProvider } from "styled-components";
 import ItemsState from "./context/items/ItemsState";
 import AuthState from "./context/auth/AuthState";
@@ -68,7 +69,9 @@ const App = () => {
             <ItemsState>
               <AppContainer>
                 <div></div>
-                <Main />
+                <Router>
+                  <Main />
+                </Router>
                 <div></div>
               </AppContainer>
             </ItemsState>

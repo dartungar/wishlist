@@ -10,6 +10,7 @@ from .helpers import generate_public_url, encrypt, decrypt, create_hash
 import flask
 import json
 import os
+import datetime
 
 
 def create_app(test_config=None, *args, **kwargs):
@@ -23,12 +24,6 @@ def create_app(test_config=None, *args, **kwargs):
     # CORSify app so we can receive data from client on another port
     CORS(app, supports_credentials=True)
 
-    # if test_config is None:
-    #     # если не тестим - загружаем боевой конфиг
-    #     app.config.from_pyfile("config.py", silent=True)
-    # else:
-    #     app.config.from_mapping(test_config)
-
     # удостоверяемся, что папка для приложения создана
     try:
         os.makedirs(app.instance_path)
@@ -38,8 +33,8 @@ def create_app(test_config=None, *args, **kwargs):
     ### USER & AUTH  ###
 
     # checks if token exists
-    # wrapped func will hape access to it
-    def check_token(func):
+    # wrapped func will have access to it
+    def check_token_validity(func):
         @wraps(func)
         def wrapper(*args, **kwargs):
             token = request.cookies.get('token')
@@ -49,7 +44,6 @@ def create_app(test_config=None, *args, **kwargs):
         return wrapper
 
     # check if user with token exists
-
     def get_user_from_token(token):
         try:
             id = decrypt(token)
@@ -64,9 +58,29 @@ def create_app(test_config=None, *args, **kwargs):
             print(e)
             raise Exception
 
+    # refresh token on each request
+    # if token is present
+    @app.after_request
+    def check_token_expiration(response):
+        token = request.cookies.get('token')
+        # refresh token if it is close to expiring
+        if token:
+            token_lifetime = int(os.getenv('TOKEN_LIFETIME'))
+            user = get_user_from_token(token)
+            if user:
+                print(f'refresing token for {user.public_url}')
+                token = encrypt(str(user.id))
+                response.set_cookie('token', token, httponly=True,
+                                    max_age=token_lifetime, samesite='Strict')
+                response.set_cookie('refreshments', 'some nice tea')
+                return response
+            else:
+                response.set_cookie('token', '', httponly=True,
+                                    max_age=0, samesite='Strict')
+        return response
+
     # authenticate user after successful Google / Facebook authorization
     # return session token
-
     @app.route("/api/auth/login", methods=["POST"])
     def login():
         data = request.get_json()
@@ -89,7 +103,10 @@ def create_app(test_config=None, *args, **kwargs):
         if user:
             token = encrypt(str(user.id))
             response = make_response(f'Authenticated', 200)
-            response.set_cookie('token', token, httponly=True)
+            response.set_cookie('token', token, httponly=True,
+                                max_age=int(os.getenv('TOKEN_LIFETIME')), samesite='Strict')
+            response.set_cookie('token_iat', str(datetime.datetime.now()), httponly=True,
+                                samesite='Strict')
             return response
         return make_response("User not found. Try registering", 204)
 
@@ -104,6 +121,7 @@ def create_app(test_config=None, *args, **kwargs):
         return response
 
     # add new user
+
     @app.route("/api/auth/register", methods=["POST"])
     def add_user():
         data = request.get_json()
@@ -145,13 +163,14 @@ def create_app(test_config=None, *args, **kwargs):
     # get current user info (for auth)
 
     @app.route("/api/auth/user", methods=["GET"])
-    @check_token
+    @check_token_validity
     def get_current_user():
         token = request.cookies.get('token')
         user = get_user_from_token(token)
         if user:
             response = make_response(user.to_json(), 200)
             response.headers.add("ContentType", "application/json")
+
             return response
         return flask.Response("User not found", status=204)
 
@@ -172,7 +191,7 @@ def create_app(test_config=None, *args, **kwargs):
     # update user
     # for now, only change username
     @app.route("/api/users/<user_id>", methods=["PUT"])
-    @check_token
+    @check_token_validity
     def update_user(user_id):
         if not user_id:
             return flask.Response("Must provide user id", status=400)
@@ -209,7 +228,7 @@ def create_app(test_config=None, *args, **kwargs):
 
     # add item
     @app.route("/api/items", methods=["POST"])
-    @check_token
+    @check_token_validity
     def add_item():
         token = request.cookies.get('token')
         user = get_user_from_token(token)
@@ -231,7 +250,7 @@ def create_app(test_config=None, *args, **kwargs):
 
     # update item info
     @app.route("/api/items/<item_id>", methods=["PUT"])
-    @check_token
+    @check_token_validity
     def update_item(item_id):
         token = request.cookies.get('token')
         user = get_user_from_token(token)
@@ -277,7 +296,7 @@ def create_app(test_config=None, *args, **kwargs):
 
     # delete item
     @app.route("/api/items/<item_id>", methods=["DELETE"])
-    @check_token
+    @check_token_validity
     def delete_item(item_id):
         token = request.cookies.get('token')
         user = get_user_from_token(token)
@@ -315,7 +334,7 @@ def create_app(test_config=None, *args, **kwargs):
 
     # get a list of user's favorite users
     @app.route("/api/users/<owner_user_id>/favorites", methods=["GET"])
-    @check_token
+    @check_token_validity
     def get_favorite_users(owner_user_id):
         token = request.cookies.get('token')
         user = get_user_from_token(token)
@@ -329,7 +348,7 @@ def create_app(test_config=None, *args, **kwargs):
 
     # add a new favorite user
     @app.route("/api/users/<owner_user_id>/favorites", methods=["POST"])
-    @check_token
+    @check_token_validity
     def add_favorite_user(owner_user_id):
         token = request.cookies.get('token')
         user = get_user_from_token(token)
@@ -352,7 +371,7 @@ def create_app(test_config=None, *args, **kwargs):
 
     # remove person from user's favorites
     @app.route("/api/users/<owner_user_id>/favorites", methods=["DELETE"])
-    @check_token
+    @check_token_validity
     def remove_favorite_user(owner_user_id):
         token = request.cookies.get('token')
         user = get_user_from_token(token)
