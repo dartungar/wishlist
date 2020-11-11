@@ -57,6 +57,7 @@ const EditItemPrompt = ({ item }) => {
     updateEditedItemValue(item);
   }, [item]);
 
+  // controlled input change handling
   const onChange = (e) => {
     const value =
       e.target.type === "checkbox" ? e.target.checked : e.target.value;
@@ -66,11 +67,13 @@ const EditItemPrompt = ({ item }) => {
     });
   };
 
+  // cance 'edit' mode
   const onCancel = (e) => {
     e.preventDefault();
     setEditedItem(null);
   };
 
+  // apply chages and cancel 'edit' mode
   const onSubmit = (e) => {
     e.preventDefault();
     console.log("Submitted", e.key, editedItemValue);
@@ -83,6 +86,7 @@ const EditItemPrompt = ({ item }) => {
     }
   };
 
+  // compare objects by prop values
   const shallowEqual = (object1, object2) => {
     const keys1 = Object.keys(object1);
     const keys2 = Object.keys(object2);
@@ -97,6 +101,7 @@ const EditItemPrompt = ({ item }) => {
     return true;
   };
 
+  // support Enter and ESC
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
       onSubmit(e);

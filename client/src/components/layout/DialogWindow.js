@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import styled from "styled-components";
 import { fadein } from "../../style/animations";
 import ConfirmBtn from "./ConfirmBtn";
@@ -33,8 +33,17 @@ const BtnsContainer = styled.div`
 `;
 
 const DialogWindow = ({ text, onConfirm, onCancel }) => {
+  const dialog = useRef(null);
+
+  // focus element
+  // so hotkeys work
+  useEffect(() => {
+    dialog.current.focus();
+  }, []);
+
   // Enter and ESC support
   const handleKeyDown = (e) => {
+    console.log(e.key);
     if (e.key === "Enter") {
       onConfirm(e);
     } else if (e.key === "Escape") {
@@ -44,7 +53,11 @@ const DialogWindow = ({ text, onConfirm, onCancel }) => {
 
   return (
     <DarkenedBackground>
-      <DialogWindowContainer onKeyDown={handleKeyDown}>
+      <DialogWindowContainer
+        ref={dialog}
+        tabIndex="0"
+        onKeyDown={(e) => handleKeyDown(e)}
+      >
         <p>{text}</p>
         <BtnsContainer>
           <CancelBtn onClick={onCancel} />

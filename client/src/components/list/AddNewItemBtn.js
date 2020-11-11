@@ -31,6 +31,7 @@ const BtnContainer = styled.div`
 const AddNewItemBtn = () => {
   const { setAddingNewItem } = useContext(ItemsContext);
 
+  // show 'Adding new item' prompt
   const onClick = () => {
     setAddingNewItem(true);
   };

@@ -65,27 +65,32 @@ const Item = ({ item }) => {
   const [showClearGiftersDialog, setShowClearGiftersDialog] = useState(false);
   const [showDeleteItemDialog, setShowDeleteItemsDialog] = useState(false);
 
+  // handle controlled input change
   const onEdit = (e) => {
     e.preventDefault();
     setEditedItem(item);
   };
 
+  // delete item, refresh wishlist
   const onDelete = (e) => {
     e.preventDefault();
     deleteItem(id);
     if (user) getWishlist(user.public_url);
   };
 
+  // on confirming delete, delete and hide dialog
   const onConfirmDelete = (e) => {
     onDelete(e);
     setShowDeleteItemsDialog(false);
   };
 
+  // on cancelling delete, hide dialog
   const onCancelDelete = (e) => {
     e.preventDefault();
     setShowDeleteItemsDialog(false);
   };
 
+  // clear gifters and refresh wishlist
   const onCleargifters = (e) => {
     e.preventDefault();
     updateItem({
@@ -95,16 +100,19 @@ const Item = ({ item }) => {
     getWishlist(user.public_url);
   };
 
+  // clear gifters and hide dialog
   const onConfirmClearGifters = (e) => {
     onCleargifters(e);
     setShowClearGiftersDialog(false);
   };
 
+  // hide dialog
   const onCancelClearGifters = (e) => {
     e.preventDefault();
     setShowClearGiftersDialog(false);
   };
 
+  // show modal for becoming a gifter of item
   const onClickBooking = (e) => {
     e.preventDefault();
     setNewGifterModal({ item: item });
