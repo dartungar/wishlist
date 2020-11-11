@@ -23,6 +23,9 @@ const SearchResultList = () => {
   const { searchResults } = useContext(SearchContext);
   const [showNoResultMessage, setShowNoResultMessage] = useState();
 
+  // show 'Did not find anything' message
+  // only if we've already searched
+  // but not on first page render (load)
   useEffect(() => {
     if (!showNoResultMessage && searchResults && searchResults.length === 0) {
       setShowNoResultMessage(true);

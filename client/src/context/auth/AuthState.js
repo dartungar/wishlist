@@ -6,22 +6,18 @@ import AlertContext from "../alert/alertContext";
 
 const AuthState = (props) => {
   const initialState = {
-    // isAuthorized: true, // TODO: make default false after implementing auth
-    // user: {
-    //   id: "1BeRbZgI",
-    //   name: "Daniel Nikolaev",
-    // }, // TODO: make null default
     isAuthorized: false,
     user: null,
   };
 
   const [state, dispatch] = useReducer(authReducer, initialState);
 
-  // using Alerts context
+  // using Alerts context to show messages
   const { pushAlert } = useContext(AlertContext);
 
   // authorize: check token & set isAuthorized and current user
   // used on every page reload
+  // protected
   const getUser = async () => {
     try {
       const response = await fetch(`http://localhost:5000/api/auth/user`, {
@@ -54,9 +50,9 @@ const AuthState = (props) => {
     }
   };
 
-  // general login
+  // login & authenticate
+  // public
   const login = async (data) => {
-    // TODO
     const response = await fetch(`http://localhost:5000/api/auth/login`, {
       method: "POST",
       mode: "cors",
@@ -88,6 +84,7 @@ const AuthState = (props) => {
   };
 
   // register
+  // public
   const register = async (data) => {
     const response = await fetch(`http://localhost:5000/api/auth/register`, {
       method: "POST",
@@ -121,6 +118,7 @@ const AuthState = (props) => {
   };
 
   // log out
+  // protected
   const logout = async () => {
     console.log("log user out");
     const response = await fetch(`http://localhost:5000/api/auth/logout`, {
@@ -141,9 +139,9 @@ const AuthState = (props) => {
   };
 
   // change user info, i.e name
+  // protected
   const changeUserInfo = async (data) => {
     console.log("changing user info...");
-    // TODO
     const response = await fetch(`http://localhost:5000/api/users/${data.id}`, {
       method: "PUT",
       mode: "cors",

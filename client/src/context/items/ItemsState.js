@@ -29,6 +29,7 @@ const ItemsState = (props) => {
   const { pushAlert } = useContext(alertContext);
 
   // set loading
+  // determines if Spinner.js is shown
   const setLoading = (boolean) => {
     dispatch({ type: SET_LOADING, payload: boolean });
   };
@@ -39,6 +40,7 @@ const ItemsState = (props) => {
   };
 
   // set item that's being currently edited
+  // also toggles 'edit mode' for this item
   const setEditedItem = (item) => {
     console.log("setting edited item: ", item);
     dispatch({ type: SET_EDITED_ITEM, payload: item });
@@ -51,6 +53,8 @@ const ItemsState = (props) => {
 
   // get wishlist (items & user info) by user
   // used on every page update (adding, deleting, editing items)
+  // to refresh displayed info
+  // public
   const getWishlist = async (user_public_url) => {
     console.log("getting wishlist...");
     setLoading(true);
@@ -89,6 +93,7 @@ const ItemsState = (props) => {
 
   // get current user's wishlist items
   // used in getWishlist
+  // public
   const getItems = async (user_id = state.currentWishlist.user.id) => {
     console.log("getting items...");
     setLoading(true);
@@ -120,6 +125,7 @@ const ItemsState = (props) => {
   };
 
   // add item in current user's wishlist
+  // protected
   const addItem = async (user = state.user, item) => {
     setLoading(true);
     let completeItem = {
@@ -155,7 +161,8 @@ const ItemsState = (props) => {
     }
   };
 
-  // update item in current user's wishlist
+  // update item by ID. used in in current user's wishlist
+  // protected
   const updateItem = async (item) => {
     setLoading(true);
     try {
@@ -187,6 +194,7 @@ const ItemsState = (props) => {
   };
 
   // update only item's gifters
+  // public
   const updateItemGifters = async (item) => {
     setLoading(true);
     try {
@@ -220,6 +228,7 @@ const ItemsState = (props) => {
   };
 
   // delete item from current user's wishlist
+  // protected
   const deleteItem = async (item_id) => {
     setLoading(true);
     try {
@@ -246,11 +255,10 @@ const ItemsState = (props) => {
     }
   };
 
-  /* FAVORITE USERS 
-     methods are designed for authenticaded user 
-  */
+  /* FAVORITE USERS */
 
   // get favorite users
+  // protected
   const getFavoriteUsers = async (current_user_id) => {
     try {
       const response = await fetch(
@@ -281,6 +289,7 @@ const ItemsState = (props) => {
   };
 
   // add favorite user
+  // protected
   const addFavoriteUser = async (current_user_id, favorite_user_id) => {
     try {
       const response = await fetch(
@@ -312,6 +321,7 @@ const ItemsState = (props) => {
   };
 
   // remove user from favorites
+  // protected
   const removeFavoriteUser = async (current_user_id, favorite_user_id) => {
     try {
       const response = await fetch(
@@ -342,6 +352,8 @@ const ItemsState = (props) => {
     }
   };
 
+  // used to determine state of 'add/remove to/from favorites'
+  // button near username on other's wishlists
   const checkIfUserIsInFavorites = (user_id) => {
     let isInFavoriteUsers = false;
     state.favoriteUsers.map((fu) => {

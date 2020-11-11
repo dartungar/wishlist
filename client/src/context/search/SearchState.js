@@ -11,9 +11,9 @@ const SearchState = (props) => {
 
   const [state, dispatch] = useReducer(searchReducer, initialState);
   const { pushAlert } = useContext(AlertContext);
-  // const { pushAlert } = alertContext;
 
   // set search results
+  // will display on Search page
   const setSearchResults = (results) => {
     dispatch({ type: SET_SEARCH_RESULTS, payload: results });
   };

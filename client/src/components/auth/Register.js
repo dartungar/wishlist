@@ -33,30 +33,41 @@ const Button = styled.button`
 `;
 
 const Register = () => {
-  const { register, authError, setAuthError } = useContext(AuthContext);
-  const { setAlert } = useContext(AlertContext);
+  const { register } = useContext(AuthContext);
+  const { pushAlert } = useContext(AlertContext);
 
-  useEffect(() => {
-    if (authError) {
-      setAlert({ text: authError, type: "danger" });
-    }
-  }, [authError]);
-
+  // if user logs in wigh google, register new user
+  // falls back to login() if user is already registered
   const onSuccessGoogle = (response) => {
     console.log(response);
     const { name, googleId } = response.profileObj;
     register({ name, google_id: googleId });
   };
 
-  const onFailure = (response) => {
-    setAuthError("Error registering", response);
+  // show alert if logging in with google didn't go well
+  const onFailure = () => {
+    pushAlert({
+      type: "danger",
+      text:
+        "Ошибка регистрации через Facebook. Проверьте логин, пароль и попробуйте снова",
+    });
   };
 
-  // TODO: handle errors
+  // if user logs in wigh facebook, register new user
+  // uses login() if user is already registered
+  // show error message if facebook didn't respond right
   const responseFacebook = (response) => {
     console.log(response);
     const { name, id } = response;
-    register({ name, facebook_id: id });
+    if (response.id) {
+      register({ name, facebook_id: id });
+    } else {
+      pushAlert({
+        type: "danger",
+        text:
+          "Ошибка авторизации через Facebook. Проверьте логин, пароль и попробуйте снова",
+      });
+    }
   };
 
   return (

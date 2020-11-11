@@ -22,15 +22,18 @@ const Settings = () => {
   } = useContext(AuthContext);
   const [showEditUsernameInput, setShowEditUsernameInput] = useState(false);
 
+  // controlled input change handling
   const onClickEdit = (e) => {
     e.preventDefault();
     setShowEditUsernameInput(true);
   };
 
+  // close Edit Username input
   const closeInput = (e) => {
     setShowEditUsernameInput(false);
   };
 
+  // copy user's wishlist URL to clipboard
   const onCopyUrl = (e) => {
     e.preventDefault();
     const currentURL = `${window.location.protocol}//${window.location.hostname}`;

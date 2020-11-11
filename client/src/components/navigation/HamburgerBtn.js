@@ -29,9 +29,6 @@ const HamburgerIcon = styled.div`
   }
 `;
 
-// store state: is hamburger menu open
-// display based on is hamburger menu open
-// animation on change state
 const HamburgerBtn = () => {
   const [showHamburgerMenu, setShowHamburgerMenu] = useState(false);
   const location = useLocation();
@@ -43,6 +40,7 @@ const HamburgerBtn = () => {
     }
   }, [location]);
 
+  // toggle menu
   const handleClick = (e) => {
     e.preventDefault();
     setShowHamburgerMenu(!showHamburgerMenu);

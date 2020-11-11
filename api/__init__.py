@@ -63,7 +63,7 @@ def create_app(test_config=None, *args, **kwargs):
     @app.after_request
     def check_token_expiration(response):
         token = request.cookies.get('token')
-        # refresh token if it is close to expiring
+        # refresh token
         if token:
             token_lifetime = int(os.getenv('TOKEN_LIFETIME'))
             user = get_user_from_token(token)
@@ -72,7 +72,6 @@ def create_app(test_config=None, *args, **kwargs):
                 token = encrypt(str(user.id))
                 response.set_cookie('token', token, httponly=True,
                                     max_age=token_lifetime, samesite='Strict')
-                response.set_cookie('refreshments', 'some nice tea')
                 return response
             else:
                 response.set_cookie('token', '', httponly=True,

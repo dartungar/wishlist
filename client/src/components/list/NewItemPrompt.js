@@ -59,6 +59,7 @@ const NewItemPrompt = () => {
     group_purchase: false,
   });
 
+  // controlled component change handling
   const onChange = (e) => {
     const value =
       e.target.type === "checkbox" ? e.target.checked : e.target.value;
@@ -68,16 +69,19 @@ const NewItemPrompt = () => {
     });
   };
 
+  // close 'add new item' prompt
   const onCancel = (e) => {
     e.preventDefault();
     setAddingNewItem(false);
   };
 
+  // add new item (duh)
   const onSubmit = (e) => {
     e.preventDefault();
     addItem(user, newItem);
   };
 
+  // Enter and ESC support
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
       onSubmit(e);

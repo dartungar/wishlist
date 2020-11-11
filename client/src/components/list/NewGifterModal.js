@@ -55,6 +55,7 @@ const NewGifterModal = () => {
   const { user } = useContext(AuthContext);
   const [gifterName, setGifterName] = useState("");
 
+  // set default value for 'name' in modal window
   useEffect(() => {
     if (!gifterName) {
       if (user && user.name) {
@@ -65,10 +66,12 @@ const NewGifterModal = () => {
     }
   }, []);
 
+  // controlled component change handling
   const onChange = (e) => {
     setGifterName(e.target.value);
   };
 
+  // add gifter and refresh wishlist to display changes
   const onSubmit = (e) => {
     e.preventDefault();
     const gifters = [newGifterModal.item.gifters];
@@ -84,10 +87,12 @@ const NewGifterModal = () => {
     getWishlist(currentWishlist.user.public_url);
   };
 
+  // close modal
   const onCancel = (e) => {
     setNewGifterModal(null);
   };
 
+  // Enter and ESC support
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
       onSubmit(e);

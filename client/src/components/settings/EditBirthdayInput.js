@@ -20,18 +20,24 @@ const EditBirthdayInput = () => {
   const [previousValue, setPreviousValue] = useState();
   const [showBtns, setShowBtns] = useState(false);
 
+  // controlled compopent change handling
+  // wish primitive history
   const onChange = (e) => {
     setPreviousValue(editedBirthday);
     setEditedBirthday(e.target.value);
     setShowBtns(true);
   };
 
+  // close input
+  // and restore previous value
   const onCancel = (e) => {
     e.preventDefault();
     setEditedBirthday(previousValue);
     setShowBtns(false);
   };
 
+  // change birthday
+  // close input
   const onSubmit = (e) => {
     e.preventDefault();
     if (user.birthday !== editedBirthday) {

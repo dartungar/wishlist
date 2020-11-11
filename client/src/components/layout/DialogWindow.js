@@ -33,6 +33,7 @@ const BtnsContainer = styled.div`
 `;
 
 const DialogWindow = ({ text, onConfirm, onCancel }) => {
+  // Enter and ESC support
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
       onConfirm(e);
@@ -40,6 +41,7 @@ const DialogWindow = ({ text, onConfirm, onCancel }) => {
       onCancel(e);
     }
   };
+
   return (
     <DarkenedBackground>
       <DialogWindowContainer onKeyDown={handleKeyDown}>

@@ -15,6 +15,8 @@ import json
 favorite_users_association = Table('favorite_users', Base.metadata, Column('owner_id', UUID(
     as_uuid=True), ForeignKey('users.id')), Column('person_id', UUID(as_uuid=True), ForeignKey('users.id')))
 
+# wishlist user
+
 
 class User(Base):
     __tablename__ = "users"
@@ -24,6 +26,7 @@ class User(Base):
     google_id = Column(String, unique=True, default=None)
     name = Column(String)
     birthday = Column(Date)
+    # sort of 'public id', used in wishlist url, searchable
     public_url = Column(String, unique=True, default=None)
     items = relationship("Item", backref="users")
     favorite_persons = relationship(
@@ -42,10 +45,7 @@ class User(Base):
         return json.dumps(user_obj)
 
 
-# if not engine.dialect.has_table(engine, "users"):
-#     Base.metadata.create_all(engine)
-
-
+# wishlist item
 class Item(Base):
     __tablename__ = "items"
     id = Column(UUID(as_uuid=True), primary_key=True,
@@ -55,6 +55,8 @@ class Item(Base):
     name = Column(String)
     url = Column(String)
     price = Column(Integer)
+    # if True, there can be > 1 gifters per item
+    # (checked only on UI)
     group_purchase = Column(Boolean, default=False)
     gifters = Column(String)
     date_added = Column(DateTime, default=datetime.now())
@@ -64,8 +66,5 @@ class Item(Base):
                     "user_id": str(self.user_id), "price": self.price, "url": self.url, "group_purchase": self.group_purchase, "gifters": self.gifters if self.gifters else None, "date_added": str(self.date_added)}
         return json.dumps(item_obj)
 
-
-# if not engine.dialect.has_table(engine, "items"):
-#     Base.metadata.create_all(engine)
 
 Base.metadata.create_all(engine)

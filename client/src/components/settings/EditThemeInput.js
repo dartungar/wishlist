@@ -3,6 +3,8 @@ import React, { useState, useEffect } from "react";
 const EditThemeInput = () => {
   const [theme, setTheme] = useState();
 
+  // set 'theme' state based on cookies
+  // or browser/system theme
   useEffect(() => {
     console.log("cookies: ", document.cookie);
     const themeCookie = document.cookie
@@ -24,6 +26,9 @@ const EditThemeInput = () => {
     }
   }, []);
 
+  // set 'theme' cookie according to chosen theme
+  // reload window to apply changes
+  // (changes apply on page load, see ../../App.js component)
   const handleChange = (e) => {
     setTheme(e.target.value);
     document.cookie = `theme=${e.target.value}`;

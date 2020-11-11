@@ -34,10 +34,13 @@ const SearchBox = () => {
   const { pushAlert } = useContext(AlertContext);
   const [query, setQuery] = useState("");
 
+  // controlled component change handling
   const onChange = (e) => {
     setQuery(e.target.value);
   };
 
+  // perform search query
+  // query must be > 2 chars long
   const onSubmit = (e) => {
     e.preventDefault();
     if (query.length > 2) {

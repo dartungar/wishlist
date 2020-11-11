@@ -10,13 +10,14 @@ const AlertState = (props) => {
 
   const [state, dispatch] = useReducer(alertReducer, initialState);
 
-  // set alert
+  // add alert
+  // to alerts stack
   const pushAlert = (alert) => {
     console.log("push alert...");
     dispatch({ type: PUSH_ALERT, payload: alert });
   };
 
-  // clear alert
+  // clear the newest alert
   const popAlert = () => {
     console.log("pop alert...");
     dispatch({ type: POP_ALERT });

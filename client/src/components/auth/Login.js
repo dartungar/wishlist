@@ -33,32 +33,37 @@ const Button = styled.button`
 `;
 
 const Login = () => {
-  const { login, authError, setAuthError } = useContext(AuthContext);
-  const { setAlert } = useContext(AlertContext);
+  const { login } = useContext(AuthContext);
+  const { pushAlert } = useContext(AlertContext);
 
-  useEffect(() => {
-    if (authError) {
-      setAlert({ text: authError, type: "danger" });
-    }
-  }, [authError]);
-
+  // if user logged in with google, log them into the app
   const onSuccessGoogle = (response) => {
     console.log(response);
     login({ google_id: response.googleId });
   };
 
+  // if logging in with google failed, show error message
+  const onFailure = () => {
+    pushAlert({
+      type: "danger",
+      text:
+        "Ошибка авторизации через Google. Проверьте логин, пароль и попробуйте снова",
+    });
+  };
+
+  // if user logged in with facebook, log them into the app
+  // if facebook didnt respond with user ID, log in was unsuccessful
+  // => show error message
   const responseFacebook = (response) => {
     console.log(response);
     if (!response.id) {
-      setAuthError(
-        "Could not log in with Facebook. Please check your credentials and try again."
-      );
+      pushAlert({
+        type: "danger",
+        text:
+          "Ошибка авторизации через Facebook. Проверьте логин, пароль и попробуйте снова",
+      });
     }
     login({ facebook_id: response.id });
-  };
-
-  const onFailure = (response) => {
-    setAuthError("Error authenticating", response);
   };
 
   return (

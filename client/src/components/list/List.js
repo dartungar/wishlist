@@ -41,9 +41,10 @@ const List = ({ show_my_wishlist }) => {
   const [dispayedBirthday, setDisplayedBirthday] = useState();
   const [dateDiff, setDateDiff] = useState();
 
+  // if user is viewing his wishlist, load it
+  // else load wishlist of target user (from URL params)
   useEffect(() => {
     if (user_public_url) {
-      console.log("getting wishlist for", user_public_url);
       getWishlist(user_public_url);
     } else if (show_my_wishlist) {
       getWishlist(user.public_url);
@@ -51,6 +52,7 @@ const List = ({ show_my_wishlist }) => {
   }, [user_public_url]);
 
   // calculate birthday data for display
+  // wish you were here, Python (or maybe I am just a JS noob)
   useEffect(() => {
     if (currentWishlist) {
       console.log("wishlist user birthday", currentWishlist.user.birthday);

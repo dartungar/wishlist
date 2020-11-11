@@ -7,6 +7,7 @@ const MenuItems = () => {
   const { isAuthorized, user, logout } = useContext(AuthContext);
   const { popAlert } = useContext(AlertContext);
 
+  // 2 versions of menu items: for authorized & not authorized users
   return (
     <ul>
       <li>

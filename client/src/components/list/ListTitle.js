@@ -29,21 +29,25 @@ const ListTitle = ({ listOwner }) => {
     false
   );
 
+  // if wishlist owner in favorites, set state accordingly
+  // if favorite users are not loaded yet, JUST DO IT
   useEffect(() => {
-    if (favoriteUsers && user && listOwner) {
+    if (favoriteUsers && user && listOwner.id) {
       const isInFavorites = checkIfUserIsInFavorites(listOwner.id);
       if (isInFavorites) setIsWishlistOwnerInFavorites(true);
     } else if (!favoriteUsers && user) {
       getFavoriteUsers(user.id);
     }
-  }, [favoriteUsers, user]);
+  }, [favoriteUsers, user, listOwner.id]);
 
+  // add to faves & change state accordingly
   const onClickAddToFavorites = (e) => {
     e.preventDefault();
     addFavoriteUser(user.id, listOwner.id);
     setIsWishlistOwnerInFavorites(true);
   };
 
+  // remove from faves & change state accordingly
   const onClickRemoveFromFavorites = (e) => {
     e.preventDefault();
     removeFavoriteUser(user.id, listOwner.id);
@@ -78,7 +82,7 @@ const ListTitle = ({ listOwner }) => {
 };
 
 ListTitle.propTypes = {
-  user_id: PropTypes.number.isRequired,
+  listOwner: PropTypes.string.isRequired,
 };
 
 export default ListTitle;

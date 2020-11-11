@@ -21,6 +21,8 @@ const NavbarContainer = styled.div`
 const Navbar = () => {
   const [showHamburgerBtn, setShowHamburgerBtn] = useState();
 
+  // replace horizontal menu with hamburger menu button
+  // on narrow screens
   useEffect(() => {
     if (!showHamburgerBtn && window.innerWidth < 800) {
       setShowHamburgerBtn(true);

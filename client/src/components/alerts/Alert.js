@@ -32,12 +32,14 @@ const Alert = () => {
   const { alerts, popAlert } = useContext(AlertContext);
   const [currentAlert, setCurrentAlert] = useState();
 
+  // show the newest alert
   useEffect(() => {
     const [alert] = alerts.slice(-1);
     console.log("Alerts: ", alerts, alert);
     setCurrentAlert(alert);
   }, [alerts]);
 
+  // remove the newest alert from alerts stack
   const onCloseAlert = (e) => {
     e.preventDefault();
     popAlert();
