@@ -64,11 +64,11 @@ def create_app(test_config=None, *args, **kwargs):
     def check_token_expiration(response):
         token = request.cookies.get('token')
         # refresh token
-        if token:
+        # if we were not logged out
+        if token and response.response[0] != b'Logged out':
             token_lifetime = int(os.getenv('TOKEN_LIFETIME'))
             user = get_user_from_token(token)
             if user:
-                print(f'refresing token for {user.public_url}')
                 token = encrypt(str(user.id))
                 response.set_cookie('token', token, httponly=True,
                                     max_age=token_lifetime, samesite='Strict')
@@ -115,8 +115,8 @@ def create_app(test_config=None, *args, **kwargs):
         token = request.cookies.get("token")
         if not token:
             return flask.Response('Request must provide token for logout', 400)
-        response = make_response('Logged out', 200)
-        response.set_cookie('token', expires=0)
+        response = make_response('Logged out', 204)
+        response.set_cookie('token', '', expires=0)
         return response
 
     # add new user
@@ -141,7 +141,16 @@ def create_app(test_config=None, *args, **kwargs):
         # if user does not exist, create one
         try:
             try:
-                public_url = str(generate_public_url(data["name"]))
+                # generate a few public_url just in case
+                # and check if they are not duplicate
+                public_urls = [str(generate_public_url(data["name"]))
+                               for _ in range(10)]
+                for public_url in public_urls:
+                    user_with_same_public_url = session.query(User).filter_by(
+                        public_url=public_url).first()
+                    if not user_with_same_public_url:
+                        break
+
             except Exception as e:
                 return flask.Response('Error generating public URL', status=500)
             new_user = User(
