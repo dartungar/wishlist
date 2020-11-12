@@ -1,10 +1,12 @@
 import React from "react";
 import LogoIcon from "./LogoIcon";
 import styled from "styled-components";
+import { useHistory } from "react-router-dom";
 
 const LogoContainer = styled.div`
   position: relative;
   min-width: 17ch;
+  cursor: pointer;
   h1 {
     display: inline-block;
     /* margin-bottom: 1rem; */
@@ -27,8 +29,15 @@ const IconContainer = styled.span`
 `;
 
 const Logo = () => {
+  const history = useHistory();
+
+  // go to main page on click on logo
+  const handleClick = () => {
+    history.push("/");
+  };
+
   return (
-    <LogoContainer>
+    <LogoContainer onClick={handleClick}>
       <h1>
         <IconContainer>
           <LogoIcon />

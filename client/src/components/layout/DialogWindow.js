@@ -25,6 +25,9 @@ const DialogWindowContainer = styled.div`
   padding: 1rem;
   animation: 0.5s ${fadein} linear;
   box-shadow: 1px 1px 4px ${(props) => props.theme.BOX_SHADOW};
+  :focus {
+    outline: 1px solid ${(props) => props.theme.BACKGROUND};
+  }
 `;
 
 const BtnsContainer = styled.div`
@@ -54,9 +57,9 @@ const DialogWindow = ({ text, onConfirm, onCancel }) => {
   return (
     <DarkenedBackground>
       <DialogWindowContainer
-        ref={dialog}
         tabIndex="0"
         onKeyDown={(e) => handleKeyDown(e)}
+        ref={dialog}
       >
         <p>{text}</p>
         <BtnsContainer>
