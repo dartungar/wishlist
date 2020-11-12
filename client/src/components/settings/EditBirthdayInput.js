@@ -76,8 +76,12 @@ const EditBirthdayInput = () => {
         {showBtns && (
           <>
             {" "}
-            <CancelBtn onClick={onCancel} />
-            <ConfirmBtn type="submit" onClick={onSubmit} />
+            <CancelBtn onClick={onCancel} background="BASIC_BACKGROUND" />
+            <ConfirmBtn
+              type="submit"
+              onClick={onSubmit}
+              background="BASIC_BACKGROUND"
+            />
           </>
         )}
       </form>

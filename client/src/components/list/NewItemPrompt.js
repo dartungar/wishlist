@@ -78,7 +78,9 @@ const NewItemPrompt = () => {
   // add new item (duh)
   const onSubmit = (e) => {
     e.preventDefault();
-    addItem(user, newItem);
+    if (newItem.name && newItem.price) {
+      addItem(user, newItem);
+    }
   };
 
   // Enter and ESC support

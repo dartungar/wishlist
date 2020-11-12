@@ -41,7 +41,10 @@ const AppContainer = styled.div`
     font-family: "Source Sans Pro", sans-serif;
     padding: 0.3rem;
     color: ${(props) => props.theme.TEXT};
-    background-color: ${(props) => props.theme.BACKGROUND};
+    background-color: ${(props) => {
+      if (props.basic_background) return props.theme.BASIC_BACKGROUND;
+      else return props.theme.BACKGROUND;
+    }};
     border: 1px solid ${(props) => props.theme.PRIMARY_LIGHT};
     border-radius: 0px;
 

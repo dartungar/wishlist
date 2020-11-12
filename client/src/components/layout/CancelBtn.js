@@ -2,7 +2,6 @@ import React from "react";
 import styled from "styled-components";
 
 const CancelBtnContainer = styled.button`
-  background-color: ${(props) => props.theme.BACKGROUND};
   border: none;
   font-size: 1rem;
   i {
@@ -11,9 +10,13 @@ const CancelBtnContainer = styled.button`
   i:hover {
     color: ${(props) => props.theme.DANGER_DARK};
   }
+
+  background-color: ${(props) =>
+    props.background ? props.theme[props.background] : props.theme.BACKGROUND};
 `;
 
-const CancelBtn = ({ title, onClick }) => {
+const CancelBtn = ({ title, onClick, background }) => {
+  console.log("cancelBtn background:", background);
   return (
     <CancelBtnContainer
       onClick={(e) => {
@@ -21,6 +24,7 @@ const CancelBtn = ({ title, onClick }) => {
         onClick(e);
       }}
       title={title ? title : "Отмена"}
+      background={background}
     >
       <i className="fas fa-times"></i>
     </CancelBtnContainer>

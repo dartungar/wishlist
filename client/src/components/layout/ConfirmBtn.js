@@ -2,7 +2,6 @@ import React from "react";
 import styled from "styled-components";
 
 const ConfirmBtnContainer = styled.button`
-  background-color: ${(props) => props.theme.BACKGROUND};
   border: none;
   font-size: 1rem;
   i {
@@ -11,13 +10,17 @@ const ConfirmBtnContainer = styled.button`
   i:hover {
     color: ${(props) => props.theme.SUCCESS_DARK};
   }
+
+  background-color: ${(props) =>
+    props.background ? props.theme[props.background] : props.theme.BACKGROUND};
 `;
 
-const ConfirmBtn = ({ title, onClick }) => {
+const ConfirmBtn = ({ title, onClick, background }) => {
   return (
     <ConfirmBtnContainer
       onClick={(e) => onClick(e)}
       title={title ? title : "Применить"}
+      background={background}
     >
       <i className="fas fa-check"></i>
     </ConfirmBtnContainer>

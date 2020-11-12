@@ -78,11 +78,11 @@ const EditItemPrompt = ({ item }) => {
     e.preventDefault();
     console.log("Submitted", e.key, editedItemValue);
     // if data didnt change, do not send request
-    if (!shallowEqual(editedItemValue, item)) {
-      updateItem(editedItemValue);
-      getWishlist(user.public_url);
-    } else {
-      setEditedItem(null);
+    if (editedItemValue.name && editedItemValue.price) {
+      if (!shallowEqual(editedItemValue, item)) {
+        updateItem(editedItemValue);
+        getWishlist(user.public_url);
+      } else setEditedItem(null);
     }
   };
 

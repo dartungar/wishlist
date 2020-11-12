@@ -149,12 +149,12 @@ def create_app(test_config=None, *args, **kwargs):
                     user_with_same_public_url = session.query(User).filter_by(
                         public_url=public_url).first()
                     if not user_with_same_public_url:
+                        unique_public_url = public_url
                         break
-
             except Exception as e:
                 return flask.Response('Error generating public URL', status=500)
             new_user = User(
-                name=data["name"], facebook_id=facebook_id, google_id=google_id, public_url=public_url)
+                name=data["name"], facebook_id=facebook_id, google_id=google_id, public_url=unique_public_url)
         except Exception as e:
             return flask.Response("Error processing new user before registering", status=500)
         try:

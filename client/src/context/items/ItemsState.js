@@ -181,7 +181,7 @@ const ItemsState = (props) => {
       if (response.ok) {
         console.log("updated item!");
         dispatch({ type: SET_EDITED_ITEM, payload: null });
-        pushAlert({ type: "success", text: "Updated item" });
+        pushAlert({ type: "success", text: "Изменения сохранены" });
       } else {
         console.log("item was not updated", response.status);
         pushAlert({ type: "danger", text: "Ошибка при сохранении изменений" });

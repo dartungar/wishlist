@@ -41,8 +41,12 @@ const EditUsernameInput = ({ closeInput }) => {
     <UsernameInputContainer>
       <form action="" onSubmit={onSubmit} onKeyDown={handleKeyDown}>
         <input type="text" value={editedName} onChange={onChange} />
-        <CancelBtn onClick={closeInput} />
-        <ConfirmBtn type="submit" onClick={onSubmit} />
+        <CancelBtn onClick={closeInput} background="BASIC_BACKGROUND" />
+        <ConfirmBtn
+          type="submit"
+          onClick={onSubmit}
+          background="BASIC_BACKGROUND"
+        />
       </form>
     </UsernameInputContainer>
   );
