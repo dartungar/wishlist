@@ -71,7 +71,9 @@ const ItemsState = (props) => {
         } else
           pushAlert({
             type: "danger",
-            text: "Ошибка при загрузке списка: не найден владелец списка",
+            text:
+              "Ошибка при загрузке списка: не найден владелец списка. Попробуйте перезагрузить страницу",
+            hideAfterMs: 5000,
           });
       } else {
         console.log(`request to get wishlist failed with ${usr_response.text}`);
@@ -79,11 +81,16 @@ const ItemsState = (props) => {
           type: "danger",
           text:
             "Ошибка при загрузке списка: ошибка при загрузке данных о владельце списка",
+          hideAfterMs: 5000,
         });
       }
     } catch (error) {
       console.log(`getting wishlist failed: ${error}`);
-      pushAlert({ type: "danger", text: "Ошибка при загрузке списка" });
+      pushAlert({
+        type: "danger",
+        text: "Ошибка при загрузке списка",
+        hideAfterMs: 3000,
+      });
     } finally {
       setLoading(false);
     }
@@ -111,6 +118,7 @@ const ItemsState = (props) => {
         pushAlert({
           type: "danger",
           text: "Ошибка при загрузке записей в списке",
+          hideAfterMs: 3000,
         });
       }
     } catch (error) {
@@ -118,6 +126,7 @@ const ItemsState = (props) => {
       pushAlert({
         type: "danger",
         text: "Ошибка при загрузке записей в списке",
+        hideAfterMs: 3000,
       });
     } finally {
       setLoading(false);
@@ -148,14 +157,23 @@ const ItemsState = (props) => {
         pushAlert({
           type: "success",
           text: "Запись успешно добавлена",
+          hideAfterMs: 3000,
         });
       } else {
         console.log("Failed to add item", JSON.stringify(completeItem));
-        pushAlert({ type: "danger", text: "Ошибка при добавлении" });
+        pushAlert({
+          type: "danger",
+          text: "Ошибка при добавлении",
+          hideAfterMs: 3000,
+        });
       }
     } catch (error) {
       console.log("Failed to add item", error);
-      pushAlert({ type: "danger", text: "Ошибка при добавлении" });
+      pushAlert({
+        type: "danger",
+        text: "Ошибка при добавлении",
+        hideAfterMs: 3000,
+      });
     } finally {
       setLoading(false);
     }
@@ -181,13 +199,25 @@ const ItemsState = (props) => {
       if (response.ok) {
         console.log("updated item!");
         dispatch({ type: SET_EDITED_ITEM, payload: null });
-        pushAlert({ type: "success", text: "Изменения сохранены" });
+        pushAlert({
+          type: "success",
+          text: "Изменения сохранены",
+          hideAfterMs: 3000,
+        });
       } else {
         console.log("item was not updated", response.status);
-        pushAlert({ type: "danger", text: "Ошибка при сохранении изменений" });
+        pushAlert({
+          type: "danger",
+          text: "Ошибка при сохранении изменений",
+          hideAfterMs: 3000,
+        });
       }
     } catch (error) {
-      pushAlert({ type: "danger", text: "Ошибка при сохранении изменений" });
+      pushAlert({
+        type: "danger",
+        text: "Ошибка при сохранении изменений",
+        hideAfterMs: 3000,
+      });
     } finally {
       setLoading(false);
     }
@@ -212,16 +242,25 @@ const ItemsState = (props) => {
       );
       if (response.ok) {
         dispatch({ type: SET_EDITED_ITEM, payload: null });
-        pushAlert({ type: "success", text: `Записал вас дарителем` });
+        pushAlert({
+          type: "success",
+          text: `Записал вас дарителем`,
+          hideAfterMs: 3000,
+        });
       } else {
         console.log("item was not updated", response.status);
         pushAlert({
           type: "danger",
           text: "Не удалось записать вас дарителем",
+          hideAfterMs: 3000,
         });
       }
     } catch (error) {
-      pushAlert({ type: "danger", text: "Не удалось записать вас дарителем" });
+      pushAlert({
+        type: "danger",
+        text: "Не удалось записать вас дарителем",
+        hideAfterMs: 3000,
+      });
     } finally {
       setLoading(false);
     }
@@ -246,10 +285,18 @@ const ItemsState = (props) => {
       if (response.ok) {
         console.log("deleted item!");
       } else {
-        pushAlert({ type: "danger", text: "Ошибка при удалении" });
+        pushAlert({
+          type: "danger",
+          text: "Ошибка при удалении",
+          hideAfterMs: 3000,
+        });
       }
     } catch (error) {
-      pushAlert({ type: "danger", text: "Ошибка при удалении" });
+      pushAlert({
+        type: "danger",
+        text: "Ошибка при удалении",
+        hideAfterMs: 3000,
+      });
     } finally {
       setLoading(false);
     }
@@ -277,6 +324,7 @@ const ItemsState = (props) => {
         pushAlert({
           type: "danger",
           text: "Ошибка авторизации при получении списка избранных",
+          hideAfterMs: 3000,
         });
       } else throw new Error("Ошибка при получении списка избранных");
     } catch (error) {
@@ -284,6 +332,7 @@ const ItemsState = (props) => {
       pushAlert({
         type: "danger",
         text: "Ошибка при получении списка избранных",
+        hideAfterMs: 3000,
       });
     }
   };

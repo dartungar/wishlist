@@ -38,6 +38,7 @@ const AuthState = (props) => {
           type: "danger",
           text:
             "Ошибка авторизации. Пожалуйста, перезагрузите страницу и попробуйте снова",
+          hideAfterMs: 5000,
         });
       }
     } catch (error) {
@@ -46,6 +47,7 @@ const AuthState = (props) => {
         type: "danger",
         text:
           "Ошибка соединения с сервером. Пожалуйста, перезагрузите страницу и попробуйте снова",
+        hideAfterMs: 5000,
       });
     }
   };
@@ -72,6 +74,7 @@ const AuthState = (props) => {
       pushAlert({
         type: "info",
         text: "Пользователь не найден. Вы зарегистрировались?",
+        hideAfterMs: 10000,
       });
     } else {
       console.log("Login error: ", responseText);
@@ -79,6 +82,7 @@ const AuthState = (props) => {
         type: "danger",
         text:
           "Ошибка авторизации. Пожалуйста, перезагрузите страницу и попробуйте снова",
+        hideAfterMs: 5000,
       });
     }
   };
@@ -100,11 +104,13 @@ const AuthState = (props) => {
       pushAlert({
         type: "info",
         text: "Не забудьте установить дату рождения!",
+        hideAfterMs: 45000,
       });
       pushAlert({
         type: "success",
         text:
           "Добро пожаловать в WishLis! Создайте список желаний или найдите друзей.",
+        hideAfterMs: 15000,
       });
     } else {
       const errorText = await response.text();
@@ -113,6 +119,7 @@ const AuthState = (props) => {
         type: "danger",
         text:
           "Ошибка при регистрации. Пожалуйста, перезагрузите страницу и попробуйте снова",
+        hideAfterMs: 5000,
       });
     }
   };
@@ -134,6 +141,7 @@ const AuthState = (props) => {
         type: "danger",
         text:
           "Ошибка при выходе из учетной записи. Пожалуйста, перезагрузите страницу и попробуйте снова",
+        hideAfterMs: 5000,
       });
     }
   };
@@ -152,12 +160,20 @@ const AuthState = (props) => {
       body: JSON.stringify(data),
     });
     if (response.ok) {
-      pushAlert({ type: "success", text: "Изменения сохранены" });
+      pushAlert({
+        type: "success",
+        text: "Изменения сохранены",
+        hideAfterMs: 3000,
+      });
       getUser(); // refresh shown name
     } else {
       const responseText = await response.text();
       console.log(responseText);
-      pushAlert({ type: "danger", text: "Ошибка при сохранении изменений" });
+      pushAlert({
+        type: "danger",
+        text: "Ошибка при сохранении изменений",
+        hideAfterMs: 5000,
+      });
     }
   };
 
