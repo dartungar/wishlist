@@ -36,6 +36,11 @@ const Register = () => {
   const { register } = useContext(AuthContext);
   const { pushAlert } = useContext(AlertContext);
 
+  useEffect(() => {
+    console.log("Google Client ID", process.env.REACT_APP_GOOGLE_CLIENT_ID);
+    console.log("Facebook App ID", process.env.REACT_APP_FACEBOOK_APP_ID);
+  }, [process.env]);
+
   // if user logs in wigh google, register new user
   // falls back to login() if user is already registered
   const onSuccessGoogle = (response) => {
@@ -49,7 +54,7 @@ const Register = () => {
     pushAlert({
       type: "danger",
       text:
-        "Ошибка регистрации через Facebook. Проверьте логин, пароль и попробуйте снова",
+        "Ошибка регистрации через Google. Проверьте логин, пароль и попробуйте снова",
     });
   };
 
@@ -75,7 +80,7 @@ const Register = () => {
       <GoogleLogin
         onSuccess={onSuccessGoogle}
         onFailure={onFailure}
-        clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
+        clientId="917180155454-0a7fpfkdrir4naoav2vf35eftopihain.apps.googleusercontent.com"
         cookiePolicy="single_host_origin"
         render={(renderProps) => (
           <Button onClick={renderProps.onClick} disabled={renderProps.disabled}>
@@ -84,7 +89,7 @@ const Register = () => {
         )}
       />
       <FacebookLogin
-        appId={process.env.REACT_APP_FACEBOOK_APP_ID}
+        appId="1038415999953068"
         fields="name"
         callback={responseFacebook}
         size="small"

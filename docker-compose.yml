@@ -1,0 +1,31 @@
+version: "3"
+services:
+  client:
+    image: dartungar/wishlist-client
+    restart: unless-stopped
+    ports:
+      - 8043:80
+    depends_on:
+      - api
+      - db
+    env_file:
+      - .env
+  api:
+    image: dartungar/wishlist-api
+    container_name: wishlist-api
+    restart: unless-stopped
+    env_file:
+      - .env
+    command: pipenv run gunicorn -b 0.0.0.0:5000 api:app
+    ports:
+      - 5000:5000
+    depends_on:
+      - db
+  db:
+    image: dartungar/wishlist-db
+    container_name: wishlist-db
+    restart: unless-stopped
+    env_file:
+      - .env
+    ports:
+      - 5432:5432

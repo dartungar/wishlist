@@ -1,6 +1,5 @@
 from functools import wraps
 from flask import Flask, request, make_response
-from flask.ctx import copy_current_request_context
 from flask.wrappers import Response
 from flask_cors import CORS
 from sqlalchemy import exc
@@ -83,6 +82,9 @@ def create_app(test_config=None, *args, **kwargs):
     @app.route("/api/auth/login", methods=["POST"])
     def login():
         data = request.get_json()
+        if not data:
+            return make_response(
+                'Must provide credentials', 400)
         google_id = create_hash(data.get("google_id"))
         facebook_id = create_hash(data.get("facebook_id"))
         print(google_id)
@@ -400,4 +402,8 @@ def create_app(test_config=None, *args, **kwargs):
             session.rollback()
             return flask.Response(f'Error removing person from user\'s favorite people: {e}', status=500)
 
+    # return app instance
     return app
+
+
+app = create_app()

@@ -22,12 +22,13 @@ const SearchState = (props) => {
   const search = async (query) => {
     try {
       const response = await fetch(
-        `http://localhost:5000/api/users/search?q=${query}`
+        `${
+          process.env.API_URL || "http://localhost:5000"
+        }/api/users/search?q=${query}`
       );
       if (response.ok) {
         const unparsed_results = await response.json();
         const results = unparsed_results.map((r) => JSON.parse(r));
-        console.log("results:", results);
         return results;
       } else if (response.status === 400) {
         pushAlert({
@@ -42,7 +43,6 @@ const SearchState = (props) => {
         });
       }
     } catch (error) {
-      console.log("Error searching!", error);
       pushAlert({
         type: "danger",
         text:

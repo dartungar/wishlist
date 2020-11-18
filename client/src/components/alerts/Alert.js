@@ -5,8 +5,10 @@ import { fadein } from "../../style/animations";
 
 const AlertContainer = styled.div`
   z-index: 100;
-  position: sticky;
-  top: 50px;
+  position: absolute;
+  top: 100px;
+  min-width: 60%;
+  max-width: 80%;
   padding: 0.5rem 1rem;
   border-radius: 3px;
   line-height: 2rem;
@@ -18,7 +20,7 @@ const AlertContainer = styled.div`
     } else return props.theme.PRIMARY;
   }};
   animation: 0.2s ${fadein} linear;
-  opacity: 0.85;
+  opacity: 0.95;
   transition: opacity 0.1s;
 
   a {

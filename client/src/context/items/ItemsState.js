@@ -42,7 +42,6 @@ const ItemsState = (props) => {
   // set item that's being currently edited
   // also toggles 'edit mode' for this item
   const setEditedItem = (item) => {
-    console.log("setting edited item: ", item);
     dispatch({ type: SET_EDITED_ITEM, payload: item });
   };
 
@@ -56,11 +55,12 @@ const ItemsState = (props) => {
   // to refresh displayed info
   // public
   const getWishlist = async (user_public_url) => {
-    console.log("getting wishlist...");
     setLoading(true);
     try {
       const usr_response = await fetch(
-        `http://localhost:5000/api/users?public_url=${user_public_url}`
+        `${
+          process.env.API_URL || "http://localhost:5000"
+        }/api/users?public_url=${user_public_url}`
       );
       if (usr_response.ok) {
         const user = await usr_response.json();
@@ -76,7 +76,6 @@ const ItemsState = (props) => {
             hideAfterMs: 5000,
           });
       } else {
-        console.log(`request to get wishlist failed with ${usr_response.text}`);
         pushAlert({
           type: "danger",
           text:
@@ -85,7 +84,6 @@ const ItemsState = (props) => {
         });
       }
     } catch (error) {
-      console.log(`getting wishlist failed: ${error}`);
       pushAlert({
         type: "danger",
         text: "Ошибка при загрузке списка",
@@ -102,19 +100,18 @@ const ItemsState = (props) => {
   // used in getWishlist
   // public
   const getItems = async (user_id = state.currentWishlist.user.id) => {
-    console.log("getting items...");
     setLoading(true);
     try {
       const response = await fetch(
-        `http://localhost:5000/api/users/${user_id}/items`
+        `${
+          process.env.API_URL || "http://localhost:5000"
+        }/api/users/${user_id}/items`
       );
       if (response.ok) {
         let unparsed_items = await response.json();
-        console.log("fetched items: ", unparsed_items);
         let items = unparsed_items.map((i) => JSON.parse(i));
         return items;
       } else {
-        console.log(`getting items failed: ${response.status}`);
         pushAlert({
           type: "danger",
           text: "Ошибка при загрузке записей в списке",
@@ -122,7 +119,6 @@ const ItemsState = (props) => {
         });
       }
     } catch (error) {
-      console.log(`getting wishlist failed: ${error}`);
       pushAlert({
         type: "danger",
         text: "Ошибка при загрузке записей в списке",
@@ -142,17 +138,19 @@ const ItemsState = (props) => {
       user_id: user.id,
     };
     try {
-      const response = await fetch(`http://localhost:5000/api/items`, {
-        method: "POST",
-        mode: "cors",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(completeItem),
-      });
+      const response = await fetch(
+        `${process.env.API_URL || "http://localhost:5000"}/api/items`,
+        {
+          method: "POST",
+          mode: "cors",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(completeItem),
+        }
+      );
       if (response.ok) {
-        console.log("Added item!");
         getWishlist(user.public_url);
         pushAlert({
           type: "success",
@@ -160,7 +158,6 @@ const ItemsState = (props) => {
           hideAfterMs: 3000,
         });
       } else {
-        console.log("Failed to add item", JSON.stringify(completeItem));
         pushAlert({
           type: "danger",
           text: "Ошибка при добавлении",
@@ -168,7 +165,6 @@ const ItemsState = (props) => {
         });
       }
     } catch (error) {
-      console.log("Failed to add item", error);
       pushAlert({
         type: "danger",
         text: "Ошибка при добавлении",
@@ -185,7 +181,9 @@ const ItemsState = (props) => {
     setLoading(true);
     try {
       const response = await fetch(
-        `http://localhost:5000/api/items/${item.id}`,
+        `${process.env.API_URL || "http://localhost:5000"}/api/items/${
+          item.id
+        }`,
         {
           method: "PUT",
           mode: "cors",
@@ -197,7 +195,6 @@ const ItemsState = (props) => {
         }
       );
       if (response.ok) {
-        console.log("updated item!");
         dispatch({ type: SET_EDITED_ITEM, payload: null });
         pushAlert({
           type: "success",
@@ -205,7 +202,6 @@ const ItemsState = (props) => {
           hideAfterMs: 3000,
         });
       } else {
-        console.log("item was not updated", response.status);
         pushAlert({
           type: "danger",
           text: "Ошибка при сохранении изменений",
@@ -229,7 +225,9 @@ const ItemsState = (props) => {
     setLoading(true);
     try {
       const response = await fetch(
-        `http://localhost:5000/api/items/${item.id}/update_gifters`,
+        `${process.env.API_URL || "http://localhost:5000"}/api/items/${
+          item.id
+        }/update_gifters`,
         {
           method: "PUT",
           mode: "cors",
@@ -248,7 +246,6 @@ const ItemsState = (props) => {
           hideAfterMs: 3000,
         });
       } else {
-        console.log("item was not updated", response.status);
         pushAlert({
           type: "danger",
           text: "Не удалось записать вас дарителем",
@@ -272,7 +269,9 @@ const ItemsState = (props) => {
     setLoading(true);
     try {
       const response = await fetch(
-        `http://localhost:5000/api/items/${item_id}`,
+        `${
+          process.env.API_URL || "http://localhost:5000"
+        }/api/items/${item_id}`,
         {
           method: "DELETE",
           mode: "cors",
@@ -283,7 +282,6 @@ const ItemsState = (props) => {
         }
       );
       if (response.ok) {
-        console.log("deleted item!");
       } else {
         pushAlert({
           type: "danger",
@@ -309,7 +307,9 @@ const ItemsState = (props) => {
   const getFavoriteUsers = async (current_user_id) => {
     try {
       const response = await fetch(
-        `http://localhost:5000/api/users/${current_user_id}/favorites`,
+        `${
+          process.env.API_URL || "http://localhost:5000"
+        }/api/users/${current_user_id}/favorites`,
         {
           method: "GET",
           mode: "cors",
@@ -328,7 +328,6 @@ const ItemsState = (props) => {
         });
       } else throw new Error("Ошибка при получении списка избранных");
     } catch (error) {
-      console.log(error);
       pushAlert({
         type: "danger",
         text: "Ошибка при получении списка избранных",
@@ -342,7 +341,9 @@ const ItemsState = (props) => {
   const addFavoriteUser = async (current_user_id, favorite_user_id) => {
     try {
       const response = await fetch(
-        `http://localhost:5000/api/users/${current_user_id}/favorites`,
+        `${
+          process.env.API_URL || "http://localhost:5000"
+        }/api/users/${current_user_id}/favorites`,
         {
           method: "POST",
           mode: "cors",
@@ -374,7 +375,9 @@ const ItemsState = (props) => {
   const removeFavoriteUser = async (current_user_id, favorite_user_id) => {
     try {
       const response = await fetch(
-        `http://localhost:5000/api/users/${current_user_id}/favorites`,
+        `${
+          process.env.API_URL || "http://localhost:5000"
+        }/api/users/${current_user_id}/favorites`,
         {
           method: "DELETE",
           mode: "cors",

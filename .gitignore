@@ -126,5 +126,14 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+# client
 /client/.env
+.client.env
+/client/build
+
+/service/.env 
+.api.env
+/db/.env
+.db.env
 /.vscode
+.prettierignore

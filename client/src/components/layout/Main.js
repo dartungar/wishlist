@@ -35,29 +35,28 @@ const Main = () => {
   }, []);
 
   return (
-    isUserChecked && (
-      <MainContainer>
-        <Navbar />
-        {alerts && <Alert />}
-        <Switch>
-          <Route path="/list/:user_public_url" children={<List />} />
-          <PrivateRoute path="/favorites" component={FavoritesList} />
-          <PrivateRoute path="/settings" component={Settings} />
-          <Route exact path="/login">
-            {isAuthorized ? <Redirect to="/" /> : <Login />}
-          </Route>
-          <Route exact path="/register">
-            {isAuthorized ? <Redirect to="/" /> : <Register />}
-          </Route>
-          <Route exact path="/search" children={<Search />} />
-          {isAuthorized ? (
-            <Redirect to={`/list/${user.public_url}`} />
-          ) : (
-            <Route children={<PublicHome />} />
-          )}
-        </Switch>
-      </MainContainer>
-    )
+    <MainContainer>
+      <Navbar />
+      <Alert />
+      {/* {alerts && <Alert />} */}
+      <Switch>
+        <Route path="/list/:user_public_url" children={<List />} />
+        <PrivateRoute path="/favorites" component={FavoritesList} />
+        <PrivateRoute path="/settings" component={Settings} />
+        <Route exact path="/login">
+          {isAuthorized ? <Redirect to="/" /> : <Login />}
+        </Route>
+        <Route exact path="/register">
+          {isAuthorized ? <Redirect to="/" /> : <Register />}
+        </Route>
+        <Route exact path="/search" children={<Search />} />
+        {isAuthorized ? (
+          <Redirect to={`/list/${user.public_url}`} />
+        ) : (
+          <Route children={<PublicHome />} />
+        )}
+      </Switch>
+    </MainContainer>
   );
 };
 

@@ -20,10 +20,13 @@ const AuthState = (props) => {
   // protected
   const getUser = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/api/auth/user`, {
-        method: "GET",
-        credentials: "include",
-      });
+      const response = await fetch(
+        `${process.env.API_URL || "http://localhost:5000"}/api/auth/user`,
+        {
+          method: "GET",
+          credentials: "include",
+        }
+      );
       if (response.ok) {
         const data = await response.json();
         dispatch({ type: SET_USER, payload: data });
@@ -42,7 +45,6 @@ const AuthState = (props) => {
         });
       }
     } catch (error) {
-      console.log(error);
       pushAlert({
         type: "danger",
         text:
@@ -55,29 +57,28 @@ const AuthState = (props) => {
   // login & authenticate
   // public
   const login = async (data) => {
-    const response = await fetch(`http://localhost:5000/api/auth/login`, {
-      method: "POST",
-      mode: "cors",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Credentials": "true",
-      },
-      body: JSON.stringify(data),
-    });
-    const responseText = await response.text();
+    const response = await fetch(
+      `${process.env.API_URL || "http://localhost:5000"}/api/auth/login`,
+      {
+        method: "POST",
+        mode: "cors",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Credentials": "true",
+        },
+        body: JSON.stringify(data),
+      }
+    );
     if (response.status === 200) {
-      console.log("Logged in! Getting user...", responseText);
       getUser();
     } else if (response.status === 204) {
-      console.log("User not found ", responseText);
       pushAlert({
         type: "info",
         text: "Пользователь не найден. Вы зарегистрировались?",
         hideAfterMs: 10000,
       });
     } else {
-      console.log("Login error: ", responseText);
       pushAlert({
         type: "danger",
         text:
@@ -90,20 +91,23 @@ const AuthState = (props) => {
   // register
   // public
   const register = async (data) => {
-    const response = await fetch(`http://localhost:5000/api/auth/register`, {
-      method: "POST",
-      mode: "cors",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
+    const response = await fetch(
+      `${process.env.API_URL || "http://localhost:5000"}/api/auth/register`,
+      {
+        method: "POST",
+        mode: "cors",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      }
+    );
     if (response.ok) {
       login(data);
       pushAlert({
         type: "info",
-        text: "Не забудьте установить дату рождения!",
+        text: 'Не забудьте установить дату рождения в "Настройках"!',
         hideAfterMs: 45000,
       });
       pushAlert({
@@ -114,7 +118,6 @@ const AuthState = (props) => {
       });
     } else {
       const errorText = await response.text();
-      console.log("Registration error", errorText);
       pushAlert({
         type: "danger",
         text:
@@ -127,12 +130,14 @@ const AuthState = (props) => {
   // log out
   // protected
   const logout = async () => {
-    console.log("log user out");
-    const response = await fetch(`http://localhost:5000/api/auth/logout`, {
-      method: "GET",
-      mode: "cors",
-      credentials: "include",
-    });
+    const response = await fetch(
+      `${process.env.API_URL || "http://localhost:5000"}/api/auth/logout`,
+      {
+        method: "GET",
+        mode: "cors",
+        credentials: "include",
+      }
+    );
     if (response.ok) {
       dispatch({ type: SET_USER, payload: false });
       dispatch({ type: SET_IS_AUTHORIZED, payload: false });
@@ -149,16 +154,18 @@ const AuthState = (props) => {
   // change user info, i.e name
   // protected
   const changeUserInfo = async (data) => {
-    console.log("changing user info...");
-    const response = await fetch(`http://localhost:5000/api/users/${data.id}`, {
-      method: "PUT",
-      mode: "cors",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
+    const response = await fetch(
+      `${process.env.API_URL || "http://localhost:5000"}/api/users/${data.id}`,
+      {
+        method: "PUT",
+        mode: "cors",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      }
+    );
     if (response.ok) {
       pushAlert({
         type: "success",
@@ -168,7 +175,6 @@ const AuthState = (props) => {
       getUser(); // refresh shown name
     } else {
       const responseText = await response.text();
-      console.log(responseText);
       pushAlert({
         type: "danger",
         text: "Ошибка при сохранении изменений",

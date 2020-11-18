@@ -4,20 +4,8 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
-flake8 = "*"
-autopep8 = "*"
-pylint = "*"
 
 [packages]
-sqlalchemy = "*"
-gunicorn = "*"
-uuid = "*"
-psycopg2 = "*"
-flask = "*"
-flask-cors = "*"
-pyjwt = "*"
-transliterate = "*"
-cryptography = "*"
 
 [requires]
 python_version = "3.7"

@@ -14,7 +14,6 @@ const AlertState = (props) => {
   // add alert
   // to alerts stack
   const pushAlert = (alert) => {
-    console.log("push alert...");
     const alertData = {
       ...alert,
       id: uuid4(),
@@ -25,13 +24,11 @@ const AlertState = (props) => {
 
   // clear the newest alert
   const popAlert = () => {
-    console.log("pop alert...");
     dispatch({ type: POP_ALERT });
   };
 
   // remove alert by ID
   const removeAlertByID = (id) => {
-    console.log("removing alert...");
     dispatch({ type: REMOVE_ALERT, payload: id });
   };
 
