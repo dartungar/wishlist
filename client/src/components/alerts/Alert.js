@@ -3,15 +3,28 @@ import styled from "styled-components";
 import AlertContext from "../../context/alert/alertContext";
 import { fadein } from "../../style/animations";
 
-const AlertContainer = styled.div`
-  z-index: 100;
-  position: absolute;
+const AlertWrapperContainer = styled.div`
+  position: fixed;
+  z-index: 300;
+  display: inline-block;
   top: 100px;
-  min-width: 60%;
-  max-width: 80%;
-  padding: 0.5rem 1rem;
-  border-radius: 3px;
   line-height: 2rem;
+  min-height: 2rem;
+
+  @media (min-width: 880px) {
+    min-width: 100ch;
+  }
+
+  @media (min-width: 200px) and (max-width: 880px) {
+    left: 5%;
+    right: 5%;
+  }
+`;
+
+const AlertContainer = styled.div`
+  border-radius: 3px;
+  padding: 0.5rem 2.5rem 0.5rem 1rem;
+  box-shadow: 1px 1px 4px ${(props) => props.theme.BOX_SHADOW};
   background-color: ${(props) => {
     if (props.alertColor === "success") {
       return props.theme.SUCCESS;
@@ -47,16 +60,16 @@ const Alert = () => {
     popAlert();
   };
 
-  if (currentAlert) {
-    return (
+  return currentAlert ? (
+    <AlertWrapperContainer>
       <AlertContainer alertColor={currentAlert.type}>
         {currentAlert.text}
         <a href="" onClick={onCloseAlert} title="Закрыть">
           <i className="fas fa-times"></i>
         </a>
       </AlertContainer>
-    );
-  } else return null;
+    </AlertWrapperContainer>
+  ) : null;
 };
 
 export default Alert;

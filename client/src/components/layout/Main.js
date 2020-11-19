@@ -16,6 +16,7 @@ import AuthContext from "../../context/auth/authContext";
 
 const MainContainer = styled.div`
   height: 95vh;
+  width: 100%;
   grid-column: 2;
   display: flex;
   flex-direction: column;
@@ -38,7 +39,6 @@ const Main = () => {
     <MainContainer>
       <Navbar />
       <Alert />
-      {/* {alerts && <Alert />} */}
       <Switch>
         <Route path="/list/:user_public_url" children={<List />} />
         <PrivateRoute path="/favorites" component={FavoritesList} />
