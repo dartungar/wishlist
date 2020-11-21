@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import styled, { keyframes } from "styled-components";
+import styled from "styled-components";
 import ItemsContext from "../../context/items/itemsContext";
 import AuthContext from "../../context/auth/authContext";
 import { fadein } from "../../style/animations";

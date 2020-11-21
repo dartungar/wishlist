@@ -4,4 +4,4 @@ COPY . .
 RUN pip install pipenv
 RUN pipenv install
 EXPOSE 5000
-CMD ["pipenv", "run", "gunicorn", "-b", "0.0.0.0:5000", "api:app"]
+#CMD ["pipenv", "run", "gunicorn", "-b", "0.0.0.0:5000", "api:app"]

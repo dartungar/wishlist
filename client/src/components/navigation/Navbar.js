@@ -12,10 +12,6 @@ const NavbarContainer = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 1rem 0;
-
-  /* @media (max-width: 500px) {
-    justify-content: center;
-  } */
 `;
 
 const Navbar = () => {
@@ -27,6 +23,7 @@ const Navbar = () => {
     if (!showHamburgerBtn && window.innerWidth < 800) {
       setShowHamburgerBtn(true);
     }
+    // es-disable-next-line
   }, []);
 
   return (

@@ -59,7 +59,7 @@ const ItemsState = (props) => {
     try {
       const usr_response = await fetch(
         `${
-          process.env.API_URL || "http://localhost:5000"
+          process.env.NODE_ENV === "development" ? "http://localhost:5000" : ""
         }/api/users?public_url=${user_public_url}`
       );
       if (usr_response.ok) {
@@ -104,7 +104,7 @@ const ItemsState = (props) => {
     try {
       const response = await fetch(
         `${
-          process.env.API_URL || "http://localhost:5000"
+          process.env.NODE_ENV === "development" ? "http://localhost:5000" : ""
         }/api/users/${user_id}/items`
       );
       if (response.ok) {
@@ -139,7 +139,9 @@ const ItemsState = (props) => {
     };
     try {
       const response = await fetch(
-        `${process.env.API_URL || "http://localhost:5000"}/api/items`,
+        `${
+          process.env.NODE_ENV === "development" ? "http://localhost:5000" : ""
+        }/api/items`,
         {
           method: "POST",
           mode: "cors",
@@ -181,9 +183,9 @@ const ItemsState = (props) => {
     setLoading(true);
     try {
       const response = await fetch(
-        `${process.env.API_URL || "http://localhost:5000"}/api/items/${
-          item.id
-        }`,
+        `${
+          process.env.NODE_ENV === "development" ? "http://localhost:5000" : ""
+        }/api/items/${item.id}`,
         {
           method: "PUT",
           mode: "cors",
@@ -225,9 +227,9 @@ const ItemsState = (props) => {
     setLoading(true);
     try {
       const response = await fetch(
-        `${process.env.API_URL || "http://localhost:5000"}/api/items/${
-          item.id
-        }/update_gifters`,
+        `${
+          process.env.NODE_ENV === "development" ? "http://localhost:5000" : ""
+        }/api/items/${item.id}/update_gifters`,
         {
           method: "PUT",
           mode: "cors",
@@ -270,7 +272,7 @@ const ItemsState = (props) => {
     try {
       const response = await fetch(
         `${
-          process.env.API_URL || "http://localhost:5000"
+          process.env.NODE_ENV === "development" ? "http://localhost:5000" : ""
         }/api/items/${item_id}`,
         {
           method: "DELETE",
@@ -308,7 +310,7 @@ const ItemsState = (props) => {
     try {
       const response = await fetch(
         `${
-          process.env.API_URL || "http://localhost:5000"
+          process.env.NODE_ENV === "development" ? "http://localhost:5000" : ""
         }/api/users/${current_user_id}/favorites`,
         {
           method: "GET",
@@ -342,7 +344,7 @@ const ItemsState = (props) => {
     try {
       const response = await fetch(
         `${
-          process.env.API_URL || "http://localhost:5000"
+          process.env.NODE_ENV === "development" ? "http://localhost:5000" : ""
         }/api/users/${current_user_id}/favorites`,
         {
           method: "POST",
@@ -376,7 +378,7 @@ const ItemsState = (props) => {
     try {
       const response = await fetch(
         `${
-          process.env.API_URL || "http://localhost:5000"
+          process.env.NODE_ENV === "development" ? "http://localhost:5000" : ""
         }/api/users/${current_user_id}/favorites`,
         {
           method: "DELETE",

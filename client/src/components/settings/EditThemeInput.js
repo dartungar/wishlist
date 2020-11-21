@@ -6,7 +6,6 @@ const EditThemeInput = () => {
   // set 'theme' state based on cookies
   // or browser/system theme
   useEffect(() => {
-    console.log("cookies: ", document.cookie);
     const themeCookie = document.cookie
       .split("; ")
       .find((row) => row.startsWith("theme"));

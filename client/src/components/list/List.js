@@ -55,9 +55,7 @@ const List = ({ show_my_wishlist }) => {
   // wish you were here, Python (or maybe I am just a JS noob)
   useEffect(() => {
     if (currentWishlist) {
-      console.log("wishlist user birthday", currentWishlist.user.birthday);
       const bday = new Date(currentWishlist.user.birthday);
-      console.log("birthday day object", bday);
       setBirthday(bday);
       const displayedBday = `${bday.getDate()}.${bday.getMonth() + 1}`;
       setDisplayedBirthday(displayedBday);

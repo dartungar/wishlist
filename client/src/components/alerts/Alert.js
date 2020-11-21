@@ -5,7 +5,7 @@ import { fadein } from "../../style/animations";
 
 const AlertWrapperContainer = styled.div`
   position: fixed;
-  z-index: 300;
+  z-index: 100;
   display: inline-block;
   top: 100px;
   line-height: 2rem;
@@ -50,7 +50,6 @@ const Alert = () => {
   // show the newest alert
   useEffect(() => {
     const [alert] = alerts.slice(-1);
-    console.log("Alerts: ", alerts, alert);
     setCurrentAlert(alert);
   }, [alerts]);
 

@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "client": "npm start --prefix client",
-    "api": " \"pipenv run flask run\"",
+    "api": "cd service && pipenv run flask run",
     "json": "json-server --watch db.json --port 3005",
     "dev": "concurrently \"npm run client\" \"npm run api\""
   },

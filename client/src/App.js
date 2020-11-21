@@ -70,8 +70,9 @@ const AppContainer = styled.div`
 const App = () => {
   const [theme, setTheme] = useState();
 
+  // get current theme from cookies
+  // if none present, set based on preferred (system) color cheme
   useEffect(() => {
-    console.log("cookies: ", document.cookie);
     const themeCookie = document.cookie
       .split("; ")
       .find((row) => row.startsWith("theme"));

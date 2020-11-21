@@ -7,6 +7,7 @@ export const SET_NEW_GIFTER_MODAL = "SET_NEW_GIFTER_MODAL";
 
 export const SET_IS_AUTHORIZED = "SET_IS_AUTHORIZED";
 export const SET_USER = "SET_USER";
+export const SET_LOADING_AUTH = "SET_LOADING_AUTH";
 
 export const PUSH_ALERT = "PUSH_ALERT";
 export const POP_ALERT = "POP_ALERT";

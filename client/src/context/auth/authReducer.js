@@ -1,4 +1,4 @@
-import { SET_IS_AUTHORIZED, SET_USER } from "../types";
+import { SET_IS_AUTHORIZED, SET_USER, SET_LOADING_AUTH } from "../types";
 
 const authReducer = (state, action) => {
   switch (action.type) {
@@ -6,17 +6,20 @@ const authReducer = (state, action) => {
       return {
         ...state,
         isAuthorized: action.payload,
-        authError: null,
+        isLoadingAuth: false,
       };
 
     case SET_USER:
-      console.log("setting user", action.payload);
       return {
         ...state,
         user: action.payload,
-        authError: null,
+        isLoadingAuth: false,
       };
-
+    case SET_LOADING_AUTH:
+      return {
+        ...state,
+        isLoadingAuth: action.payload,
+      };
     default:
       return state;
   }

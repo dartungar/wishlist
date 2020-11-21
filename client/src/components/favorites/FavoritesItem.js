@@ -30,7 +30,7 @@ const FavoritesItem = ({ owner, user }) => {
       <h4>
         {user.name}
         {"  "}
-        <a href="" onClick={handleClick} title="Убрать из избранных">
+        <a href="#" onClick={handleClick} title="Убрать из избранных">
           <i className="fas fa-times"></i>
         </a>
       </h4>

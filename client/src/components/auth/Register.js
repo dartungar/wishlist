@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 import GoogleLogin from "react-google-login";
 import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
@@ -36,15 +36,9 @@ const Register = () => {
   const { register } = useContext(AuthContext);
   const { pushAlert } = useContext(AlertContext);
 
-  useEffect(() => {
-    console.log("Google Client ID", process.env.REACT_APP_GOOGLE_CLIENT_ID);
-    console.log("Facebook App ID", process.env.REACT_APP_FACEBOOK_APP_ID);
-  }, [process.env]);
-
   // if user logs in wigh google, register new user
   // falls back to login() if user is already registered
   const onSuccessGoogle = (response) => {
-    console.log(response);
     const { name, googleId } = response.profileObj;
     register({ name, google_id: googleId });
   };
@@ -62,7 +56,6 @@ const Register = () => {
   // uses login() if user is already registered
   // show error message if facebook didn't respond right
   const responseFacebook = (response) => {
-    console.log(response);
     const { name, id } = response;
     if (response.id) {
       register({ name, facebook_id: id });

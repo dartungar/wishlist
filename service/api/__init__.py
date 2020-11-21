@@ -10,6 +10,7 @@ import flask
 import json
 import os
 import datetime
+import time
 
 
 def create_app(test_config=None, *args, **kwargs):
@@ -36,6 +37,9 @@ def create_app(test_config=None, *args, **kwargs):
     def check_token_validity(func):
         @wraps(func)
         def wrapper(*args, **kwargs):
+            # simulate long server response for development
+            if os.environ['FLASK_ENV'] == 'development':
+                time.sleep(2)
             token = request.cookies.get('token')
             if not token:
                 return flask.Response('Could not find token in cookies', status=401)
@@ -76,6 +80,21 @@ def create_app(test_config=None, *args, **kwargs):
                 response.set_cookie('token', '', httponly=True,
                                     max_age=0, samesite='Strict')
         return response
+
+    # get current user info (for auth)
+    # invoked on every page load
+    @app.route("/api/auth/user", methods=["GET"])
+    @check_token_validity
+    def get_current_user():
+
+        token = request.cookies.get('token')
+        user = get_user_from_token(token)
+        if user:
+            response = make_response(user.to_json(), 200)
+            response.headers.add("ContentType", "application/json")
+
+            return response
+        return flask.Response("User not found", status=204)
 
     # authenticate user after successful Google / Facebook authorization
     # return session token
@@ -170,21 +189,8 @@ def create_app(test_config=None, *args, **kwargs):
             session.rollback()
             return flask.Response("Error adding user", status=500)
 
-    # get current user info (for auth)
-
-    @app.route("/api/auth/user", methods=["GET"])
-    @check_token_validity
-    def get_current_user():
-        token = request.cookies.get('token')
-        user = get_user_from_token(token)
-        if user:
-            response = make_response(user.to_json(), 200)
-            response.headers.add("ContentType", "application/json")
-
-            return response
-        return flask.Response("User not found", status=204)
-
     # get any user info by public url (for displaying wishlist)
+
     @app.route("/api/users", methods=["GET"])
     def get_user_by_public_url():
         try:

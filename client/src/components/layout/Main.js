@@ -11,7 +11,7 @@ import Register from "../auth/Register";
 import PublicHome from "../layout/PublicHome";
 import Search from "../search/Search";
 import Alert from "../alerts/Alert";
-import AlertContext from "../../context/alert/alertContext";
+import Spinner from "./Spinner";
 import AuthContext from "../../context/auth/authContext";
 
 const MainContainer = styled.div`
@@ -24,18 +24,31 @@ const MainContainer = styled.div`
 `;
 
 const Main = () => {
-  const { alerts } = useContext(AlertContext);
-  const { isAuthorized, user, getUser, checkToken } = useContext(AuthContext);
-  const [isUserChecked, setUserChecked] = useState(false);
+  const { isAuthorized, user, getUser, isLoadingAuth } = useContext(
+    AuthContext
+  );
+  const [isUserChecked, setIsUserChecked] = useState(false);
+  const [triedToCheckUser, setTriedToCheckUser] = useState(false);
 
   // try to check user on every page load
   useEffect(() => {
     if (!user) {
-      getUser().finally(() => setUserChecked(true));
+      setTriedToCheckUser(true);
+      getUser();
+      setTriedToCheckUser(true);
     }
+    // es-disable-next-line
   }, []);
 
-  return (
+  useEffect(() => {
+    if (!isLoadingAuth && !isUserChecked && triedToCheckUser) {
+      setIsUserChecked(true);
+    }
+  }, [isLoadingAuth]);
+
+  return !isUserChecked ? (
+    <Spinner />
+  ) : (
     <MainContainer>
       <Navbar />
       <Alert />

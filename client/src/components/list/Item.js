@@ -142,7 +142,7 @@ const Item = ({ item }) => {
           {gifters && (
             <LeftBtnsContainer>
               <a
-                href=""
+                href="#"
                 onClick={(e) => {
                   e.preventDefault();
                   setShowClearGiftersDialog(true);
@@ -169,7 +169,7 @@ const Item = ({ item }) => {
               <i className="fas fa-edit"></i>
             </a>
             <a
-              href=""
+              href="#"
               onClick={(e) => {
                 e.preventDefault();
                 setShowDeleteItemsDialog(true);
@@ -191,7 +191,7 @@ const Item = ({ item }) => {
         <LeftBtnsContainer>
           {group_purchase ? (
             <a
-              href=""
+              href="#"
               title={
                 !gifters ? `Буду дарить` : `Буду дарить вместе с ${gifters}`
               }
@@ -200,7 +200,7 @@ const Item = ({ item }) => {
               <i className="fas fa-users"></i>
             </a>
           ) : !gifters ? (
-            <a href="" title={`Буду дарить`} onClick={onClickBooking}>
+            <a href="#" title={`Буду дарить`} onClick={onClickBooking}>
               <i className="fas fa-gift"></i>
             </a>
           ) : (

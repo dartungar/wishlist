@@ -23,7 +23,7 @@ const SearchState = (props) => {
     try {
       const response = await fetch(
         `${
-          process.env.API_URL || "http://localhost:5000"
+          process.env.NODE_ENV === "development" ? "http://localhost:5000" : ""
         }/api/users/search?q=${query}`
       );
       if (response.ok) {

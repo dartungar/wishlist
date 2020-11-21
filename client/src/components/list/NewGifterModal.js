@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
-import styled, { keyframes } from "styled-components";
+import styled from "styled-components";
 import ItemsContext from "../../context/items/itemsContext";
 import AuthContext from "../../context/auth/authContext";
 import { fadein } from "../../style/animations";
@@ -64,6 +64,7 @@ const NewGifterModal = () => {
         setGifterName("Аноним");
       }
     }
+    // es-disable-next-line
   }, []);
 
   // controlled component change handling
@@ -78,7 +79,6 @@ const NewGifterModal = () => {
     let updatedGifters = gifters[0]
       ? [...gifters, ...[gifterName]]
       : [gifterName];
-    console.log("updated gifters: ", updatedGifters);
     updateItemGifters({
       ...newGifterModal.item,
       gifters: updatedGifters,

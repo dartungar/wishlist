@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 import GoogleLogin from "react-google-login";
 import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
@@ -38,7 +38,6 @@ const Login = () => {
 
   // if user logged in with google, log them into the app
   const onSuccessGoogle = (response) => {
-    console.log(response);
     login({ google_id: response.googleId });
   };
 
@@ -55,7 +54,6 @@ const Login = () => {
   // if facebook didnt respond with user ID, log in was unsuccessful
   // => show error message
   const responseFacebook = (response) => {
-    console.log(response);
     if (!response.id) {
       pushAlert({
         type: "danger",

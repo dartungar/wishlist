@@ -11,6 +11,7 @@ const SearchBoxContainer = styled.div`
     width: 45ch;
     height: 1.5rem;
   }
+  box-shadow: 1px 1px 4px ${(props) => props.theme.BOX_SHADOW};
 `;
 
 const SubmitBtn = styled.button`

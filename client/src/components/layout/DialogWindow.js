@@ -46,7 +46,6 @@ const DialogWindow = ({ text, onConfirm, onCancel }) => {
 
   // Enter and ESC support
   const handleKeyDown = (e) => {
-    console.log(e.key);
     if (e.key === "Enter") {
       onConfirm(e);
     } else if (e.key === "Escape") {

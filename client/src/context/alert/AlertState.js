@@ -29,7 +29,7 @@ const AlertState = (props) => {
 
   // remove alert by ID
   const removeAlertByID = (id) => {
-    //dispatch({ type: REMOVE_ALERT, payload: id });
+    dispatch({ type: REMOVE_ALERT, payload: id });
   };
 
   return (

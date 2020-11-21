@@ -16,11 +16,9 @@ const CancelBtnContainer = styled.button`
 `;
 
 const CancelBtn = ({ title, onClick, background }) => {
-  console.log("cancelBtn background:", background);
   return (
     <CancelBtnContainer
       onClick={(e) => {
-        console.log("cancelling!");
         onClick(e);
       }}
       title={title ? title : "Отмена"}

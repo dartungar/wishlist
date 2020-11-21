@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
-import styled, { keyframes } from "styled-components";
+import styled from "styled-components";
 import SearchResultItem from "./SearchResultItem";
 import SearchContext from "../../context/search/searchContext";
 import { fadein } from "../../style/animations";
@@ -30,6 +30,7 @@ const SearchResultList = () => {
     if (!showNoResultMessage && searchResults && searchResults.length === 0) {
       setShowNoResultMessage(true);
     } else setShowNoResultMessage(false);
+    // es-disable-next-line
   }, [searchResults]);
 
   return (

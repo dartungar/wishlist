@@ -12,13 +12,12 @@ services:
       - .env
   api:
     image: dartungar/wishlist-api
-    container_name: wishlist-api
     restart: unless-stopped
     env_file:
       - .env
     command: pipenv run gunicorn -b 0.0.0.0:5000 api:app
     ports:
-      - 5000:5000
+      - 5001:5000
     depends_on:
       - db
   db:
@@ -28,4 +27,4 @@ services:
     env_file:
       - .env
     ports:
-      - 5432:5432
+      - 5431:5432
