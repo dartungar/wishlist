@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 import styled from "styled-components";
 import AuthContext from "../../context/auth/authContext";
+import AlertContext from "../../context/alert/alertContext";
 import EditUserNameInput from "./EditUsernameInput";
 import EditBirthdayInput from "./EditBirthdayInput";
 import EditThemeInput from "./EditThemeInput";
@@ -20,6 +21,7 @@ const Settings = () => {
   const {
     user: { name, public_url },
   } = useContext(AuthContext);
+  const { pushAlert } = useContext(AlertContext);
   const [showEditUsernameInput, setShowEditUsernameInput] = useState(false);
 
   // controlled input change handling
@@ -38,6 +40,7 @@ const Settings = () => {
     e.preventDefault();
     const currentURL = `${window.location.protocol}//${window.location.hostname}`;
     navigator.clipboard.writeText(`${currentURL}/list/${public_url}`);
+    pushAlert({ type: "info", text: "Скопировано в буфер обмена", time: 2000 });
   };
 
   return (

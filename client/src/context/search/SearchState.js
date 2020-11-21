@@ -34,12 +34,14 @@ const SearchState = (props) => {
         pushAlert({
           type: "info",
           text: `Для поиска нужно > 2 символов. Вы искали "${query}", этого мало.`,
+          time: "4000",
         });
       } else {
         pushAlert({
           type: "danger",
           text:
             "Ошибка при поиске. Попробуйте еще раз или перезагрузите страницу",
+          time: "4000",
         });
       }
     } catch (error) {
@@ -47,6 +49,7 @@ const SearchState = (props) => {
         type: "danger",
         text:
           "Ошибка при поиске. Попробуйте еще раз или перезагрузите страницу",
+        time: "4000",
       });
     }
   };

@@ -10,7 +10,7 @@ export const SET_USER = "SET_USER";
 export const SET_LOADING_AUTH = "SET_LOADING_AUTH";
 
 export const PUSH_ALERT = "PUSH_ALERT";
-export const POP_ALERT = "POP_ALERT";
+export const CHANGE_ALERT_DATA = "CHANGE_ALERT_DATA";
 export const REMOVE_ALERT = "REMOVE_ALERT";
 
 export const SET_SEARCH_RESULTS = "SET_SEARCH_RESULTS";

@@ -73,21 +73,21 @@ const ItemsState = (props) => {
             type: "danger",
             text:
               "Ошибка при загрузке списка: не найден владелец списка. Попробуйте перезагрузить страницу",
-            hideAfterMs: 5000,
+            time: 5000,
           });
       } else {
         pushAlert({
           type: "danger",
           text:
             "Ошибка при загрузке списка: ошибка при загрузке данных о владельце списка",
-          hideAfterMs: 5000,
+          time: 5000,
         });
       }
     } catch (error) {
       pushAlert({
         type: "danger",
         text: "Ошибка при загрузке списка",
-        hideAfterMs: 3000,
+        time: 3000,
       });
     } finally {
       setLoading(false);
@@ -115,14 +115,14 @@ const ItemsState = (props) => {
         pushAlert({
           type: "danger",
           text: "Ошибка при загрузке записей в списке",
-          hideAfterMs: 3000,
+          time: 3000,
         });
       }
     } catch (error) {
       pushAlert({
         type: "danger",
         text: "Ошибка при загрузке записей в списке",
-        hideAfterMs: 3000,
+        time: 3000,
       });
     } finally {
       setLoading(false);
@@ -157,20 +157,20 @@ const ItemsState = (props) => {
         pushAlert({
           type: "success",
           text: "Запись успешно добавлена",
-          hideAfterMs: 3000,
+          time: 3000,
         });
       } else {
         pushAlert({
           type: "danger",
           text: "Ошибка при добавлении",
-          hideAfterMs: 3000,
+          time: 3000,
         });
       }
     } catch (error) {
       pushAlert({
         type: "danger",
         text: "Ошибка при добавлении",
-        hideAfterMs: 3000,
+        time: 3000,
       });
     } finally {
       setLoading(false);
@@ -201,20 +201,20 @@ const ItemsState = (props) => {
         pushAlert({
           type: "success",
           text: "Изменения сохранены",
-          hideAfterMs: 3000,
+          time: 3000,
         });
       } else {
         pushAlert({
           type: "danger",
           text: "Ошибка при сохранении изменений",
-          hideAfterMs: 3000,
+          time: 3000,
         });
       }
     } catch (error) {
       pushAlert({
         type: "danger",
         text: "Ошибка при сохранении изменений",
-        hideAfterMs: 3000,
+        time: 3000,
       });
     } finally {
       setLoading(false);
@@ -245,20 +245,20 @@ const ItemsState = (props) => {
         pushAlert({
           type: "success",
           text: `Записал вас дарителем`,
-          hideAfterMs: 3000,
+          time: 3000,
         });
       } else {
         pushAlert({
           type: "danger",
           text: "Не удалось записать вас дарителем",
-          hideAfterMs: 3000,
+          time: 3000,
         });
       }
     } catch (error) {
       pushAlert({
         type: "danger",
         text: "Не удалось записать вас дарителем",
-        hideAfterMs: 3000,
+        time: 3000,
       });
     } finally {
       setLoading(false);
@@ -288,14 +288,14 @@ const ItemsState = (props) => {
         pushAlert({
           type: "danger",
           text: "Ошибка при удалении",
-          hideAfterMs: 3000,
+          time: 3000,
         });
       }
     } catch (error) {
       pushAlert({
         type: "danger",
         text: "Ошибка при удалении",
-        hideAfterMs: 3000,
+        time: 3000,
       });
     } finally {
       setLoading(false);
@@ -326,14 +326,14 @@ const ItemsState = (props) => {
         pushAlert({
           type: "danger",
           text: "Ошибка авторизации при получении списка избранных",
-          hideAfterMs: 3000,
+          time: 3000,
         });
       } else throw new Error("Ошибка при получении списка избранных");
     } catch (error) {
       pushAlert({
         type: "danger",
         text: "Ошибка при получении списка избранных",
-        hideAfterMs: 3000,
+        time: 3000,
       });
     }
   };

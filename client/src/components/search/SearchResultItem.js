@@ -32,7 +32,10 @@ const SearchResultItem = ({ result: { name, public_url } }) => {
     <SearchResultItemContainer>
       <SearchResutHeader>{name}</SearchResutHeader>
       <p>
-        {public_url}{" "}
+        <a href={`/list/${public_url}`} title="открыть профиль">
+          {public_url}{" "}
+        </a>
+
         <a
           href={`/list/${public_url}`}
           title="открыть профиль в новой вкладке"

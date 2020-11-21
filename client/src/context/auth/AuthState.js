@@ -50,7 +50,7 @@ const AuthState = (props) => {
             type: "danger",
             text:
               "Ошибка авторизации. Пожалуйста, перезагрузите страницу и попробуйте снова",
-            hideAfterMs: 5000,
+            time: 5000,
           });
         }
       })
@@ -58,7 +58,7 @@ const AuthState = (props) => {
         pushAlert({
           type: "danger",
           text: `Сервер недоступен. Пожалуйста, подождите минуту-две, а потом перезагрузите страницу.`,
-          hideAfterMs: 5000,
+          time: 5000,
         });
       })
       .finally(() => {
@@ -94,7 +94,7 @@ const AuthState = (props) => {
         type: "danger",
         text:
           "Ошибка авторизации. Пожалуйста, перезагрузите страницу и попробуйте снова",
-        hideAfterMs: 5000,
+        time: 5000,
       });
     }
   };
@@ -122,13 +122,13 @@ const AuthState = (props) => {
       pushAlert({
         type: "info",
         text: 'Не забудьте установить дату рождения в "Настройках"!',
-        hideAfterMs: 45000,
+        time: 45000,
       });
       pushAlert({
         type: "success",
         text:
           "Добро пожаловать в WishLis! Создайте список желаний или найдите друзей.",
-        hideAfterMs: 15000,
+        time: 15000,
       });
     } else {
       const errorText = await response.text();
@@ -136,7 +136,7 @@ const AuthState = (props) => {
         type: "danger",
         text:
           "Ошибка при регистрации. Пожалуйста, перезагрузите страницу и попробуйте снова",
-        hideAfterMs: 5000,
+        time: 5000,
       });
     }
   };
@@ -163,7 +163,7 @@ const AuthState = (props) => {
         type: "danger",
         text:
           "Ошибка при выходе из учетной записи. Пожалуйста, перезагрузите страницу и попробуйте снова",
-        hideAfterMs: 5000,
+        time: 5000,
       });
     }
   };
@@ -189,7 +189,7 @@ const AuthState = (props) => {
       pushAlert({
         type: "success",
         text: "Изменения сохранены",
-        hideAfterMs: 3000,
+        time: 3000,
       });
       getUser(); // refresh shown name
     } else {
@@ -197,7 +197,7 @@ const AuthState = (props) => {
       pushAlert({
         type: "danger",
         text: "Ошибка при сохранении изменений",
-        hideAfterMs: 5000,
+        time: 5000,
       });
     }
   };

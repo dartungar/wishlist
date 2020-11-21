@@ -1,6 +1,10 @@
 {
-  "short_name": "Wishlist",
-  "name": "Wishlist: let people know what you want",
+  "lang": "ru",
+  "name": "WishLis: ваш список желаний",
+  "short_name": "WishLis",
+  "description": "Создайте список желаний, поделитесь с друзьями, узнайте их желания! ",
+  "categories": ["gifts", "sharing", "friends", "birthday"],
+  "theme_color": "#f7cb52",
   "icons": [
     {
       "src": "favicon.ico",
@@ -20,6 +24,5 @@
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#000000",
   "background_color": "#ffffff"
 }

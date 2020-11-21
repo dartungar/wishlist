@@ -1,7 +1,7 @@
 import React, { useReducer } from "react";
 import alertContext from "./alertContext";
 import alertReducer from "./alertReducer";
-import { PUSH_ALERT, POP_ALERT, REMOVE_ALERT } from "../types";
+import { PUSH_ALERT, CHANGE_ALERT_DATA, REMOVE_ALERT } from "../types";
 import { v4 as uuid4 } from "uuid";
 
 const AlertState = (props) => {
@@ -17,19 +17,23 @@ const AlertState = (props) => {
     const alertData = {
       ...alert,
       id: uuid4(),
+      display: true,
     };
     dispatch({ type: PUSH_ALERT, payload: alertData });
-    setTimeout(() => removeAlertByID(alertData.id), alert.hideAfterMs || 7000);
+    setTimeout(() => removeAlert(alertData), alert.time || 7000);
   };
 
-  // clear the newest alert
-  const popAlert = () => {
-    dispatch({ type: POP_ALERT });
+  const changeAlertData = (alert) => {
+    dispatch({ type: CHANGE_ALERT_DATA, payload: alert });
   };
 
   // remove alert by ID
-  const removeAlertByID = (id) => {
-    dispatch({ type: REMOVE_ALERT, payload: id });
+  const removeAlert = (alert) => {
+    changeAlertData({
+      ...alert,
+      display: false,
+    });
+    setTimeout(() => dispatch({ type: REMOVE_ALERT, payload: alert }), 200);
   };
 
   return (
@@ -37,7 +41,7 @@ const AlertState = (props) => {
       value={{
         alerts: state.alerts,
         pushAlert,
-        popAlert,
+        removeAlert,
       }}
     >
       {props.children}

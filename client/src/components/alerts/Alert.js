@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import styled from "styled-components";
 import AlertContext from "../../context/alert/alertContext";
-import { fadein } from "../../style/animations";
+import { fadein, fadeout } from "../../style/animations";
 
 const AlertWrapperContainer = styled.div`
   position: fixed;
@@ -32,7 +32,7 @@ const AlertContainer = styled.div`
       return props.theme.DANGER;
     } else return props.theme.PRIMARY;
   }};
-  animation: 0.2s ${fadein} linear;
+  animation: 0.2s ${(props) => (props.display ? fadein : fadeout)} linear;
   opacity: 0.95;
   transition: opacity 0.1s;
 
@@ -44,7 +44,7 @@ const AlertContainer = styled.div`
 `;
 
 const Alert = () => {
-  const { alerts, popAlert } = useContext(AlertContext);
+  const { alerts, removeAlert } = useContext(AlertContext);
   const [currentAlert, setCurrentAlert] = useState();
 
   // show the newest alert
@@ -56,12 +56,15 @@ const Alert = () => {
   // remove the newest alert from alerts stack
   const onCloseAlert = (e) => {
     e.preventDefault();
-    popAlert();
+    removeAlert(currentAlert);
   };
 
   return currentAlert ? (
     <AlertWrapperContainer>
-      <AlertContainer alertColor={currentAlert.type}>
+      <AlertContainer
+        alertColor={currentAlert.type}
+        display={currentAlert.display}
+      >
         {currentAlert.text}
         <a href="" onClick={onCloseAlert} title="Закрыть">
           <i className="fas fa-times"></i>
