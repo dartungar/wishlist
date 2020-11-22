@@ -23,17 +23,19 @@ const AlertState = (props) => {
     setTimeout(() => removeAlert(alertData), alert.time || 7000);
   };
 
+  // update alert
   const changeAlertData = (alert) => {
     dispatch({ type: CHANGE_ALERT_DATA, payload: alert });
   };
 
-  // remove alert by ID
-  const removeAlert = (alert) => {
+  // set 'display' to false to trigger animations
+  // remove alert
+  const removeAlert = (alert, time = 190) => {
     changeAlertData({
       ...alert,
       display: false,
     });
-    setTimeout(() => dispatch({ type: REMOVE_ALERT, payload: alert }), 200);
+    setTimeout(() => dispatch({ type: REMOVE_ALERT, payload: alert }), time);
   };
 
   return (

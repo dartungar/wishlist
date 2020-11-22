@@ -19,13 +19,13 @@ const darkTheme = {
   BOX_SHADOW: "#29231d",
   TEXT: "#fffdfa",
   TEXT_LIGHT: "#7a7a7a",
-  PRIMARY: "rgba(247, 208, 99, 0.7)",
-  PRIMARY_LIGHT: "rgba(255, 236, 186, 0.7)",
-  INFO: "rgba(247, 208, 99, 0.7)",
-  DANGER: "rgba(255, 130, 102, 0.7)",
-  DANGER_DARK: "rgba(214, 74, 43, 0.7)",
-  SUCCESS: "rgba(140, 237, 158, 0.7)",
-  SUCCESS_DARK: "rgba(87, 181, 112, 0.7)",
+  PRIMARY: "rgba(247, 208, 99, 1)",
+  PRIMARY_LIGHT: "rgba(255, 236, 186, 1)",
+  INFO: "rgba(247, 208, 99, 1)",
+  DANGER: "rgba(255, 130, 102, 1)",
+  DANGER_DARK: "rgba(214, 74, 43, 1)",
+  SUCCESS: "rgba(140, 237, 158, 1)",
+  SUCCESS_DARK: "rgba(87, 181, 112, 1)",
 };
 
 export { lightTheme, darkTheme };

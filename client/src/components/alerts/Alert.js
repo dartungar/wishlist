@@ -25,21 +25,32 @@ const AlertContainer = styled.div`
   border-radius: 3px;
   padding: 0.5rem 2.5rem 0.5rem 1rem;
   box-shadow: 1px 1px 4px ${(props) => props.theme.BOX_SHADOW};
+
+  animation: 0.2s ${(props) => (props.display ? fadein : fadeout)} linear;
+  opacity: 1;
+  transition: opacity 0.1s;
+
   background-color: ${(props) => {
     if (props.alertColor === "success") {
       return props.theme.SUCCESS;
     } else if (props.alertColor === "danger") {
       return props.theme.DANGER;
-    } else return props.theme.PRIMARY;
+    } else return props.theme.INFO;
   }};
-  animation: 0.2s ${(props) => (props.display ? fadein : fadeout)} linear;
-  opacity: 0.95;
-  transition: opacity 0.1s;
 
+  color: ${(props) => props.theme.BASIC_BACKGROUND};
   a {
     position: absolute;
     top: 0.5rem;
     right: 1rem;
+  }
+
+  a i {
+    color: ${(props) => props.theme.BASIC_BACKGROUND};
+  }
+
+  a i:hover {
+    color: ${(props) => props.theme.DANGER_DARK};
   }
 `;
 

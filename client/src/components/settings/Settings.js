@@ -6,7 +6,8 @@ import EditUserNameInput from "./EditUsernameInput";
 import EditBirthdayInput from "./EditBirthdayInput";
 import EditThemeInput from "./EditThemeInput";
 
-const ProfileContainer = styled.div`
+const SettingsContainer = styled.div`
+  height: 100%;
   h4 {
     margin-top: 2.5rem;
     margin-bottom: 1rem;
@@ -44,7 +45,7 @@ const Settings = () => {
   };
 
   return (
-    <ProfileContainer>
+    <SettingsContainer>
       <h1>Настройки</h1>
       <h4>Отображаемое имя</h4>
       {showEditUsernameInput ? (
@@ -67,7 +68,7 @@ const Settings = () => {
       </a>
       <EditBirthdayInput />
       <EditThemeInput />
-    </ProfileContainer>
+    </SettingsContainer>
   );
 };
 
