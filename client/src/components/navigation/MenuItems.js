@@ -5,7 +5,6 @@ import AlertContext from "../../context/alert/alertContext";
 
 const MenuItems = () => {
   const { isAuthorized, user, logout } = useContext(AuthContext);
-  const { popAlert } = useContext(AlertContext);
 
   // 2 versions of menu items: for authorized & not authorized users
   return (
@@ -33,18 +32,22 @@ const MenuItems = () => {
             </Link>
           </li>
           <li>
+            <Link to="/help" title="Справка">
+              Справка
+            </Link>
+          </li>
+          <li>
             <a
               href=""
               title="Выйти"
               onClick={(e) => {
                 e.preventDefault();
                 logout();
-                popAlert();
               }}
             >
               Выйти
             </a>
-          </li>{" "}
+          </li>
         </>
       ) : (
         <>
@@ -56,6 +59,11 @@ const MenuItems = () => {
           <li>
             <Link to="/register" title="Регистрация">
               Регистрация
+            </Link>
+          </li>
+          <li>
+            <Link to="/help" title="Справка">
+              Справка
             </Link>
           </li>
         </>

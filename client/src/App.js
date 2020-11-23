@@ -12,7 +12,7 @@ import "./App.css";
 // global styles
 const AppContainer = styled.div`
   display: grid;
-  height: 100%;
+  min-height: 100%;
   grid-template-columns: 1fr min(100ch, 90%) 1fr;
   color: ${(props) => props.theme.TEXT};
   font-family: "Source Sans Pro", sans-serif;

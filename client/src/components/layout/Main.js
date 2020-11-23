@@ -10,6 +10,7 @@ import Login from "../auth/Login";
 import Register from "../auth/Register";
 import PublicHome from "../layout/PublicHome";
 import Search from "../search/Search";
+import Help from "./Help";
 import Alert from "../alerts/Alert";
 import Spinner from "./Spinner";
 import AuthContext from "../../context/auth/authContext";
@@ -63,6 +64,7 @@ const Main = () => {
           {isAuthorized ? <Redirect to="/" /> : <Register />}
         </Route>
         <Route exact path="/search" children={<Search />} />
+        <Route exact path="/help" children={<Help />} />
         {isAuthorized ? (
           <Redirect to={`/list/${user.public_url}`} />
         ) : (

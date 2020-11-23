@@ -38,8 +38,8 @@ def create_app(test_config=None, *args, **kwargs):
         @wraps(func)
         def wrapper(*args, **kwargs):
             # simulate long server response for development
-            if os.environ['FLASK_ENV'] == 'development':
-                time.sleep(2)
+            # if os.environ['FLASK_ENV'] == 'development':
+            #     time.sleep(2)
             token = request.cookies.get('token')
             if not token:
                 return flask.Response('Could not find token in cookies', status=401)
