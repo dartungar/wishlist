@@ -20,4 +20,51 @@ const fadeout = keyframes`
   }
 `;
 
-export { fadein, fadeout };
+const slideDown = keyframes`
+  from {
+    height: 0;
+  }
+
+  to { 
+    height: 100%
+    }
+`;
+
+const slideUp = keyframes`
+from {
+  height: 100%;
+}
+
+to { 
+  height: 0
+  }
+`;
+
+const rotateClockwise = keyframes`
+from {
+  transform: rotate(0deg)
+}
+
+to { 
+  transform: rotate(90deg)
+  }
+`;
+
+const rotateCounterClockwise = keyframes`
+from {
+  transform: rotate(0deg)
+}
+
+to { 
+  transform: rotate(-90deg)
+  }
+`;
+
+export {
+  fadein,
+  fadeout,
+  slideDown,
+  slideUp,
+  rotateClockwise,
+  rotateCounterClockwise,
+};

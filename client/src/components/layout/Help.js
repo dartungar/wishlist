@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import CollapsibleSectionContainer from "./CollapsibleSectionContainer";
 
 const HelpContainer = styled.div``;
 
@@ -59,44 +60,52 @@ const Help = () => {
       </HelpBlock>
 
       <HelpBlock>
-        <h3>Как создать список</h3>
-        <p>
-          Зарегистрируйтесь - у вас появится свой список желаний. Наполнить
-          список просто:
-          <img
-            src="./AddWishlistItem.gif"
-            alt="Добавление новой записи в список желаний"
-            srcset=""
-          />
-        </p>
+        <CollapsibleSectionContainer title="Как создать список">
+          <p>
+            Зарегистрируйтесь - у вас появится свой список желаний. Наполнить
+            список просто:
+            <img
+              src="./AddWishlistItem.gif"
+              alt="Добавление новой записи в список желаний"
+              srcset=""
+            />
+          </p>
+        </CollapsibleSectionContainer>
       </HelpBlock>
       <HelpBlock>
-        <h3>Как найти списки друзей</h3>
-        <p>
-          На странице "Поиск" можно искать друзей по имени, фамилии или id.
-          Пользователя можно добавить в "Избранные" для быстрого доступа.
-          <img
-            src="./SearchUsers.gif"
-            alt="Поиск пользователей и добавление в избранное"
-            srcset=""
-          />
-        </p>
+        <CollapsibleSectionContainer title="Как найти списки друзей">
+          <p>
+            На странице "Поиск" можно искать друзей по имени, фамилии или id.
+            Пользователя можно добавить в "Избранные" для быстрого доступа.
+            <img
+              src="./SearchUsers.gif"
+              alt="Поиск пользователей и добавление в избранное"
+              srcset=""
+            />
+          </p>
+        </CollapsibleSectionContainer>
       </HelpBlock>
       <HelpBlock>
-        <h3>Как записаться в дарители</h3>
-        <p>
-          Записаться в дарители можно, кликнув на "
-          <i className="fas fa-gift"></i>" (для обычных подарков) / "
-          <i className="fas fa-users"></i>" (для даримых вскладчину):
-          <img src="./becomeGifter.gif" alt="Записаться дарителем" srcset="" />
-        </p>
+        <CollapsibleSectionContainer title="Как записаться в дарители">
+          <p>
+            Записаться в дарители можно, кликнув на "
+            <i className="fas fa-gift"></i>" (для обычных подарков) / "
+            <i className="fas fa-users"></i>" (для даримых вскладчину):
+            <img
+              src="./BecomeGifter.gif"
+              alt="Записаться дарителем"
+              srcset=""
+            />
+          </p>
+        </CollapsibleSectionContainer>
       </HelpBlock>
       <HelpBlock>
-        <h3>Как выписаться из дарителей</h3>
-        <p>
-          Попросите владельца списка очистить список дарителей этого подарка.
-          Владелец списка не увидит ваше имя.
-        </p>
+        <CollapsibleSectionContainer title="Как выписаться из дарителей">
+          <p>
+            Попросите владельца списка очистить список дарителей этого подарка.
+            Владелец списка не увидит ваше имя.
+          </p>
+        </CollapsibleSectionContainer>
       </HelpBlock>
     </HelpContainer>
   );
