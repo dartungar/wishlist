@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import CollapsibleSection from "./CollapsibleSection";
 
-const animationDuration = 0.3;
+const animationDuration = 0.25;
 
 const CollapsibleSectionContainer = (props) => {
   const [isOpen, setIsOpen] = useState(false);

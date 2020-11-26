@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import styled from "styled-components";
 import ItemsContext from "../../context/items/itemsContext";
 import AuthContext from "../../context/auth/authContext";
@@ -6,6 +6,7 @@ import { fadein } from "../../style/animations";
 import DialogWindow from "../layout/DialogWindow";
 
 const ItemContainer = styled.div`
+  position: relative;
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
@@ -52,6 +53,14 @@ const RightBtnsContainer = styled.div`
   }
 `;
 
+const GiftersInfoForMobileContainer = styled.div`
+  display: inline-block;
+  position: relative;
+  right: 1rem;
+  top: 1.1rem;
+  z-index: 100;
+`;
+
 const Item = ({ item }) => {
   const {
     setEditedItem,
@@ -64,6 +73,9 @@ const Item = ({ item }) => {
   const { id, name, price, url, gifters, group_purchase, user_id } = item;
   const [showClearGiftersDialog, setShowClearGiftersDialog] = useState(false);
   const [showDeleteItemDialog, setShowDeleteItemsDialog] = useState(false);
+  const [showGiftersInfoForMobile, setShowGiftersInfoForMobile] = useState(
+    false
+  );
 
   // handle controlled input change
   const onEdit = (e) => {
@@ -117,6 +129,21 @@ const Item = ({ item }) => {
     e.preventDefault();
     setNewGifterModal({ item: item });
   };
+
+  const showGiftersInfo = (e) => {
+    e.preventDefault();
+    setShowGiftersInfoForMobile(true);
+  };
+
+  useEffect(() => {
+    let timer;
+    if (showGiftersInfoForMobile) {
+      timer = setTimeout(() => setShowGiftersInfoForMobile(false), 2000);
+    }
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [showGiftersInfoForMobile]);
 
   return (
     <ItemContainer>
@@ -204,11 +231,19 @@ const Item = ({ item }) => {
               <i className="fas fa-gift"></i>
             </a>
           ) : (
-            <i
-              className="fas fa-gift"
-              title={`Будет дарить ${gifters}`}
-              style={{ opacity: "50%" }}
-            ></i>
+            <>
+              <i
+                className="fas fa-gift"
+                title={`Будет дарить ${gifters}`}
+                style={{ opacity: "50%" }}
+                onTouchStart={showGiftersInfo}
+              ></i>
+              {showGiftersInfoForMobile && (
+                <GiftersInfoForMobileContainer>
+                  Будет дарить {gifters}
+                </GiftersInfoForMobileContainer>
+              )}
+            </>
           )}
         </LeftBtnsContainer>
       )}

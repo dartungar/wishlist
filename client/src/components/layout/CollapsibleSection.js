@@ -6,9 +6,9 @@ const Title = styled.h3`
 `;
 
 const ChildrenContainer = styled.div`
-  max-height: ${(props) => (props.isOpen ? "1000px" : 0)};
-  /* display: ${(props) => (props.isOpen ? "block" : "none")}; */
-  transition: all ${(props) => props.animationDuration}s ease-in-out;
+  /* max-height: ${(props) => (props.isOpen ? "1000px" : 0)};
+  display: ${(props) => (props.isOpen ? "block" : "none")}; 
+  transition: all ${(props) => props.animationDuration}s linear; */
 `;
 
 const Icon = styled.div`
