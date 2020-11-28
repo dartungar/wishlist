@@ -12,7 +12,6 @@ const EditItemContainer = styled.form`
   justify-content: flex-start;
   align-items: center;
   margin: 1rem 0 0 0;
-  /* border: 1px solid #b1dff2; */
   border-radius: 3px;
   background-color: ${(props) => props.theme.BACKGROUND};
   animation: 0.5s ${fadein} linear;
@@ -34,7 +33,6 @@ const PriceInput = styled.input`
 `;
 const BtnsContainer = styled.div`
   margin: 0 1rem 1rem auto;
-  /* margin: 1rem; */
   i,
   div {
     margin-left: 1rem;

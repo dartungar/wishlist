@@ -73,7 +73,11 @@ const Register = () => {
       <GoogleLogin
         onSuccess={onSuccessGoogle}
         onFailure={onFailure}
-        clientId="917180155454-0a7fpfkdrir4naoav2vf35eftopihain.apps.googleusercontent.com"
+        clientId={
+          process.env.NODE_ENV === "production"
+            ? "917180155454-0a7fpfkdrir4naoav2vf35eftopihain.apps.googleusercontent.com"
+            : "917180155454-0pnj9a30f6v15qkukbgumqcv4phbskhd.apps.googleusercontent.com"
+        }
         cookiePolicy="single_host_origin"
         render={(renderProps) => (
           <Button onClick={renderProps.onClick} disabled={renderProps.disabled}>
@@ -82,7 +86,11 @@ const Register = () => {
         )}
       />
       <FacebookLogin
-        appId="1038415999953068"
+        appId={
+          process.env.NODE_ENV === "production"
+            ? "1038415999953068"
+            : "1036054240194241"
+        }
         fields="name"
         callback={responseFacebook}
         size="small"

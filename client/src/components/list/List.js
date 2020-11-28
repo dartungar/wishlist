@@ -1,7 +1,7 @@
 import React, { useEffect, useContext, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
-import Item from "./Item";
+import Item from "./item/Item";
 import AddNewItemBtn from "./AddNewItemBtn";
 import NewItemPrompt from "./NewItemPrompt";
 import EditItemPrompt from "./EditItemPrompt";

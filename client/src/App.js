@@ -14,6 +14,7 @@ const AppContainer = styled.div`
   display: grid;
   min-height: 100%;
   grid-template-columns: 1fr min(100ch, 90%) 1fr;
+  padding-bottom: 2rem;
   color: ${(props) => props.theme.TEXT};
   font-family: "Source Sans Pro", sans-serif;
   border-radius: 3px;
