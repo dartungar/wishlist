@@ -59,6 +59,7 @@ const Register = () => {
     const { name, id } = response;
     if (response.id) {
       register({ name, facebook_id: id });
+    } else if (response.status === "unknown") {
     } else {
       pushAlert({
         type: "danger",
@@ -91,6 +92,7 @@ const Register = () => {
             ? "1038415999953068"
             : "1036054240194241"
         }
+        isMobile={false}
         fields="name"
         callback={responseFacebook}
         size="small"

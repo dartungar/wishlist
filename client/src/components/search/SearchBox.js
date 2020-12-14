@@ -10,6 +10,9 @@ const SearchBoxContainer = styled.div`
     border-radius: 3px;
     width: 45ch;
     height: 1.5rem;
+    @media (max-width: 500px) {
+      max-width: 45ch;
+    }
   }
   box-shadow: 1px 1px 4px ${(props) => props.theme.BOX_SHADOW};
 `;

@@ -5,6 +5,7 @@ import AuthContext from "../../context/auth/authContext";
 import { fadein } from "../../style/animations";
 import CancelBtn from "../layout/CancelBtn";
 import ConfirmBtn from "../layout/ConfirmBtn";
+import { shallowEqual } from "../../helpers/shallowEqual";
 
 const EditItemContainer = styled.form`
   display: flex;
@@ -81,21 +82,6 @@ const EditItemPrompt = ({ item }) => {
         getWishlist(user.public_url);
       } else setEditedItem(null);
     }
-  };
-
-  // compare objects by prop values
-  const shallowEqual = (object1, object2) => {
-    const keys1 = Object.keys(object1);
-    const keys2 = Object.keys(object2);
-    if (keys1.length !== keys2.length) {
-      return false;
-    }
-    for (let key of keys1) {
-      if (object1[key] !== object2[key]) {
-        return false;
-      }
-    }
-    return true;
   };
 
   // support Enter and ESC

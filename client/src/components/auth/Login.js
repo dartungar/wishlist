@@ -58,14 +58,17 @@ const Login = () => {
   // if facebook didnt respond with user ID, log in was unsuccessful
   // => show error message
   const responseFacebook = (response) => {
-    if (!response.id) {
+    const { name, id } = response;
+    if (response.id) {
+      login({ name, facebook_id: id });
+    } else if (response.status === "unknown") {
+    } else {
       pushAlert({
         type: "danger",
         text:
           "Ошибка авторизации через Facebook. Проверьте логин, пароль и попробуйте снова",
       });
     }
-    login({ facebook_id: response.id });
   };
 
   return (
@@ -91,6 +94,7 @@ const Login = () => {
             ? "1038415999953068"
             : "1036054240194241"
         }
+        isMobile={false}
         fields="name"
         callback={responseFacebook}
         size="small"

@@ -12,6 +12,9 @@ const PublicHomeContainer = styled.div`
 
 const GreetingTextContainer = styled.p`
   margin: 7rem 0 2rem 0;
+  @media (max-width: 500px) {
+    max-width: 38ch;
+  }
 `;
 
 const PublicHome = () => {

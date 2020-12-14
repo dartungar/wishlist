@@ -5,10 +5,6 @@ import ItemsContext from "../../context/items/itemsContext";
 import AuthContext from "../../context/auth/authContext";
 
 const Title = styled.h1`
-  @media (max-width: 500px) {
-    text-align: center;
-  }
-
   a {
     position: relative;
     bottom: 3px;

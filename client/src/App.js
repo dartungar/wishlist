@@ -17,8 +17,13 @@ const AppContainer = styled.div`
   padding-bottom: 2rem;
   color: ${(props) => props.theme.TEXT};
   font-family: "Source Sans Pro", sans-serif;
-  border-radius: 3px;
+
   background-color: ${(props) => props.theme.BASIC_BACKGROUND};
+
+  * {
+    border-radius: 3px;
+  }
+
   h1,
   h2,
   h3,

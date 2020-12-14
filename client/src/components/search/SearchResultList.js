@@ -7,7 +7,7 @@ import { fadein } from "../../style/animations";
 // wrapper so search results can be aligned
 // with search box
 const SearchResultContainerWrapper = styled.div`
-  width: 40ch;
+  max-width: 45ch;
 `;
 
 const SearchResultsContainer = styled.div`

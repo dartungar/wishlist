@@ -54,8 +54,9 @@ const Item = ({ item }) => {
         <p>{name}</p>
       </NameContainer>
       <PriceContainer>{price} ₽</PriceContainer>
-      <UrlContainer>
-        {url && (
+
+      {url && (
+        <UrlContainer>
           <a
             href={url}
             title="посмотреть в магазине"
@@ -64,8 +65,8 @@ const Item = ({ item }) => {
           >
             <i className="fas fa-external-link-alt"></i>
           </a>
-        )}
-      </UrlContainer>
+        </UrlContainer>
+      )}
 
       {user && user.id === user_id ? (
         <>
