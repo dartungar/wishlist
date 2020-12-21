@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import Item from "./item/Item";
 import AddNewItemBtn from "./AddNewItemBtn";
+import ShareBtn from "./ShareBtn";
 import NewItemPrompt from "./NewItemPrompt";
 import EditItemPrompt from "./EditItemPrompt";
 import ListTitle from "./ListTitle";
@@ -26,6 +27,12 @@ const ListContainer = styled.div`
   }
 `;
 
+const TopBtnsContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+`;
+
 const List = ({ show_my_wishlist }) => {
   const {
     loading,
@@ -37,6 +44,7 @@ const List = ({ show_my_wishlist }) => {
   } = useContext(ItemsContext);
   const { user } = useContext(AuthContext);
   const { user_public_url } = useParams();
+  const [currentWishlistUrl, setCurrentWishlistUrl] = useState();
   const [birthday, setBirthday] = useState();
   const [dispayedBirthday, setDisplayedBirthday] = useState();
   const [dateDiff, setDateDiff] = useState();
@@ -45,8 +53,10 @@ const List = ({ show_my_wishlist }) => {
   // else load wishlist of target user (from URL params)
   useEffect(() => {
     if (user_public_url) {
+      setCurrentWishlistUrl(user_public_url);
       getWishlist(user_public_url);
     } else if (show_my_wishlist) {
+      setCurrentWishlistUrl(user.public_url);
       getWishlist(user.public_url);
     }
   }, [user_public_url]);
@@ -95,9 +105,17 @@ const List = ({ show_my_wishlist }) => {
           )}
       </small>
       {loading && <Spinner />}
-      {user &&
-        currentWishlist.user.id === user.id &&
-        (addingNewItem ? <NewItemPrompt /> : <AddNewItemBtn />)}
+      <TopBtnsContainer>
+        <ShareBtn
+          url={window.location.href}
+          title="WishLis: Ваш список желаний"
+          text="Создайте список желаний, поделитесь с друзьями, узнайте их желания!"
+        />
+        {user &&
+          currentWishlist.user.id === user.id &&
+          (addingNewItem ? <NewItemPrompt /> : <AddNewItemBtn />)}
+      </TopBtnsContainer>
+
       {currentWishlist.items && currentWishlist.items.length > 0
         ? currentWishlist.items.map((item) => {
             if (editedItem && item.id === editedItem.id) {

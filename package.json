@@ -23,6 +23,7 @@
   "homepage": "https://github.com/dartungar/wishlist#readme",
   "dependencies": {
     "concurrently": "^5.3.0",
-    "json-server": "^0.16.2"
+    "json-server": "^0.16.2",
+    "react-share": "^4.3.1"
   }
 }

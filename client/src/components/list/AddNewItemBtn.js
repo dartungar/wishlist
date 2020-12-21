@@ -5,6 +5,8 @@ import ItemsContext from "../../context/items/itemsContext";
 const BtnContainer = styled.div`
   margin-left: auto;
   margin-right: 0rem;
+  display: inline-block;
+
   padding: 5px;
   color: ${(props) => props.theme.TEXT_LIGHT};
   font-size: 0.8rem;
