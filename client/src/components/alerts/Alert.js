@@ -35,7 +35,7 @@ const AlertContainer = styled.div`
       return props.theme.SUCCESS;
     } else if (props.alertColor === "danger") {
       return props.theme.DANGER;
-    } else return props.theme.INFO;
+    } else return props.theme.PRIMARY;
   }};
 
   color: ${(props) => props.theme.BASIC_BACKGROUND};

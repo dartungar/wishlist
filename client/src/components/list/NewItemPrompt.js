@@ -33,6 +33,11 @@ const UrlInput = styled.input`
 const PriceInput = styled.input`
   margin: 0 1rem 1rem 1rem;
 `;
+
+const CurrencyContainer = styled.span`
+  position: relative;
+  bottom: 0.5rem;
+`;
 const BtnsContainer = styled.div`
   margin: 0 1rem 1rem auto;
   /* margin: 1rem; */
@@ -45,7 +50,9 @@ const BtnsContainer = styled.div`
 const IsGroupPurchaseInput = styled.div`
   margin: 0 1rem 1rem;
   input {
-    margin: 3px 0.5rem auto auto;
+    position: relative;
+    top: 2px;
+    margin-right: 0.3rem;
   }
 `;
 
@@ -78,7 +85,7 @@ const NewItemPrompt = () => {
   // add new item (duh)
   const onSubmit = (e) => {
     e.preventDefault();
-    if (newItem.name && newItem.price) {
+    if (newItem.name) {
       addItem(user, newItem);
     }
   };
@@ -119,8 +126,8 @@ const NewItemPrompt = () => {
         placeholder="Цена"
         value={newItem.price}
         onChange={onChange}
-        required
       ></PriceInput>
+      <CurrencyContainer> ₽</CurrencyContainer>
       <IsGroupPurchaseInput>
         <input
           type="checkbox"
@@ -130,7 +137,6 @@ const NewItemPrompt = () => {
         ></input>{" "}
         можно вскладчину
       </IsGroupPurchaseInput>
-
       <BtnsContainer>
         <CancelBtn onClick={onCancel} />
         <ConfirmBtn type="submit" onClick={onSubmit} />

@@ -61,8 +61,7 @@ const Login = () => {
     const { name, id } = response;
     if (response.id) {
       login({ name, facebook_id: id });
-    } else if (response.status === "unknown") {
-    } else {
+    } else if (response.status !== "unknown") {
       pushAlert({
         type: "danger",
         text:

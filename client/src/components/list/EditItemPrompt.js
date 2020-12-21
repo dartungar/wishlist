@@ -32,6 +32,11 @@ const UrlInput = styled.input`
 const PriceInput = styled.input`
   margin: 0 1rem 1rem 1rem;
 `;
+
+const CurrencyContainer = styled.span`
+  position: relative;
+  bottom: 0.5rem;
+`;
 const BtnsContainer = styled.div`
   margin: 0 1rem 1rem auto;
   i,
@@ -43,7 +48,9 @@ const BtnsContainer = styled.div`
 const IsGroupPurchaseInput = styled.div`
   margin: 0 1rem 1rem;
   input {
-    margin: 3px 0.5rem auto auto;
+    position: relative;
+    top: 2px;
+    margin-right: 0.3rem;
   }
 `;
 
@@ -76,7 +83,7 @@ const EditItemPrompt = ({ item }) => {
   const onSubmit = (e) => {
     e.preventDefault();
     // if data didnt change, do not send request
-    if (editedItemValue.name && editedItemValue.price) {
+    if (editedItemValue.name) {
       if (!shallowEqual(editedItemValue, item)) {
         updateItem(editedItemValue);
         getWishlist(user.public_url);
@@ -122,8 +129,9 @@ const EditItemPrompt = ({ item }) => {
         placeholder="Цена"
         value={editedItemValue.price}
         onChange={onChange}
-        required
       ></PriceInput>
+      <CurrencyContainer> ₽</CurrencyContainer>
+
       <IsGroupPurchaseInput>
         <input
           type="checkbox"
@@ -133,7 +141,6 @@ const EditItemPrompt = ({ item }) => {
         ></input>{" "}
         можно вскладчину
       </IsGroupPurchaseInput>
-
       <BtnsContainer>
         <CancelBtn onClick={onCancel} />
         <ConfirmBtn type="submit" onClick={onSubmit} />
