@@ -14,6 +14,7 @@ import Help from "./Help";
 import Alert from "../alerts/Alert";
 import Spinner from "./Spinner";
 import AuthContext from "../../context/auth/authContext";
+import AlertContext from "../../context/alert/alertContext";
 
 const MainContainer = styled.div`
   height: 100%;
@@ -28,8 +29,36 @@ const Main = () => {
   const { isAuthorized, user, getUser, isLoadingAuth } = useContext(
     AuthContext
   );
+  const { pushAlert } = useContext(AlertContext);
   const [isUserChecked, setIsUserChecked] = useState(false);
   const [triedToCheckUser, setTriedToCheckUser] = useState(false);
+
+  // show alerts when going offline / online
+  useEffect(() => {
+    window.addEventListener("online", handleOnline);
+    window.addEventListener("offline", handleOffline);
+
+    return () => {
+      window.removeEventListener("online", handleOnline);
+      window.removeEventListener("offline", handleOffline);
+    };
+  }, []);
+
+  function handleOnline() {
+    pushAlert({
+      type: "success",
+      text: `Соединение с интернетом восстановлено.`,
+      time: 3000,
+    });
+  }
+
+  function handleOffline() {
+    pushAlert({
+      type: "danger",
+      text: `Нет интернет-соединения. Изменения не будут сохранены!`,
+      time: 5000,
+    });
+  }
 
   // try to check user on every page load
   useEffect(() => {
