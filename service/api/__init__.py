@@ -4,13 +4,13 @@ from flask.wrappers import Response
 from flask_cors import CORS
 from sqlalchemy import exc
 from .db import session
-from .models import User, Item
+from .models import User, UserExternalId, Item
 from .helpers import generate_public_url, encrypt, decrypt, create_hash
+from uuid import uuid4
 import flask
 import json
 import os
 import datetime
-import time
 
 
 def create_app(test_config=None, *args, **kwargs):
@@ -104,24 +104,20 @@ def create_app(test_config=None, *args, **kwargs):
         if not data:
             return make_response(
                 'Must provide credentials', 400)
-        google_id = create_hash(data.get("google_id"))
-        facebook_id = create_hash(data.get("facebook_id"))
-        print(google_id)
+        external_id = create_hash(data.get("external_id"))
         try:
-            if google_id:
-                user = session.query(User).filter_by(
-                    google_id=google_id).first()
-            elif facebook_id:
-                user = session.query(User).filter_by(
-                    facebook_id=facebook_id).first()
+            if external_id:
+                user_id = session.query(UserExternalId).filter_by(
+                    external_id=external_id).first().user_id
+
             else:
                 response = make_response(
-                    'Must provide google or facebook ID to log in', 400)
+                    'Must provide ID to log in', 400)
                 return response
         except Exception as e:
             return make_response(f'Error while trying to authenticate: {e}', 500)
-        if user:
-            token = encrypt(str(user.id))
+        if user_id:
+            token = encrypt(str(user_id))
             response = make_response(f'Authenticated', 200)
             response.set_cookie('token', token, httponly=True,
                                 max_age=int(os.getenv('TOKEN_LIFETIME')), samesite='Strict')
@@ -135,8 +131,9 @@ def create_app(test_config=None, *args, **kwargs):
     def logout():
         token = request.cookies.get("token")
         if not token:
-            return flask.Response('Request must provide token for logout', 400)
-        response = make_response('Logged out', 204)
+            return
+        response = make_response('Logged out', 200) if token else make_response(
+            'Request must provide token for logout', 204)
         response.set_cookie('token', '', expires=0)
         return response
 
@@ -145,25 +142,21 @@ def create_app(test_config=None, *args, **kwargs):
     @app.route("/api/auth/register", methods=["POST"])
     def add_user():
         data = request.get_json()
-        google_id = create_hash(data.get("google_id"))
-        facebook_id = create_hash(data.get("facebook_id"))
+        external_id = create_hash(data.get("external_id"))
         # check if user already exists
         try:
-            if google_id:
-                user = session.query(User).filter_by(
-                    google_id=google_id).first()
-            elif facebook_id:
-                user = session.query(User).filter_by(
-                    facebook_id=facebook_id).first()
+            if external_id:
+                user_id = session.query(UserExternalId).filter_by(
+                    external_id=external_id).first()
         except Exception:
             return flask.Response('Error checking if user already exists', 500)
-        if user:
+        if user_id:
             return flask.Response('User already exists', 200)
         # if user does not exist, create one
         try:
             try:
                 # generate a few public_url just in case
-                # and check if they are not duplicate
+                # and check if there is no user with such public_url already
                 public_urls = [str(generate_public_url(data["name"]))
                                for _ in range(10)]
                 for public_url in public_urls:
@@ -174,17 +167,21 @@ def create_app(test_config=None, *args, **kwargs):
                         break
             except Exception as e:
                 return flask.Response('Error generating public URL', status=500)
-            new_user = User(
-                name=data["name"], facebook_id=facebook_id, google_id=google_id, public_url=unique_public_url)
+            new_user_id = uuid4()
+            new_user = User(id=new_user_id,
+                            name=data["name"], public_url=unique_public_url)
+            new_user_external_id = UserExternalId(
+                user_id=new_user_id, external_id=external_id)
         except Exception as e:
             return flask.Response("Error processing new user before registering", status=500)
         try:
             session.add(new_user)
+            session.add(new_user_external_id)
             session.commit()
             return flask.Response("Added user", status=201)
         except exc.IntegrityError:
             session.rollback(
-                'Integrity error when adding new user. Check if user with similar facebook/google ID exists', 400)
+                'Integrity error when adding new user. Check if user with similar social ID exists', 400)
         except Exception as e:
             session.rollback()
             return flask.Response("Error adding user", status=500)

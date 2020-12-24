@@ -38,7 +38,7 @@ const Login = () => {
 
   // if user logged in with google, log them into the app
   const onSuccessGoogle = (response) => {
-    login({ google_id: response.googleId });
+    login({ external_id: response.googleId });
   };
 
   // if logging in with google failed, show error message
@@ -60,7 +60,7 @@ const Login = () => {
   const responseFacebook = (response) => {
     const { name, id } = response;
     if (response.id) {
-      login({ name, facebook_id: id });
+      login({ external_id: id });
     } else if (response.status !== "unknown") {
       pushAlert({
         type: "danger",

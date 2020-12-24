@@ -132,6 +132,7 @@ const AuthState = (props) => {
       });
     } else {
       const errorText = await response.text();
+      console.log(errorText);
       pushAlert({
         type: "danger",
         text:
@@ -142,7 +143,7 @@ const AuthState = (props) => {
   };
 
   // log out
-  // protected
+  // public
   const logout = async () => {
     const logoutRequest = fetch(
       `${

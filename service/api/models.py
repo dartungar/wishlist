@@ -22,8 +22,6 @@ class User(Base):
     __tablename__ = "users"
     id = Column(UUID(as_uuid=True), primary_key=True,
                 default=uuid4, unique=True, nullable=False)
-    facebook_id = Column(String, unique=True, default=None)
-    google_id = Column(String, unique=True, default=None)
     name = Column(String)
     birthday = Column(Date)
     # sort of 'public id', used in wishlist url, searchable
@@ -36,13 +34,24 @@ class User(Base):
 
     def to_json(self):
         user_obj = {"id": str(self.id), "name": self.name, "birthday": str(self.birthday),
-                    "facebook_id": self.facebook_id, "google_id": self.google_id, "public_url": self.public_url}
+                    "public_url": self.public_url}
         return json.dumps(user_obj)
 
     def to_json_short(self):
         user_obj = {"id": str(self.id), "name": self.name, "birthday": str(self.birthday),
                     "public_url": self.public_url}
         return json.dumps(user_obj)
+
+
+# user's ID in social network(-s)
+# user for 'Sign in with Google' and other sign-in methods
+# allows for many sign in providers
+class UserExternalId(Base):
+    __tablename__ = "user_external_id"
+    id = Column(UUID(as_uuid=True), primary_key=True,
+                default=uuid4, unique=True, nullable=False)
+    user_id = Column(UUID(as_uuid=True), nullable=False)
+    external_id = Column(String, unique=True, default=None)
 
 
 # wishlist item

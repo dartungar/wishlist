@@ -40,7 +40,7 @@ const Register = () => {
   // falls back to login() if user is already registered
   const onSuccessGoogle = (response) => {
     const { name, googleId } = response.profileObj;
-    register({ name, google_id: googleId });
+    register({ name, external_id: googleId });
   };
 
   // show alert if logging in with google didn't go well
@@ -58,7 +58,7 @@ const Register = () => {
   const responseFacebook = (response) => {
     const { name, id } = response;
     if (response.id) {
-      register({ name, facebook_id: id });
+      register({ name, external_id: id });
     } else if (response.status === "unknown") {
     } else {
       pushAlert({
